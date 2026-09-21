@@ -53,6 +53,7 @@
     <header class="topbar">
 
       <div>
+
         <p class="eyebrow">
           Zeiterfassung
         </p>
@@ -60,6 +61,7 @@
         <h1>
           ZeitPol
         </h1>
+
       </div>
 
       <button
@@ -261,13 +263,24 @@
           Export
         </p>
 
+
         <button
           id="exportExcel"
-          class="primary-button"
           type="button"
+          style="
+            background: transparent;
+            color: inherit;
+            border: 1px solid currentColor;
+            border-radius: 10px;
+            padding: 8px 12px;
+            font-size: 14px;
+            font-weight: 500;
+            box-shadow: none;
+          "
         >
           📥 Excel exportieren
         </button>
+
 
         <small>
           Alle gespeicherten Zeiteinträge werden exportiert.
@@ -297,9 +310,11 @@
           Details
         </p>
 
+
         <h3 id="commissionDetailsTitle">
           Kommission
         </h3>
+
 
         <div
           id="commissionDetailsList"
