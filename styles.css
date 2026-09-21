@@ -2,8 +2,6 @@
   --blue-900: #123b7a;
   --blue-800: #174b95;
   --blue-700: #1d5db3;
-  --blue-100: #eaf2ff;
-  --blue-050: #f5f9ff;
 
   --yellow: #f4c542;
   --yellow-light: #fff6d6;
@@ -24,10 +22,12 @@
   --radius: 18px;
 }
 
+
 * {
   box-sizing:
     border-box;
 }
+
 
 html {
   min-height:
@@ -36,6 +36,7 @@ html {
   background:
     var(--background);
 }
+
 
 body {
   margin:
@@ -67,6 +68,7 @@ body {
     antialiased;
 }
 
+
 button,
 input,
 select {
@@ -74,10 +76,16 @@ select {
     inherit;
 }
 
+
 button {
   -webkit-tap-highlight-color:
     transparent;
 }
+
+
+/* =========================
+   APP
+========================= */
 
 .app-shell {
   width:
@@ -102,6 +110,7 @@ button {
     16px;
 }
 
+
 .topbar {
   display:
     flex;
@@ -116,9 +125,9 @@ button {
     18px;
 
   padding:
-    4px
-    2px;
+    4px 2px;
 }
+
 
 .eyebrow {
   margin:
@@ -140,6 +149,7 @@ button {
     uppercase;
 }
 
+
 h1 {
   margin:
     0;
@@ -157,6 +167,7 @@ h1 {
     -0.03em;
 }
 
+
 h2 {
   margin:
     4px 0 16px;
@@ -168,6 +179,7 @@ h2 {
     1.2;
 }
 
+
 h3 {
   margin:
     4px 0 14px;
@@ -175,6 +187,7 @@ h3 {
   font-size:
     20px;
 }
+
 
 .user-name-display {
   margin-top:
@@ -187,10 +200,12 @@ h3 {
     13px;
 }
 
+
 .user-name-display:empty {
   display:
     none;
 }
+
 
 .icon-button {
   display:
@@ -231,6 +246,7 @@ h3 {
     pointer;
 }
 
+
 .card {
   margin-bottom:
     16px;
@@ -252,11 +268,13 @@ h3 {
     var(--shadow);
 }
 
+
 .timer-card {
   border-top:
     5px solid
     var(--yellow);
 }
+
 
 .section-label {
   margin:
@@ -278,6 +296,7 @@ h3 {
     uppercase;
 }
 
+
 label {
   display:
     block;
@@ -294,6 +313,7 @@ label {
   font-weight:
     700;
 }
+
 
 input,
 select {
@@ -324,11 +344,8 @@ select {
 
   font-size:
     16px;
-
-  transition:
-    border-color 0.15s ease,
-    box-shadow 0.15s ease;
 }
+
 
 input:focus,
 select:focus {
@@ -337,13 +354,24 @@ select:focus {
 
   box-shadow:
     0 0 0 3px
-    rgba(29, 93, 179, 0.12);
+    rgba(
+      29,
+      93,
+      179,
+      0.12
+    );
 }
+
 
 input[type="date"] {
   color-scheme:
     light;
 }
+
+
+/* =========================
+   BUTTONS
+========================= */
 
 .primary-button {
   width:
@@ -382,8 +410,14 @@ input[type="date"] {
 
   box-shadow:
     0 6px 14px
-    rgba(18, 59, 122, 0.18);
+    rgba(
+      18,
+      59,
+      122,
+      0.18
+    );
 }
+
 
 .primary-button:active,
 .secondary-button:active,
@@ -391,14 +425,77 @@ input[type="date"] {
 .small-button:active,
 .export-button:active,
 .export-reset-button:active,
-.nav-item:active {
+.nav-item:active,
+.commission-summary-item:active {
   transform:
     scale(0.98);
 }
 
 
+.secondary-button {
+  min-height:
+    42px;
+
+  padding:
+    9px 13px;
+
+  border:
+    1px solid
+    var(--blue-900);
+
+  border-radius:
+    10px;
+
+  background:
+    transparent;
+
+  color:
+    var(--blue-900);
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+}
+
+
+.confirm-button {
+  min-height:
+    42px;
+
+  padding:
+    9px 13px;
+
+  border:
+    1px solid
+    var(--blue-900);
+
+  border-radius:
+    10px;
+
+  background:
+    var(--blue-900);
+
+  color:
+    #fff;
+
+  font-size:
+    14px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+}
+
+
 /* =========================
-   EINGABE STATUS
+   STATUS
 ========================= */
 
 .entry-status {
@@ -444,6 +541,7 @@ input[type="date"] {
     var(--yellow-light);
 }
 
+
 .summary-header {
   display:
     flex;
@@ -461,6 +559,7 @@ input[type="date"] {
     14px;
 }
 
+
 .summary-header
 .section-label {
   margin-bottom:
@@ -470,6 +569,7 @@ input[type="date"] {
     #715600;
 }
 
+
 .summary-header
 h3 {
   margin:
@@ -478,6 +578,7 @@ h3 {
   color:
     var(--blue-900);
 }
+
 
 .pending-badge {
   flex:
@@ -510,6 +611,7 @@ h3 {
     uppercase;
 }
 
+
 .summary-row {
   display:
     flex;
@@ -536,10 +638,12 @@ h3 {
     );
 }
 
+
 .summary-row:last-of-type {
   border-bottom:
     0;
 }
+
 
 .summary-row
 span {
@@ -549,6 +653,7 @@ span {
   font-size:
     13px;
 }
+
 
 .summary-row
 strong {
@@ -562,6 +667,7 @@ strong {
     right;
 }
 
+
 .summary-actions {
   display:
     grid;
@@ -574,66 +680,6 @@ strong {
 
   margin-top:
     16px;
-}
-
-.secondary-button {
-  min-height:
-    42px;
-
-  padding:
-    9px 13px;
-
-  border:
-    1px solid
-    var(--blue-900);
-
-  border-radius:
-    10px;
-
-  background:
-    transparent;
-
-  color:
-    var(--blue-900);
-
-  font-size:
-    14px;
-
-  font-weight:
-    700;
-
-  cursor:
-    pointer;
-}
-
-.confirm-button {
-  min-height:
-    42px;
-
-  padding:
-    9px 13px;
-
-  border:
-    1px solid
-    var(--blue-900);
-
-  border-radius:
-    10px;
-
-  background:
-    var(--blue-900);
-
-  color:
-    #fff;
-
-  font-size:
-    14px;
-
-  font-weight:
-    800;
-
-  cursor:
-    pointer;
 }
 
 
@@ -652,17 +698,20 @@ strong {
     #fff;
 }
 
+
 .evaluation-card
 .section-label {
   color:
     var(--yellow);
 }
 
+
 .evaluation-card
 h2 {
   color:
     #fff;
 }
+
 
 .commission-evaluation-list {
   display:
@@ -671,6 +720,7 @@ h2 {
   gap:
     16px;
 }
+
 
 .commission-block {
   display:
@@ -681,9 +731,9 @@ h2 {
 }
 
 
-/*
-  Kommission als klickbare Zeile.
-*/
+/* =========================
+   KOMMISSION KOPF
+========================= */
 
 .commission-summary-item {
   display:
@@ -740,6 +790,7 @@ h2 {
     none;
 }
 
+
 .commission-summary-item.open {
   border-radius:
     13px 13px 0 0;
@@ -753,6 +804,7 @@ h2 {
     );
 }
 
+
 .commission-summary-item
 strong {
   color:
@@ -761,6 +813,7 @@ strong {
   font-size:
     16px;
 }
+
 
 .commission-summary-hours {
   margin-top:
@@ -777,6 +830,7 @@ strong {
   font-size:
     14px;
 }
+
 
 .commission-arrow {
   flex:
@@ -801,6 +855,12 @@ strong {
 ========================= */
 
 .commission-details-list {
+  display:
+    grid;
+
+  gap:
+    8px;
+
   overflow:
     hidden;
 
@@ -829,33 +889,19 @@ strong {
       255,
       0.04
     );
-
-  transition:
-    padding 0.18s ease;
 }
 
-.commission-details-list.collapsed {
-  display:
-    none;
-}
 
-.commission-details-list.expanded {
-  display:
-    grid;
-}
+/*
+  Kein "display" hier festlegen.
+  JavaScript steuert das Öffnen
+  und Schliessen direkt.
+*/
 
 
 /* =========================
    SWIPE LÖSCHEN
 ========================= */
-
-.swipe-list {
-  display:
-    grid;
-
-  gap:
-    8px;
-}
 
 .swipe-entry {
   position:
@@ -870,6 +916,7 @@ strong {
   background:
     var(--danger-dark);
 }
+
 
 .swipe-content {
   position:
@@ -920,6 +967,7 @@ strong {
     none;
 }
 
+
 .swipe-content
 strong {
   display:
@@ -932,6 +980,7 @@ strong {
     14px;
 }
 
+
 .swipe-content
 div {
   margin-top:
@@ -943,6 +992,7 @@ div {
   font-size:
     13px;
 }
+
 
 .swipe-content
 small {
@@ -963,6 +1013,7 @@ small {
   font-size:
     12px;
 }
+
 
 .swipe-delete {
   position:
@@ -1001,6 +1052,7 @@ small {
   cursor:
     pointer;
 }
+
 
 .confirmed-badge {
   display:
@@ -1041,6 +1093,103 @@ small {
 
 
 /* =========================
+   ÜBERSICHT
+========================= */
+
+.evaluation-overview {
+  margin-top:
+    24px;
+
+  padding-top:
+    20px;
+
+  border-top:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+}
+
+
+.summary-grid {
+  display:
+    grid;
+
+  grid-template-columns:
+    repeat(2, 1fr);
+
+  gap:
+    10px;
+}
+
+
+.summary-box {
+  min-width:
+    0;
+
+  padding:
+    14px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+
+  border-radius:
+    13px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+}
+
+
+.summary-box
+span {
+  display:
+    block;
+
+  margin-bottom:
+    6px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.78
+    );
+
+  font-size:
+    12px;
+}
+
+
+.summary-box
+strong {
+  display:
+    block;
+
+  color:
+    #fff;
+
+  font-size:
+    15px;
+}
+
+
+/* =========================
    EXPORT
 ========================= */
 
@@ -1060,6 +1209,7 @@ small {
       0.18
     );
 }
+
 
 .export-details
 summary {
@@ -1114,11 +1264,13 @@ summary {
     none;
 }
 
+
 .export-details
 summary::-webkit-details-marker {
   display:
     none;
 }
+
 
 .export-details
 summary::after {
@@ -1132,16 +1284,19 @@ summary::after {
     18px;
 }
 
+
 .export-details[open]
 summary::after {
   content:
     "−";
 }
 
+
 .export-content {
   padding-top:
     14px;
 }
+
 
 .export-description {
   margin:
@@ -1159,6 +1314,7 @@ summary::after {
     13px;
 }
 
+
 .export-filter {
   display:
     grid;
@@ -1170,6 +1326,7 @@ summary::after {
     10px;
 }
 
+
 .export-filter
 label {
   margin:
@@ -1178,6 +1335,7 @@ label {
   color:
     #fff;
 }
+
 
 .export-filter
 input {
@@ -1201,11 +1359,13 @@ input {
     #fff;
 }
 
+
 .export-filter
 input:focus {
   border-color:
     var(--yellow);
 }
+
 
 .export-actions {
   display:
@@ -1223,6 +1383,7 @@ input:focus {
   margin-top:
     14px;
 }
+
 
 .export-button {
   min-height:
@@ -1259,6 +1420,7 @@ input:focus {
     pointer;
 }
 
+
 .export-reset-button {
   min-height:
     40px;
@@ -1289,6 +1451,7 @@ input:focus {
   cursor:
     pointer;
 }
+
 
 .export-content
 small {
@@ -1329,11 +1492,13 @@ small {
     #fff;
 }
 
+
 .commission-card
 .section-label {
   color:
     var(--yellow);
 }
+
 
 .commission-card
 h2 {
@@ -1341,11 +1506,13 @@ h2 {
     #fff;
 }
 
+
 .commission-card
 label {
   color:
     #fff;
 }
+
 
 .commission-card
 input {
@@ -1369,6 +1536,7 @@ input {
     #fff;
 }
 
+
 .commission-card
 input::placeholder {
   color:
@@ -1379,6 +1547,7 @@ input::placeholder {
       0.55
     );
 }
+
 
 .commission-card
 input:focus {
@@ -1394,6 +1563,7 @@ input:focus {
       0.16
     );
 }
+
 
 .commission-card
 .entry {
@@ -1414,12 +1584,14 @@ input:focus {
     );
 }
 
+
 .commission-card
 .entry
 strong {
   color:
     #fff;
 }
+
 
 .commission-card
 .empty-state {
@@ -1448,6 +1620,7 @@ strong {
     );
 }
 
+
 .commission-card
 .primary-button {
   background:
@@ -1463,6 +1636,7 @@ strong {
     none;
 }
 
+
 .commission-input-row {
   display:
     grid;
@@ -1476,6 +1650,7 @@ strong {
   align-items:
     end;
 }
+
 
 .commission-input-row
 .primary-button {
@@ -1491,6 +1666,7 @@ strong {
   white-space:
     nowrap;
 }
+
 
 .commission-info {
   margin:
@@ -1511,6 +1687,7 @@ strong {
     1.5;
 }
 
+
 .entry-actions {
   display:
     flex;
@@ -1527,6 +1704,7 @@ strong {
   margin-top:
     10px;
 }
+
 
 .small-button {
   min-height:
@@ -1568,6 +1746,7 @@ strong {
     pointer;
 }
 
+
 .danger-button {
   color:
     var(--danger);
@@ -1579,28 +1758,6 @@ strong {
       173,
       0.4
     );
-}
-
-
-/* =========================
-   EINSTELLUNGEN
-========================= */
-
-.form-status {
-  min-height:
-    20px;
-
-  margin:
-    10px 0 0;
-
-  color:
-    var(--blue-700);
-
-  font-size:
-    13px;
-
-  font-weight:
-    700;
 }
 
 
@@ -1642,6 +1799,28 @@ strong {
 
   font-size:
     14px;
+}
+
+
+/* =========================
+   EINSTELLUNGEN
+========================= */
+
+.form-status {
+  min-height:
+    20px;
+
+  margin:
+    10px 0 0;
+
+  color:
+    var(--blue-700);
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
 }
 
 
@@ -1711,6 +1890,7 @@ strong {
     blur(14px);
 }
 
+
 .nav-item {
   display:
     flex;
@@ -1752,6 +1932,7 @@ strong {
     pointer;
 }
 
+
 .nav-icon {
   font-size:
     19px;
@@ -1759,6 +1940,7 @@ strong {
   line-height:
     1;
 }
+
 
 .nav-item.active {
   background:
