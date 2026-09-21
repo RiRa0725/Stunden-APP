@@ -3471,4 +3471,8 @@ renderCommissionList();
 
 renderEvaluation();
 
-showRecording();
+/*
+  Ravo startet immer mit
+  der Auswertung.
+*/
+showEvaluation();
