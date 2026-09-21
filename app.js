@@ -16,6 +16,27 @@ const addEntryButton =
 const entryStatus =
   document.getElementById("entryStatus");
 
+const entrySummary =
+  document.getElementById("entrySummary");
+
+const summaryDate =
+  document.getElementById("summaryDate");
+
+const summaryHours =
+  document.getElementById("summaryHours");
+
+const summaryCommission =
+  document.getElementById("summaryCommission");
+
+const summaryActivity =
+  document.getElementById("summaryActivity");
+
+const editEntryButton =
+  document.getElementById("editEntry");
+
+const confirmEntryButton =
+  document.getElementById("confirmEntry");
+
 const recordingSection =
   document.getElementById("recordingSection");
 
@@ -142,6 +163,8 @@ let timeEntries = [];
 let commissions = [];
 
 let selectedCommission = null;
+
+let pendingEntry = null;
 
 
 /* =========================
@@ -332,12 +355,6 @@ try {
    ALTE EINTRÄGE
 ========================= */
 
-/*
-  Bestehende Einträge aus älteren
-  Versionen werden als quittiert
-  behandelt.
-*/
-
 timeEntries.forEach(
   function(entry) {
 
@@ -346,7 +363,8 @@ timeEntries.forEach(
       "boolean"
     ) {
 
-      entry.confirmed = true;
+      entry.confirmed =
+        true;
 
     }
 
@@ -364,7 +382,9 @@ const savedUserName =
   );
 
 
-if (savedUserName) {
+if (
+  savedUserName
+) {
 
   userNameInput.value =
     savedUserName;
@@ -572,9 +592,7 @@ function calculateTotal(
     function(entry) {
 
       total +=
-        getHours(
-          entry
-        );
+        getHours(entry);
 
     }
   );
@@ -652,7 +670,7 @@ function renderCommissionSelect() {
 
 
 /* =========================
-   KOMMISSIONEN VERWALTEN
+   KOMMISSIONEN
 ========================= */
 
 function renderCommissionList() {
@@ -845,7 +863,9 @@ function addCommission() {
     );
 
 
-  if (exists) {
+  if (
+    exists
+  ) {
 
     alert(
       "Diese Kommission gibt es bereits."
@@ -883,7 +903,7 @@ function addCommission() {
 
 
 /* =========================
-   UMBENENNEN
+   KOMMISSION UMBENENNEN
 ========================= */
 
 function showRenameForm(
@@ -996,7 +1016,9 @@ function showRenameForm(
         );
 
 
-      if (exists) {
+      if (
+        exists
+      ) {
 
         alert(
           "Diese Kommission gibt es bereits."
@@ -1039,6 +1061,20 @@ function showRenameForm(
 
         selectedCommission =
           newName;
+
+      }
+
+
+      if (
+        pendingEntry &&
+        pendingEntry.commission ===
+        oldName
+      ) {
+
+        pendingEntry.commission =
+          newName;
+
+        showPendingSummary();
 
       }
 
@@ -1186,12 +1222,319 @@ function deleteCommission(
   }
 
 
+  if (
+    pendingEntry &&
+    pendingEntry.commission ===
+    commission
+  ) {
+
+    pendingEntry =
+      null;
+
+
+    entrySummary.style.display =
+      "none";
+
+
+    entryStatus.textContent =
+      "Bitte wähle eine neue Kommission.";
+
+  }
+
+
   saveCommissions();
 
 
   renderCommissionSelect();
 
   renderCommissionList();
+
+}
+
+
+/* =========================
+   NEUEN EINTRAG VORBEREITEN
+========================= */
+
+function prepareEntry() {
+
+  const selectedDate =
+    entryDateInput.value.trim();
+
+
+  const value =
+    hoursInput.value
+      .trim()
+      .replace(
+        ",",
+        "."
+      );
+
+
+  const hours =
+    Number(
+      value
+    );
+
+
+  if (
+    selectedDate === ""
+  ) {
+
+    alert(
+      "Bitte wähle ein Datum aus."
+    );
+
+
+    entryDateInput.focus();
+
+
+    return;
+
+  }
+
+
+  if (
+    value === "" ||
+    !Number.isFinite(
+      hours
+    ) ||
+    hours <= 0
+  ) {
+
+    alert(
+      "Bitte gib eine gültige Stundenzahl ein."
+    );
+
+
+    hoursInput.focus();
+
+
+    return;
+
+  }
+
+
+  if (
+    commissions.length ===
+    0
+  ) {
+
+    alert(
+      "Bitte lege zuerst eine Kommission an."
+    );
+
+
+    return;
+
+  }
+
+
+  pendingEntry = {
+
+    date:
+      selectedDate,
+
+    hours:
+      hours.toLocaleString(
+        "de-CH",
+        {
+          maximumFractionDigits: 2
+        }
+      ),
+
+    commission:
+      commissionInput.value,
+
+    activity:
+      activityInput.value.trim()
+
+  };
+
+
+  showPendingSummary();
+
+}
+
+
+/* =========================
+   ZUSAMMENFASSUNG ZEIGEN
+========================= */
+
+function showPendingSummary() {
+
+  if (
+    !pendingEntry
+  ) {
+
+    entrySummary.style.display =
+      "none";
+
+    return;
+
+  }
+
+
+  const date =
+    getEntryDate(
+      pendingEntry
+    );
+
+
+  summaryDate.textContent =
+    date
+      ? formatDate(date)
+      : "Datum unbekannt";
+
+
+  summaryHours.textContent =
+    pendingEntry.hours +
+    " Std.";
+
+
+  summaryCommission.textContent =
+    pendingEntry.commission;
+
+
+  summaryActivity.textContent =
+    pendingEntry.activity ||
+    "Keine Tätigkeit angegeben";
+
+
+  entrySummary.style.display =
+    "";
+
+
+  entryStatus.textContent =
+    "";
+
+}
+
+
+/* =========================
+   EINTRAG ÄNDERN
+========================= */
+
+function editPendingEntry() {
+
+  if (
+    !pendingEntry
+  ) {
+
+    return;
+
+  }
+
+
+  entryDateInput.value =
+    pendingEntry.date;
+
+
+  hoursInput.value =
+    pendingEntry.hours;
+
+
+  commissionInput.value =
+    pendingEntry.commission;
+
+
+  activityInput.value =
+    pendingEntry.activity;
+
+
+  pendingEntry =
+    null;
+
+
+  entrySummary.style.display =
+    "none";
+
+
+  entryStatus.textContent =
+    "";
+
+
+  hoursInput.focus();
+
+}
+
+
+/* =========================
+   EINTRAG QUITTIEREN
+========================= */
+
+function confirmEntry() {
+
+  if (
+    !pendingEntry
+  ) {
+
+    return;
+
+  }
+
+
+  const entry = {
+
+    id:
+      Date.now().toString() +
+      "-" +
+      Math.random()
+        .toString(36)
+        .slice(2),
+
+    date:
+      pendingEntry.date,
+
+    hours:
+      pendingEntry.hours,
+
+    commission:
+      pendingEntry.commission,
+
+    activity:
+      pendingEntry.activity,
+
+    confirmed:
+      true
+
+  };
+
+
+  timeEntries.push(
+    entry
+  );
+
+
+  saveEntries();
+
+
+  pendingEntry =
+    null;
+
+
+  entrySummary.style.display =
+    "none";
+
+
+  hoursInput.value =
+    "";
+
+  activityInput.value =
+    "";
+
+
+  setDefaultEntryDate();
+
+
+  entryStatus.textContent =
+    "✓ Stunden quittiert und gespeichert.";
+
+
+  renderEvaluation();
+
+
+  hoursInput.focus();
 
 }
 
@@ -1222,6 +1565,16 @@ function renderEvaluation() {
     timeEntries.filter(
       function(entry) {
 
+        if (
+          entry.confirmed ===
+          false
+        ) {
+
+          return false;
+
+        }
+
+
         const date =
           getEntryDate(
             entry
@@ -1240,6 +1593,16 @@ function renderEvaluation() {
   const monthEntries =
     timeEntries.filter(
       function(entry) {
+
+        if (
+          entry.confirmed ===
+          false
+        ) {
+
+          return false;
+
+        }
+
 
         const date =
           getEntryDate(
@@ -1299,7 +1662,8 @@ function renderCommissionEvaluation() {
     function(entry) {
 
       if (
-        entry.confirmed === false
+        entry.confirmed ===
+        false
       ) {
 
         return;
@@ -1476,21 +1840,9 @@ function renderCommissionEvaluation() {
     selectedCommission
   ) {
 
-    const stillExists =
-      commissionTotals[
-        selectedCommission
-      ] !== undefined;
-
-
-    if (
-      stillExists
-    ) {
-
-      showCommissionDetails(
-        selectedCommission
-      );
-
-    }
+    showCommissionDetails(
+      selectedCommission
+    );
 
   }
 
@@ -1525,31 +1877,31 @@ function showCommissionDetails(
           return (
             entry.commission ===
             commission &&
-            entry.confirmed !== false
+
+            entry.confirmed !==
+            false
           );
 
         }
       )
       .map(
-        function(entry, index) {
+        function(entry) {
 
           return {
-            entry: entry,
+
+            entry:
+              entry,
+
             originalIndex:
               timeEntries.indexOf(
                 entry
               ),
+
             date:
               getEntryDate(
                 entry
-              ),
-            key:
-              entry.id ||
-              String(
-                timeEntries.indexOf(
-                  entry
-                )
               )
+
           };
 
         }
@@ -1715,10 +2067,6 @@ function showCommissionDetails(
     "Details schließen";
 
 
-  closeButton.style.marginTop =
-    "12px";
-
-
   closeButton.addEventListener(
     "click",
     function() {
@@ -1879,8 +2227,10 @@ function createSwipeEntry(
   let startX =
     0;
 
+
   let currentX =
     0;
+
 
   let dragging =
     false;
@@ -1893,8 +2243,10 @@ function createSwipeEntry(
       startX =
         event.touches[0].clientX;
 
+
       currentX =
         startX;
+
 
       dragging =
         true;
@@ -1910,8 +2262,12 @@ function createSwipeEntry(
     "touchmove",
     function(event) {
 
-      if (!dragging) {
+      if (
+        !dragging
+      ) {
+
         return;
+
       }
 
 
@@ -1953,8 +2309,12 @@ function createSwipeEntry(
     "touchend",
     function() {
 
-      if (!dragging) {
+      if (
+        !dragging
+      ) {
+
         return;
+
       }
 
 
@@ -1975,6 +2335,7 @@ function createSwipeEntry(
           "swiped"
         );
 
+
         content.style.transform =
           "translateX(-90px)";
 
@@ -1983,6 +2344,7 @@ function createSwipeEntry(
         content.classList.remove(
           "swiped"
         );
+
 
         content.style.transform =
           "translateX(0)";
@@ -2148,7 +2510,8 @@ function exportToExcel() {
       function(entry) {
 
         return (
-          entry.confirmed !== false
+          entry.confirmed !==
+          false
         );
 
       }
@@ -2717,10 +3080,6 @@ function showRecording() {
     "active"
   );
 
-
-  entryStatus.textContent =
-    "";
-
 }
 
 
@@ -2798,143 +3157,51 @@ function showSettings() {
 
 
 /* =========================
-   STUNDEN QUITTIEREN
+   BUTTONS
 ========================= */
+
+/*
+  1. "Eintragen"
+  erstellt nur eine Vorschau.
+  Es wird NOCH NICHT gespeichert.
+*/
 
 addEntryButton.addEventListener(
   "click",
   function() {
 
-    const selectedDate =
-      entryDateInput.value.trim();
+    prepareEntry();
+
+  }
+);
 
 
-    const value =
-      hoursInput.value
-        .trim()
-        .replace(
-          ",",
-          "."
-        );
+/*
+  2. "Ändern"
+  bringt die Daten zurück
+  in das Eingabeformular.
+*/
+
+editEntryButton.addEventListener(
+  "click",
+  function() {
+
+    editPendingEntry();
+
+  }
+);
 
 
-    const hours =
-      Number(
-        value
-      );
+/*
+  3. Erst hier wird
+     endgültig gespeichert.
+*/
 
+confirmEntryButton.addEventListener(
+  "click",
+  function() {
 
-    if (
-      selectedDate === ""
-    ) {
-
-      alert(
-        "Bitte wähle ein Datum aus."
-      );
-
-
-      entryDateInput.focus();
-
-
-      return;
-
-    }
-
-
-    if (
-      value === "" ||
-      !Number.isFinite(
-        hours
-      ) ||
-      hours <= 0
-    ) {
-
-      alert(
-        "Bitte gib eine gültige Stundenzahl ein."
-      );
-
-
-      hoursInput.focus();
-
-
-      return;
-
-    }
-
-
-    if (
-      commissions.length ===
-      0
-    ) {
-
-      alert(
-        "Bitte lege zuerst eine Kommission an."
-      );
-
-
-      return;
-
-    }
-
-
-    const entry = {
-
-      id:
-        Date.now().toString() +
-        "-" +
-        Math.random()
-          .toString(36)
-          .slice(2),
-
-      date:
-        selectedDate,
-
-      hours:
-        hours.toLocaleString(
-          "de-CH",
-          {
-            maximumFractionDigits: 2
-          }
-        ),
-
-      commission:
-        commissionInput.value,
-
-      activity:
-        activityInput.value.trim(),
-
-      confirmed:
-        true
-
-    };
-
-
-    timeEntries.push(
-      entry
-    );
-
-
-    saveEntries();
-
-
-    hoursInput.value =
-      "";
-
-    activityInput.value =
-      "";
-
-
-    setDefaultEntryDate();
-
-
-    entryStatus.textContent =
-      "✓ Stunden quittiert und gespeichert.";
-
-
-    renderEvaluation();
-
-
-    hoursInput.focus();
+    confirmEntry();
 
   }
 );
