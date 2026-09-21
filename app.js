@@ -5,7 +5,13 @@ const button = document.querySelector("#addEntry");
 const entries = document.querySelector("#entries");
 const entryCount = document.querySelector("#entryCount");
 
-let timeEntries = [];
+const STORAGE_KEY = "zeitpol_entries";
+
+let timeEntries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+function saveEntries() {
+localStorage.setItem(STORAGE_KEY, JSON.stringify(timeEntries));
+}
 
 function renderEntries() {
 if (timeEntries.length === 0) {
@@ -27,7 +33,7 @@ entries.innerHTML = timeEntries.map((entry) => `
 }
 
 entryCount.textContent =
-`${timeEntries.length} ${timeEntries.length === 1 ? "Eintrag" : "Einträge"}`;
+${timeEntries.length} ${timeEntries.length === 1 ? "Eintrag" : "Einträge"};
 }
 
 button.addEventListener("click", () => {
@@ -45,11 +51,13 @@ hours: hours.toLocaleString("de-CH", {
 maximumFractionDigits: 2
 }),
 commission: commissionInput.value,
-activity: activityInput.value.trim()
+activity: activityInput.value.trim(),
+date: new Date().toISOString()
 };
 
 timeEntries.push(entry);
 
+saveEntries();
 renderEntries();
 
 hoursInput.value = "";
