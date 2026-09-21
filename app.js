@@ -13,20 +13,8 @@ const activityInput =
 const addEntryButton =
   document.getElementById("addEntry");
 
-const entriesContainer =
-  document.getElementById("entries");
-
-const entryCount =
-  document.getElementById("entryCount");
-
-const totalHours =
-  document.getElementById("totalHours");
-
 const recordingSection =
   document.getElementById("recordingSection");
-
-const todaySection =
-  document.getElementById("todaySection");
 
 const evaluationSection =
   document.getElementById("evaluationSection");
@@ -48,9 +36,6 @@ const navEvaluation =
 
 const navCommissions =
   document.getElementById("navCommissions");
-
-const evaluationToday =
-  document.getElementById("evaluationToday");
 
 const evaluationWeek =
   document.getElementById("evaluationWeek");
@@ -209,7 +194,9 @@ function setDefaultEntryDate() {
 }
 
 
-function formatDate(date) {
+function formatDate(
+  date
+) {
 
   return date.toLocaleDateString(
     "de-CH",
@@ -223,7 +210,9 @@ function formatDate(date) {
 }
 
 
-function parseDateString(value) {
+function parseDateString(
+  value
+) {
 
   if (
     !value ||
@@ -397,7 +386,9 @@ function saveCommissions() {
    HILFSFUNKTIONEN
 ========================= */
 
-function getHours(entry) {
+function getHours(
+  entry
+) {
 
   return Number(
     String(
@@ -411,7 +402,9 @@ function getHours(entry) {
 }
 
 
-function getEntryDate(entry) {
+function getEntryDate(
+  entry
+) {
 
   if (
     !entry ||
@@ -458,25 +451,6 @@ function getEntryDate(entry) {
 }
 
 
-function isSameDay(
-  date1,
-  date2
-) {
-
-  return (
-    date1.getFullYear() ===
-      date2.getFullYear() &&
-
-    date1.getMonth() ===
-      date2.getMonth() &&
-
-    date1.getDate() ===
-      date2.getDate()
-  );
-
-}
-
-
 function getStartOfWeek(
   date
 ) {
@@ -486,7 +460,6 @@ function getStartOfWeek(
 
   const day =
     start.getDay();
-
 
   const difference =
     day === 0
@@ -638,7 +611,7 @@ function renderCommissionSelect() {
 
 
 /* =========================
-   KOMMISSIONEN
+   KOMMISSIONEN VERWALTEN
 ========================= */
 
 function renderCommissionList() {
@@ -712,6 +685,7 @@ function renderCommissionList() {
 
       renameButton.type =
         "button";
+
 
       renameButton.className =
         "small-button";
@@ -1031,11 +1005,10 @@ function showRenameForm(
 
       saveEntries();
 
+
       renderCommissionSelect();
 
       renderCommissionList();
-
-      renderEntries();
 
       renderEvaluation();
 
@@ -1076,6 +1049,11 @@ function showRenameForm(
   );
 
 
+  item.appendChild(
+    actions
+  );
+
+
   actions.appendChild(
     saveButton
   );
@@ -1083,11 +1061,6 @@ function showRenameForm(
 
   actions.appendChild(
     cancelButton
-  );
-
-
-  item.appendChild(
-    actions
   );
 
 
@@ -1173,157 +1146,11 @@ function deleteCommission(
 
   saveCommissions();
 
+
   renderCommissionSelect();
 
+
   renderCommissionList();
-
-}
-
-
-/* =========================
-   HEUTIGE EINTRÄGE
-========================= */
-
-function renderEntries() {
-
-  entriesContainer.innerHTML =
-    "";
-
-
-  const today =
-    new Date();
-
-
-  const todayEntries =
-    timeEntries.filter(
-      function(entry) {
-
-        const date =
-          getEntryDate(
-            entry
-          );
-
-
-        if (
-          !date
-        ) {
-
-          return false;
-
-        }
-
-
-        return isSameDay(
-          date,
-          today
-        );
-
-      }
-    );
-
-
-  if (
-    todayEntries.length ===
-    0
-  ) {
-
-    entriesContainer.className =
-      "empty-state";
-
-
-    entriesContainer.textContent =
-      "Noch keine Einträge vorhanden.";
-
-  } else {
-
-    entriesContainer.className =
-      "entries-list";
-
-
-    todayEntries.forEach(
-      function(entry) {
-
-        const item =
-          document.createElement(
-            "div"
-          );
-
-
-        item.className =
-          "entry";
-
-
-        const hours =
-          document.createElement(
-            "strong"
-          );
-
-
-        hours.textContent =
-          entry.hours +
-          " Std.";
-
-
-        const commission =
-          document.createElement(
-            "div"
-          );
-
-
-        commission.textContent =
-          entry.commission;
-
-
-        const activity =
-          document.createElement(
-            "small"
-          );
-
-
-        activity.textContent =
-          entry.activity ||
-          "Keine Tätigkeit angegeben";
-
-
-        item.appendChild(
-          hours
-        );
-
-
-        item.appendChild(
-          commission
-        );
-
-
-        item.appendChild(
-          activity
-        );
-
-
-        entriesContainer.appendChild(
-          item
-        );
-
-      }
-    );
-
-  }
-
-
-  entryCount.textContent =
-    todayEntries.length ===
-    1
-      ? "1 Eintrag"
-      : todayEntries.length +
-        " Einträge";
-
-
-  totalHours.textContent =
-    formatHours(
-      calculateTotal(
-        todayEntries
-      )
-    );
 
 }
 
@@ -1347,28 +1174,6 @@ function renderEvaluation() {
   const startOfMonth =
     getStartOfMonth(
       now
-    );
-
-
-  const todayEntries =
-    timeEntries.filter(
-      function(entry) {
-
-        const date =
-          getEntryDate(
-            entry
-          );
-
-
-        return (
-          date &&
-          isSameDay(
-            date,
-            now
-          )
-        );
-
-      }
     );
 
 
@@ -1411,14 +1216,6 @@ function renderEvaluation() {
         );
 
       }
-    );
-
-
-  evaluationToday.textContent =
-    formatHours(
-      calculateTotal(
-        todayEntries
-      )
     );
 
 
@@ -1578,7 +1375,7 @@ function renderCommissionEvaluation() {
 
 
         button.className =
-          "secondary-button compact-button";
+          "secondary-button";
 
 
         button.textContent =
@@ -2343,7 +2140,7 @@ function exportToExcel() {
 
 
   let filename =
-    "ZeitPol_Export_" +
+    "Ravo_Export_" +
     getTodayString();
 
 
@@ -2353,7 +2150,7 @@ function exportToExcel() {
   ) {
 
     filename =
-      "ZeitPol_Export_" +
+      "Ravo_Export_" +
       fromValue +
       "_bis_" +
       toValue;
@@ -2363,7 +2160,7 @@ function exportToExcel() {
   ) {
 
     filename =
-      "ZeitPol_Export_ab_" +
+      "Ravo_Export_ab_" +
       fromValue;
 
   } else if (
@@ -2371,7 +2168,7 @@ function exportToExcel() {
   ) {
 
     filename =
-      "ZeitPol_Export_bis_" +
+      "Ravo_Export_bis_" +
       toValue;
 
   }
@@ -2403,10 +2200,10 @@ function exportToExcel() {
     navigator.share(
       {
         title:
-          "ZeitPol Export",
+          "Ravo Export",
 
         text:
-          "Zeiterfassung aus ZeitPol",
+          "Zeiterfassung aus Ravo",
 
         files: [file]
 
@@ -2444,7 +2241,7 @@ function exportToExcel() {
 
 
 /* =========================
-   CSV DOWNLOAD
+   DOWNLOAD
 ========================= */
 
 function downloadCSV(
@@ -2506,9 +2303,6 @@ function clearSections() {
   recordingSection.style.display =
     "none";
 
-  todaySection.style.display =
-    "none";
-
   evaluationSection.style.display =
     "none";
 
@@ -2548,9 +2342,6 @@ function showRecording() {
   recordingSection.style.display =
     "";
 
-  todaySection.style.display =
-    "";
-
 
   navRecording.classList.add(
     "active"
@@ -2576,8 +2367,8 @@ function showEvaluation() {
 
 
   /*
-    Export beim Öffnen immer
-    geschlossen anzeigen.
+    Export bei jedem Öffnen
+    geschlossen starten.
   */
 
   exportDetails.open =
@@ -2745,11 +2536,6 @@ addEntryButton.addEventListener(
     saveEntries();
 
 
-    renderEntries();
-
-    renderEvaluation();
-
-
     hoursInput.value =
       "";
 
@@ -2758,6 +2544,9 @@ addEntryButton.addEventListener(
 
 
     setDefaultEntryDate();
+
+
+    renderEvaluation();
 
 
     hoursInput.focus();
@@ -2893,8 +2682,6 @@ renderUserName();
 renderCommissionSelect();
 
 renderCommissionList();
-
-renderEntries();
 
 renderEvaluation();
 
