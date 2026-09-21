@@ -93,6 +93,11 @@ const commissionList =
     "commissionList"
   );
 
+const exportDetails =
+  document.getElementById(
+    "exportDetails"
+  );
+
 const exportExcelButton =
   document.getElementById(
     "exportExcel"
@@ -204,9 +209,7 @@ function setDefaultEntryDate() {
 }
 
 
-function formatDate(
-  date
-) {
+function formatDate(date) {
 
   return date.toLocaleDateString(
     "de-CH",
@@ -220,9 +223,7 @@ function formatDate(
 }
 
 
-function parseDateString(
-  value
-) {
+function parseDateString(value) {
 
   if (
     !value ||
@@ -396,9 +397,7 @@ function saveCommissions() {
    HILFSFUNKTIONEN
 ========================= */
 
-function getHours(
-  entry
-) {
+function getHours(entry) {
 
   return Number(
     String(
@@ -412,9 +411,7 @@ function getHours(
 }
 
 
-function getEntryDate(
-  entry
-) {
+function getEntryDate(entry) {
 
   if (
     !entry ||
@@ -562,7 +559,9 @@ function calculateTotal(
     function(entry) {
 
       total +=
-        getHours(entry);
+        getHours(
+          entry
+        );
 
     }
   );
@@ -584,8 +583,7 @@ function renderCommissionSelect() {
 
 
   if (
-    commissions.length ===
-    0
+    commissions.length === 0
   ) {
 
     const option =
@@ -640,7 +638,7 @@ function renderCommissionSelect() {
 
 
 /* =========================
-   KOMMISSIONEN VERWALTEN
+   KOMMISSIONEN
 ========================= */
 
 function renderCommissionList() {
@@ -650,8 +648,7 @@ function renderCommissionList() {
 
 
   if (
-    commissions.length ===
-    0
+    commissions.length === 0
   ) {
 
     commissionList.className =
@@ -732,6 +729,7 @@ function renderCommissionList() {
 
       deleteButton.type =
         "button";
+
 
       deleteButton.className =
         "small-button danger-button";
@@ -853,6 +851,7 @@ function addCommission() {
 
   saveCommissions();
 
+
   renderCommissionSelect();
 
   renderCommissionList();
@@ -868,7 +867,7 @@ function addCommission() {
 
 
 /* =========================
-   KOMMISSION UMBENENNEN
+   UMBENENNEN
 ========================= */
 
 function showRenameForm(
@@ -1032,7 +1031,6 @@ function showRenameForm(
 
       saveEntries();
 
-
       renderCommissionSelect();
 
       renderCommissionList();
@@ -1099,7 +1097,7 @@ function showRenameForm(
 
 
 /* =========================
-   KOMMISSION LÖSCHEN
+   LÖSCHEN
 ========================= */
 
 function deleteCommission(
@@ -1127,7 +1125,9 @@ function deleteCommission(
     "Möchtest du diese Kommission wirklich löschen?";
 
 
-  if (used) {
+  if (
+    used
+  ) {
 
     message =
       "Diese Kommission wird bereits bei Zeiteinträgen verwendet. Die bisherigen Einträge bleiben erhalten. Trotzdem löschen?";
@@ -1405,6 +1405,7 @@ function renderEvaluation() {
           date &&
           date.getFullYear() ===
             now.getFullYear() &&
+
           date.getMonth() ===
             now.getMonth()
         );
@@ -1443,7 +1444,7 @@ function renderEvaluation() {
 
 
 /* =========================
-   AUSWERTUNG PRO KOMMISSION
+   KOMMISSIONSAUSWERTUNG
 ========================= */
 
 function renderCommissionEvaluation() {
@@ -1931,18 +1932,6 @@ function renderUserName() {
     userNameInput.value.trim();
 
 
-  if (
-    name === ""
-  ) {
-
-    userNameDisplay.textContent =
-      "";
-
-    return;
-
-  }
-
-
   userNameDisplay.textContent =
     name;
 
@@ -1987,7 +1976,7 @@ function saveUserName() {
 
 
 /* =========================
-   EXPORT-FILTER
+   EXPORT FILTER
 ========================= */
 
 function resetExportFilter() {
@@ -2002,7 +1991,7 @@ function resetExportFilter() {
 
 
 /* =========================
-   EXCEL-EXPORT
+   EXCEL EXPORT
 ========================= */
 
 function exportToExcel() {
@@ -2221,27 +2210,32 @@ function exportToExcel() {
     toValue
   ) {
 
+    const fromText =
+      fromValue
+        ? formatDate(
+            parseDateString(
+              fromValue
+            )
+          )
+        : "Anfang";
+
+
+    const toText =
+      toValue
+        ? formatDate(
+            parseDateString(
+              toValue
+            )
+          )
+        : "heute";
+
+
     rows.push(
       [
         "Zeitraum",
-        fromValue
-          ? formatDate(
-              parseDateString(
-                fromValue
-              )
-            )
-          : "Anfang",
-
+        fromText,
         "bis",
-
-        toValue
-          ? formatDate(
-              parseDateString(
-                toValue
-              )
-            )
-          : "heute"
-
+        toText
       ]
         .map(
           escapeCSV
@@ -2286,24 +2280,13 @@ function exportToExcel() {
           : "";
 
 
-      const row = [
-
-        dateText,
-
-        entry.commission ||
-          "",
-
-        entry.activity ||
-          "",
-
-        entry.hours ||
-          ""
-
-      ];
-
-
       rows.push(
-        row
+        [
+          dateText,
+          entry.commission || "",
+          entry.activity || "",
+          entry.hours || ""
+        ]
           .map(
             escapeCSV
           )
@@ -2592,6 +2575,23 @@ function showEvaluation() {
   );
 
 
+  /*
+    Export beim Öffnen immer
+    geschlossen anzeigen.
+  */
+
+  exportDetails.open =
+    false;
+
+
+  commissionDetails.style.display =
+    "none";
+
+
+  selectedCommission =
+    null;
+
+
   renderEvaluation();
 
 }
@@ -2630,6 +2630,7 @@ function showSettings() {
 
 
   renderUserName();
+
 
   userNameInput.focus();
 
