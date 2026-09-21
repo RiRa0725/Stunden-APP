@@ -43,7 +43,10 @@
 
     </header>
 
-    <section class="card timer-card">
+    <section
+      id="recordingSection"
+      class="card timer-card"
+    >
 
       <p class="section-label">
         Stunden erfassen
@@ -102,7 +105,10 @@
 
     </section>
 
-    <section class="card">
+    <section
+      id="todaySection"
+      class="card"
+    >
 
       <div class="section-heading">
 
@@ -140,12 +146,64 @@
 
     </section>
 
+    <section
+      id="evaluationSection"
+      class="card"
+      style="display: none;"
+    >
+
+      <p class="section-label">
+        Auswertung
+      </p>
+
+      <h2>
+        Übersicht
+      </h2>
+
+      <div class="entry">
+        <div>
+          <strong>Heute</strong>
+          <div id="evaluationToday">
+            0 Stunden
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div>
+          <strong>Diese Woche</strong>
+          <div id="evaluationWeek">
+            0 Stunden
+          </div>
+        </div>
+      </div>
+
+      <div class="entry">
+        <div>
+          <strong>Diesen Monat</strong>
+          <div id="evaluationMonth">
+            0 Stunden
+          </div>
+        </div>
+      </div>
+
+      <p class="section-label">
+        Nach Kommission
+      </p>
+
+      <div id="evaluationCommissions">
+        Noch keine Einträge vorhanden.
+      </div>
+
+    </section>
+
     <nav
       class="bottom-nav"
       aria-label="Hauptnavigation"
     >
 
       <button
+        id="navRecording"
         class="nav-item active"
         type="button"
       >
@@ -154,6 +212,7 @@
       </button>
 
       <button
+        id="navEvaluation"
         class="nav-item"
         type="button"
       >
