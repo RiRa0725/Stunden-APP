@@ -490,16 +490,76 @@
       </h2>
 
 
-      <label for="userName">
-        Name
+      <label for="userLastName">
+        Name *
       </label>
 
+      <input
+        id="userLastName"
+        type="text"
+        placeholder="z. B. Muster"
+        autocomplete="family-name"
+      >
+
+
+      <label for="userFirstName">
+        Vorname *
+      </label>
 
       <input
-        id="userName"
+        id="userFirstName"
         type="text"
-        placeholder="z. B. Max Muster"
-        autocomplete="name"
+        placeholder="z. B. Max"
+        autocomplete="given-name"
+      >
+
+
+      <label for="userAddress">
+        Adresse
+      </label>
+
+      <input
+        id="userAddress"
+        type="text"
+        placeholder="z. B. Hauptstrasse 10"
+        autocomplete="street-address"
+      >
+
+
+      <label for="userZip">
+        PLZ
+      </label>
+
+      <input
+        id="userZip"
+        type="text"
+        inputmode="numeric"
+        placeholder="z. B. 8000"
+        autocomplete="postal-code"
+      >
+
+
+      <label for="userCity">
+        Ort
+      </label>
+
+      <input
+        id="userCity"
+        type="text"
+        placeholder="z. B. Zürich"
+        autocomplete="address-level2"
+      >
+
+
+      <label for="userParty">
+        Partei
+      </label>
+
+      <input
+        id="userParty"
+        type="text"
+        placeholder="optional"
+        autocomplete="off"
       >
 
 
@@ -508,7 +568,7 @@
         class="primary-button"
         type="button"
       >
-        Namen speichern
+        Angaben speichern
       </button>
 
 
