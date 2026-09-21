@@ -87,6 +87,11 @@ const commissionList =
     "commissionList"
   );
 
+const exportExcelButton =
+  document.getElementById(
+    "exportExcel"
+  );
+
 
 const ENTRIES_KEY =
   "zeitpol_entries";
@@ -296,8 +301,8 @@ function getEntryDate(entry) {
 
 
   /*
-    Neue Einträge speichern das Datum
-    als YYYY-MM-DD.
+    Neue Einträge verwenden
+    YYYY-MM-DD.
   */
 
   if (
@@ -308,6 +313,7 @@ function getEntryDate(entry) {
 
     const parts =
       entry.date.split("-");
+
 
     return new Date(
       Number(parts[0]),
@@ -323,8 +329,8 @@ function getEntryDate(entry) {
 
 
   /*
-    Alte Einträge aus der bisherigen
-    Version verwenden ISO-Datumswerte.
+    Alte Einträge können noch
+    ISO-Datumswerte enthalten.
   */
 
   const date =
@@ -377,6 +383,7 @@ function getStartOfWeek(
 
   const day =
     start.getDay();
+
 
   const difference =
     day === 0
@@ -457,7 +464,8 @@ function calculateTotal(
   entries
 ) {
 
-  let total = 0;
+  let total =
+    0;
 
 
   entries.forEach(
@@ -494,7 +502,10 @@ function renderCommissionSelect() {
         "option"
       );
 
-    option.value = "";
+
+    option.value =
+      "";
+
 
     option.textContent =
       "Keine Kommission vorhanden";
@@ -503,6 +514,7 @@ function renderCommissionSelect() {
     commissionInput.appendChild(
       option
     );
+
 
     return;
 
@@ -517,8 +529,10 @@ function renderCommissionSelect() {
           "option"
         );
 
+
       option.value =
         commission;
+
 
       option.textContent =
         commission;
@@ -535,7 +549,7 @@ function renderCommissionSelect() {
 
 
 /* =========================
-   KOMMISSIONSLISTE
+   KOMMISSIONEN VERWALTEN
 ========================= */
 
 function renderCommissionList() {
@@ -551,8 +565,10 @@ function renderCommissionList() {
     commissionList.className =
       "empty-state";
 
+
     commissionList.textContent =
       "Noch keine Kommissionen vorhanden.";
+
 
     return;
 
@@ -608,6 +624,7 @@ function renderCommissionList() {
       renameButton.type =
         "button";
 
+
       renameButton.textContent =
         "✏️ Umbenennen";
 
@@ -621,8 +638,10 @@ function renderCommissionList() {
       deleteButton.type =
         "button";
 
+
       deleteButton.textContent =
         "🗑️ Löschen";
+
 
       deleteButton.style.marginLeft =
         "8px";
@@ -658,6 +677,7 @@ function renderCommissionList() {
         renameButton
       );
 
+
       actions.appendChild(
         deleteButton
       );
@@ -666,6 +686,7 @@ function renderCommissionList() {
       item.appendChild(
         name
       );
+
 
       item.appendChild(
         actions
@@ -722,6 +743,7 @@ function addCommission() {
       "Diese Kommission gibt es bereits."
     );
 
+
     newCommissionInput.focus();
 
     return;
@@ -736,7 +758,9 @@ function addCommission() {
 
   saveCommissions();
 
+
   renderCommissionSelect();
+
 
   renderCommissionList();
 
@@ -744,13 +768,14 @@ function addCommission() {
   newCommissionInput.value =
     "";
 
+
   newCommissionInput.focus();
 
 }
 
 
 /* =========================
-   UMBENENNEN
+   KOMMISSION UMBENENNEN
 ========================= */
 
 function showRenameForm(
@@ -772,8 +797,10 @@ function showRenameForm(
   input.type =
     "text";
 
+
   input.value =
     oldName;
+
 
   input.autocomplete =
     "off";
@@ -788,8 +815,10 @@ function showRenameForm(
   saveButton.type =
     "button";
 
+
   saveButton.textContent =
     "Speichern";
+
 
   saveButton.style.marginTop =
     "8px";
@@ -804,11 +833,14 @@ function showRenameForm(
   cancelButton.type =
     "button";
 
+
   cancelButton.textContent =
     "Abbrechen";
 
+
   cancelButton.style.marginTop =
     "8px";
+
 
   cancelButton.style.marginLeft =
     "8px";
@@ -855,6 +887,7 @@ function showRenameForm(
         alert(
           "Diese Kommission gibt es bereits."
         );
+
 
         input.focus();
 
@@ -943,15 +976,18 @@ function showRenameForm(
     input
   );
 
+
   item.appendChild(
     document.createElement(
       "br"
     )
   );
 
+
   item.appendChild(
     saveButton
   );
+
 
   item.appendChild(
     cancelButton
@@ -964,7 +1000,7 @@ function showRenameForm(
 
 
 /* =========================
-   LÖSCHEN
+   KOMMISSION LÖSCHEN
 ========================= */
 
 function deleteCommission(
@@ -1001,9 +1037,7 @@ function deleteCommission(
 
 
   const confirmed =
-    confirm(
-      message
-    );
+    confirm(message);
 
 
   if (!confirmed) {
@@ -1027,6 +1061,7 @@ function deleteCommission(
     selectedCommission =
       null;
 
+
     commissionDetails.style.display =
       "none";
 
@@ -1035,7 +1070,9 @@ function deleteCommission(
 
   saveCommissions();
 
+
   renderCommissionSelect();
+
 
   renderCommissionList();
 
@@ -1061,9 +1098,7 @@ function renderEntries() {
       function(entry) {
 
         const date =
-          getEntryDate(
-            entry
-          );
+          getEntryDate(entry);
 
 
         if (!date) {
@@ -1089,6 +1124,7 @@ function renderEntries() {
 
     entriesContainer.className =
       "empty-state";
+
 
     entriesContainer.textContent =
       "Noch keine Einträge vorhanden.";
@@ -1148,9 +1184,11 @@ function renderEntries() {
           hours
         );
 
+
         item.appendChild(
           commission
         );
+
 
         item.appendChild(
           activity
@@ -1212,9 +1250,7 @@ function renderEvaluation() {
       function(entry) {
 
         const date =
-          getEntryDate(
-            entry
-          );
+          getEntryDate(entry);
 
 
         return (
@@ -1234,9 +1270,7 @@ function renderEvaluation() {
       function(entry) {
 
         const date =
-          getEntryDate(
-            entry
-          );
+          getEntryDate(entry);
 
 
         return (
@@ -1253,9 +1287,7 @@ function renderEvaluation() {
       function(entry) {
 
         const date =
-          getEntryDate(
-            entry
-          );
+          getEntryDate(entry);
 
 
         return (
@@ -1354,11 +1386,14 @@ function renderCommissionEvaluation() {
     evaluationCommissions.className =
       "empty-state";
 
+
     evaluationCommissions.textContent =
       "Noch keine Einträge vorhanden.";
 
+
     commissionDetails.style.display =
       "none";
+
 
     return;
 
@@ -1425,12 +1460,14 @@ function renderCommissionEvaluation() {
         button.type =
           "button";
 
+
         button.textContent =
           "Details anzeigen";
 
 
         button.style.marginTop =
           "10px";
+
 
         button.style.width =
           "100%";
@@ -1444,6 +1481,7 @@ function renderCommissionEvaluation() {
 
             event.stopPropagation();
 
+
             showCommissionDetails(
               commission
             );
@@ -1456,9 +1494,11 @@ function renderCommissionEvaluation() {
           name
         );
 
+
         content.appendChild(
           hours
         );
+
 
         content.appendChild(
           button
@@ -1567,11 +1607,14 @@ function showCommissionDetails(
     commissionDetailsList.className =
       "empty-state";
 
+
     commissionDetailsList.textContent =
       "Keine Details vorhanden.";
 
+
     commissionDetails.style.display =
       "";
+
 
     return;
 
@@ -1648,9 +1691,11 @@ function showCommissionDetails(
         date
       );
 
+
       item.appendChild(
         hours
       );
+
 
       item.appendChild(
         activity
@@ -1717,6 +1762,7 @@ function showCommissionDetails(
     totalLabel
   );
 
+
   totalItem.appendChild(
     totalValue
   );
@@ -1736,12 +1782,14 @@ function showCommissionDetails(
   closeButton.type =
     "button";
 
+
   closeButton.textContent =
     "Details schließen";
 
 
   closeButton.style.marginTop =
     "10px";
+
 
   closeButton.style.width =
     "100%";
@@ -1753,6 +1801,7 @@ function showCommissionDetails(
 
       selectedCommission =
         null;
+
 
       commissionDetails.style.display =
         "none";
@@ -1773,7 +1822,293 @@ function showCommissionDetails(
 
 
 /* =========================
-   ERFASSUNG
+   EXCEL-EXPORT
+========================= */
+
+function exportToExcel() {
+
+  if (
+    timeEntries.length ===
+    0
+  ) {
+
+    alert(
+      "Es sind noch keine Zeiteinträge vorhanden."
+    );
+
+    return;
+
+  }
+
+
+  function escapeCSV(
+    value
+  ) {
+
+    const text =
+      String(
+        value ?? ""
+      );
+
+
+    if (
+      text.includes(";") ||
+      text.includes('"') ||
+      text.includes("\n") ||
+      text.includes("\r")
+    ) {
+
+      return (
+        '"' +
+        text.replace(
+          /"/g,
+          '""'
+        ) +
+        '"'
+      );
+
+    }
+
+
+    return text;
+
+  }
+
+
+  const sortedEntries =
+    [...timeEntries].sort(
+      function(a, b) {
+
+        const dateA =
+          getEntryDate(a);
+
+        const dateB =
+          getEntryDate(b);
+
+
+        const timeA =
+          dateA
+            ? dateA.getTime()
+            : 0;
+
+
+        const timeB =
+          dateB
+            ? dateB.getTime()
+            : 0;
+
+
+        return timeB - timeA;
+
+      }
+    );
+
+
+  const rows =
+    [];
+
+
+  rows.push(
+    [
+      "Datum",
+      "Kommission",
+      "Tätigkeit",
+      "Stunden"
+    ]
+      .map(
+        escapeCSV
+      )
+      .join(";")
+  );
+
+
+  sortedEntries.forEach(
+    function(entry) {
+
+      const date =
+        getEntryDate(
+          entry
+        );
+
+
+      const dateText =
+        date
+          ? formatDate(date)
+          : "";
+
+
+      const row = [
+        dateText,
+        entry.commission || "",
+        entry.activity || "",
+        entry.hours || ""
+      ];
+
+
+      rows.push(
+        row
+          .map(
+            escapeCSV
+          )
+          .join(";")
+      );
+
+    }
+  );
+
+
+  /*
+    UTF-8-BOM sorgt dafür,
+    dass Excel Umlaute wie ä, ö und ü
+    korrekt erkennt.
+  */
+
+  const csv =
+    "\uFEFF" +
+    rows.join(
+      "\r\n"
+    );
+
+
+  const blob =
+    new Blob(
+      [csv],
+      {
+        type:
+          "text/csv;charset=utf-8;"
+      }
+    );
+
+
+  const filename =
+    "ZeitPol_Export_" +
+    getTodayString() +
+    ".csv";
+
+
+  const file =
+    new File(
+      [blob],
+      filename,
+      {
+        type:
+          "text/csv;charset=utf-8;"
+      }
+    );
+
+
+  /*
+    Auf dem iPhone direkt den
+    Teilen-Dialog öffnen.
+  */
+
+  if (
+    navigator.share &&
+    navigator.canShare &&
+    navigator.canShare({
+      files: [file]
+    })
+  ) {
+
+    navigator.share(
+      {
+        title:
+          "ZeitPol Export",
+
+        text:
+          "Zeiterfassung aus ZeitPol",
+
+        files: [file]
+
+      }
+    ).catch(
+      function(error) {
+
+        if (
+          error.name !==
+          "AbortError"
+        ) {
+
+          downloadCSV(
+            blob,
+            filename
+          );
+
+        }
+
+      }
+    );
+
+
+    return;
+
+  }
+
+
+  downloadCSV(
+    blob,
+    filename
+  );
+
+}
+
+
+/* =========================
+   CSV DOWNLOAD
+========================= */
+
+function downloadCSV(
+  blob,
+  filename
+) {
+
+  const url =
+    URL.createObjectURL(
+      blob
+    );
+
+
+  const link =
+    document.createElement(
+      "a"
+    );
+
+
+  link.href =
+    url;
+
+
+  link.download =
+    filename;
+
+
+  document.body.appendChild(
+    link
+  );
+
+
+  link.click();
+
+
+  link.remove();
+
+
+  setTimeout(
+    function() {
+
+      URL.revokeObjectURL(
+        url
+      );
+
+    },
+    1000
+  );
+
+}
+
+
+/* =========================
+   SEITENWECHSEL
 ========================= */
 
 function showRecording() {
@@ -1805,10 +2140,6 @@ function showRecording() {
 
 }
 
-
-/* =========================
-   AUSWERTUNG
-========================= */
 
 function showEvaluation() {
 
@@ -1842,10 +2173,6 @@ function showEvaluation() {
 
 }
 
-
-/* =========================
-   KOMMISSIONEN
-========================= */
 
 function showCommissions() {
 
@@ -1910,7 +2237,9 @@ addEntryButton.addEventListener(
         "Bitte wähle ein Datum aus."
       );
 
+
       entryDateInput.focus();
+
 
       return;
 
@@ -1927,7 +2256,9 @@ addEntryButton.addEventListener(
         "Bitte gib eine gültige Stundenzahl ein."
       );
 
+
       hoursInput.focus();
+
 
       return;
 
@@ -1943,19 +2274,13 @@ addEntryButton.addEventListener(
         "Bitte lege zuerst eine Kommission an."
       );
 
+
       return;
 
     }
 
 
     const entry = {
-
-      /*
-        Das Datum wird direkt als
-        YYYY-MM-DD gespeichert.
-        Dadurch gibt es keine
-        Zeitzonen-Probleme.
-      */
 
       date:
         selectedDate,
@@ -1984,6 +2309,7 @@ addEntryButton.addEventListener(
 
     saveEntries();
 
+
     renderEntries();
 
     renderEvaluation();
@@ -1995,11 +2321,6 @@ addEntryButton.addEventListener(
     activityInput.value =
       "";
 
-
-    /*
-      Nach dem Speichern wieder
-      auf heute zurückstellen.
-    */
 
     setDefaultEntryDate();
 
@@ -2045,7 +2366,7 @@ navCommissions.addEventListener(
 
 
 /* =========================
-   NEUE KOMMISSION
+   KOMMISSION HINZUFÜGEN
 ========================= */
 
 addCommissionButton.addEventListener(
@@ -2073,6 +2394,20 @@ newCommissionInput.addEventListener(
       addCommission();
 
     }
+
+  }
+);
+
+
+/* =========================
+   EXCEL BUTTON
+========================= */
+
+exportExcelButton.addEventListener(
+  "click",
+  function() {
+
+    exportToExcel();
 
   }
 );
