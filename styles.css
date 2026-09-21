@@ -83,10 +83,6 @@ button {
 }
 
 
-/* =========================
-   APP
-========================= */
-
 .app-shell {
   width:
     100%;
@@ -495,7 +491,7 @@ input[type="date"] {
 
 
 /* =========================
-   STATUS
+   EINGABE STATUS
 ========================= */
 
 .entry-status {
@@ -524,8 +520,8 @@ input[type="date"] {
 ========================= */
 
 .entry-summary {
-  margin-top:
-    20px;
+  margin:
+    0 0 20px;
 
   padding:
     17px;
@@ -731,10 +727,6 @@ h2 {
 }
 
 
-/* =========================
-   KOMMISSION KOPF
-========================= */
-
 .commission-summary-item {
   display:
     flex;
@@ -890,13 +882,6 @@ strong {
       0.04
     );
 }
-
-
-/*
-  Kein "display" hier festlegen.
-  JavaScript steuert das Öffnen
-  und Schliessen direkt.
-*/
 
 
 /* =========================
@@ -1762,6 +1747,28 @@ strong {
 
 
 /* =========================
+   EINSTELLUNGEN
+========================= */
+
+.form-status {
+  min-height:
+    20px;
+
+  margin:
+    10px 0 0;
+
+  color:
+    var(--blue-700);
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+}
+
+
+/* =========================
    LEERZUSTAND
 ========================= */
 
@@ -1799,28 +1806,6 @@ strong {
 
   font-size:
     14px;
-}
-
-
-/* =========================
-   EINSTELLUNGEN
-========================= */
-
-.form-status {
-  min-height:
-    20px;
-
-  margin:
-    10px 0 0;
-
-  color:
-    var(--blue-700);
-
-  font-size:
-    13px;
-
-  font-weight:
-    700;
 }
 
 
