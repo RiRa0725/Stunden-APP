@@ -452,8 +452,8 @@ function loadUserProfile() {
 
 
   /*
-    Übernahme des bisherigen
-    gespeicherten Namens.
+    Bisher gespeicherten Namen
+    übernehmen.
   */
 
   const oldName =
@@ -999,6 +999,7 @@ function addCommission() {
 
     newCommissionInput.focus();
 
+
     return;
 
   }
@@ -1019,6 +1020,7 @@ function addCommission() {
 
   newCommissionInput.value =
     "";
+
 
   newCommissionInput.focus();
 
@@ -1150,6 +1152,7 @@ function showRenameForm(
 
         input.focus();
 
+
         return;
 
       }
@@ -1206,7 +1209,8 @@ function showRenameForm(
     function(event) {
 
       if (
-        event.key === "Enter"
+        event.key ===
+        "Enter"
       ) {
 
         event.preventDefault();
@@ -1449,7 +1453,9 @@ function showPendingSummary() {
 
   summaryDate.textContent =
     date
-      ? formatDate(date)
+      ? formatDate(
+          date
+        )
       : "Datum unbekannt";
 
 
@@ -1467,8 +1473,15 @@ function showPendingSummary() {
     "Keine Tätigkeit angegeben";
 
 
+  /*
+    Die Zusammenfassung befindet
+    sich im HTML bereits über dem
+    Eingabeformular und wird hier
+    nur sichtbar gemacht.
+  */
+
   entrySummary.style.display =
-    "";
+    "block";
 
 
   entryStatus.textContent =
@@ -1621,35 +1634,9 @@ function renderEvaluation() {
     );
 
 
-  const monthEntries =
-    timeEntries.filter(
-      function(entry) {
-
-        if (
-          entry.confirmed ===
-          false
-        ) {
-
-          return false;
-
-        }
-
-
-        const date =
-          getEntryDate(
-            entry
-          );
-
-
-        return (
-          date &&
-          date.getFullYear() ===
-            now.getFullYear() &&
-          date.getMonth() ===
-            now.getMonth()
-        );
-
-      }
+  const startOfMonth =
+    getStartOfMonth(
+      now
     );
 
 
@@ -1676,6 +1663,39 @@ function renderEvaluation() {
         return (
           date &&
           date >= startOfWeek
+        );
+
+      }
+    );
+
+
+  const monthEntries =
+    timeEntries.filter(
+      function(entry) {
+
+        if (
+          entry.confirmed ===
+          false
+        ) {
+
+          return false;
+
+        }
+
+
+        const date =
+          getEntryDate(
+            entry
+          );
+
+
+        return (
+          date &&
+          date.getFullYear() ===
+            now.getFullYear() &&
+
+          date.getMonth() ===
+            now.getMonth()
         );
 
       }
@@ -1942,6 +1962,12 @@ function renderCommissionEvaluation() {
       );
 
 
+      /*
+        Details immer neu erzeugen
+        und beim Start ausdrücklich
+        verstecken.
+      */
+
       const detailsList =
         document.createElement(
           "div"
@@ -2089,7 +2115,9 @@ function createSwipeEntry(
 
   date.textContent =
     detail.date
-      ? formatDate(detail.date)
+      ? formatDate(
+          detail.date
+        )
       : "Datum unbekannt";
 
 
@@ -2469,13 +2497,6 @@ function saveUserProfile() {
   );
 
 
-  /*
-    Alten Schlüssel ebenfalls
-    aktuell halten, damit ältere
-    Versionen der App den Namen
-    weiterhin finden.
-  */
-
   localStorage.setItem(
     OLD_USER_NAME_KEY,
     getDisplayName()
@@ -2654,6 +2675,10 @@ function exportToExcel() {
   }
 
 
+  /*
+    Ältestes Datum zuerst.
+  */
+
   const sortedEntries =
     [...filteredEntries].sort(
       function(a, b) {
@@ -2725,13 +2750,149 @@ function exportToExcel() {
   }
 
 
+  const profile =
+    getUserProfile();
+
+
   const rows =
     [];
 
 
   /*
-    Excel-Liste:
-    Datum | Kommission | Tätigkeit | Stunden
+    ========================
+    PERSÖNLICHE ANGABEN
+    ========================
+  */
+
+  rows.push(
+    [
+      "Name",
+      profile.lastName
+    ]
+      .map(
+        escapeCSV
+      )
+      .join(";")
+  );
+
+
+  rows.push(
+    [
+      "Vorname",
+      profile.firstName
+    ]
+      .map(
+        escapeCSV
+      )
+      .join(";")
+  );
+
+
+  rows.push(
+    [
+      "Adresse",
+      profile.address
+    ]
+      .map(
+        escapeCSV
+      )
+      .join(";")
+  );
+
+
+  rows.push(
+    [
+      "PLZ",
+      profile.zip
+    ]
+      .map(
+        escapeCSV
+      )
+      .join(";")
+  );
+
+
+  rows.push(
+    [
+      "Ort",
+      profile.city
+    ]
+      .map(
+        escapeCSV
+      )
+      .join(";")
+  );
+
+
+  rows.push(
+    [
+      "Partei",
+      profile.party
+    ]
+      .map(
+        escapeCSV
+      )
+      .join(";")
+  );
+
+
+  /*
+    Export-Zeitraum
+  */
+
+  if (
+    fromValue ||
+    toValue
+  ) {
+
+    const fromText =
+      fromValue
+        ? formatDate(
+            parseDateString(
+              fromValue
+            )
+          )
+        : "Anfang";
+
+
+    const toText =
+      toValue
+        ? formatDate(
+            parseDateString(
+              toValue
+            )
+          )
+        : "heute";
+
+
+    rows.push(
+      [
+        "Zeitraum",
+        fromText +
+        " bis " +
+        toText
+      ]
+        .map(
+          escapeCSV
+        )
+        .join(";")
+    );
+
+  }
+
+
+  /*
+    Leerzeile vor der
+    eigentlichen Excel-Tabelle.
+  */
+
+  rows.push("");
+
+
+  /*
+    ========================
+    ZEITTABELLE
+    ========================
   */
 
   rows.push(
@@ -2759,7 +2920,9 @@ function exportToExcel() {
 
       const dateText =
         date
-          ? formatDate(date)
+          ? formatDate(
+              date
+            )
           : "";
 
 
@@ -2792,6 +2955,10 @@ function exportToExcel() {
   );
 
 
+  /*
+    Gesamt
+  */
+
   const total =
     calculateTotal(
       sortedEntries
@@ -2820,6 +2987,11 @@ function exportToExcel() {
       .join(";")
   );
 
+
+  /*
+    UTF-8 BOM für korrekte
+    Umlaute in Excel.
+  */
 
   const csv =
     "\uFEFF" +
@@ -3214,7 +3386,8 @@ saveUserNameButton.addEventListener(
       function(event) {
 
         if (
-          event.key === "Enter"
+          event.key ===
+          "Enter"
         ) {
 
           event.preventDefault();
@@ -3249,7 +3422,8 @@ newCommissionInput.addEventListener(
   function(event) {
 
     if (
-      event.key === "Enter"
+      event.key ===
+      "Enter"
     ) {
 
       event.preventDefault();
