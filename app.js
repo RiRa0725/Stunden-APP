@@ -1358,7 +1358,7 @@ function prepareEntry() {
 
 
 /* =========================
-   ZUSAMMENFASSUNG ZEIGEN
+   ZUSAMMENFASSUNG
 ========================= */
 
 function showPendingSummary() {
@@ -1369,6 +1369,7 @@ function showPendingSummary() {
 
     entrySummary.style.display =
       "none";
+
 
     return;
 
@@ -1383,7 +1384,9 @@ function showPendingSummary() {
 
   summaryDate.textContent =
     date
-      ? formatDate(date)
+      ? formatDate(
+          date
+        )
       : "Datum unbekannt";
 
 
@@ -1956,14 +1959,47 @@ function showCommissionDetails(
     "swipe-list";
 
 
+  /*
+    Der Hinweis ist zunächst unsichtbar.
+    Er wird erst eingeblendet, sobald
+    ein Eintrag tatsächlich nach links
+    gewischt wurde.
+  */
+
+  const swipeHint =
+    document.createElement(
+      "small"
+    );
+
+
+  swipeHint.className =
+    "swipe-hint";
+
+
+  swipeHint.textContent =
+    "Nach links wischen, um einen falschen Eintrag zu löschen.";
+
+
   details.forEach(
     function(detail) {
 
       createSwipeEntry(
-        detail
+        detail,
+        function() {
+
+          swipeHint.classList.add(
+            "visible"
+          );
+
+        }
       );
 
     }
+  );
+
+
+  commissionDetailsList.appendChild(
+    swipeHint
   );
 
 
@@ -2030,25 +2066,6 @@ function showCommissionDetails(
   );
 
 
-  const hint =
-    document.createElement(
-      "small"
-    );
-
-
-  hint.className =
-    "swipe-hint";
-
-
-  hint.textContent =
-    "Nach links wischen, um einen falschen Eintrag zu löschen.";
-
-
-  commissionDetailsList.appendChild(
-    hint
-  );
-
-
   const closeButton =
     document.createElement(
       "button"
@@ -2098,7 +2115,8 @@ function showCommissionDetails(
 ========================= */
 
 function createSwipeEntry(
-  detail
+  detail,
+  onSwiped
 ) {
 
   const wrapper =
@@ -2339,6 +2357,16 @@ function createSwipeEntry(
         content.style.transform =
           "translateX(-90px)";
 
+
+        if (
+          typeof onSwiped ===
+          "function"
+        ) {
+
+          onSwiped();
+
+        }
+
       } else {
 
         content.classList.remove(
@@ -2385,10 +2413,6 @@ function deleteTimeEntry(
     return;
 
   }
-
-
-  const entry =
-    timeEntries[index];
 
 
   const confirmed =
@@ -3080,6 +3104,10 @@ function showRecording() {
     "active"
   );
 
+
+  entryStatus.textContent =
+    "";
+
 }
 
 
@@ -3160,12 +3188,6 @@ function showSettings() {
    BUTTONS
 ========================= */
 
-/*
-  1. "Eintragen"
-  erstellt nur eine Vorschau.
-  Es wird NOCH NICHT gespeichert.
-*/
-
 addEntryButton.addEventListener(
   "click",
   function() {
@@ -3176,12 +3198,6 @@ addEntryButton.addEventListener(
 );
 
 
-/*
-  2. "Ändern"
-  bringt die Daten zurück
-  in das Eingabeformular.
-*/
-
 editEntryButton.addEventListener(
   "click",
   function() {
@@ -3191,11 +3207,6 @@ editEntryButton.addEventListener(
   }
 );
 
-
-/*
-  3. Erst hier wird
-     endgültig gespeichert.
-*/
 
 confirmEntryButton.addEventListener(
   "click",
