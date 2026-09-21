@@ -3,21 +3,45 @@
 <head>
   <meta charset="utf-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
 
-  <meta name="theme-color" content="#111827">
+  <meta
+    name="theme-color"
+    content="#111827"
+  >
 
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta
+    name="apple-mobile-web-app-capable"
+    content="yes"
+  >
 
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta
+    name="apple-mobile-web-app-status-bar-style"
+    content="black-translucent"
+  >
 
-  <meta name="apple-mobile-web-app-title" content="ZeitPol">
+  <meta
+    name="apple-mobile-web-app-title"
+    content="ZeitPol"
+  >
 
-  <link rel="manifest" href="manifest.json">
+  <link
+    rel="manifest"
+    href="manifest.json"
+  >
 
-  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link
+    rel="apple-touch-icon"
+    href="icons/icon-180.png"
+  >
 
-  <link rel="stylesheet" href="styles.css">
+  <link
+    rel="stylesheet"
+    href="styles.css"
+  >
 
   <title>ZeitPol</title>
 </head>
@@ -29,8 +53,13 @@
     <header class="topbar">
 
       <div>
-        <p class="eyebrow">Zeiterfassung</p>
-        <h1>ZeitPol</h1>
+        <p class="eyebrow">
+          Zeiterfassung
+        </p>
+
+        <h1>
+          ZeitPol
+        </h1>
       </div>
 
       <button
@@ -42,6 +71,9 @@
       </button>
 
     </header>
+
+
+    <!-- ERFASSUNG -->
 
     <section
       id="recordingSection"
@@ -69,19 +101,6 @@
       </label>
 
       <select id="commission">
-
-        <option value="Kommission 001">
-          Kommission 001
-        </option>
-
-        <option value="Kommission 002">
-          Kommission 002
-        </option>
-
-        <option value="Kommission 003">
-          Kommission 003
-        </option>
-
       </select>
 
       <label for="activity">
@@ -104,6 +123,9 @@
       </button>
 
     </section>
+
+
+    <!-- HEUTE -->
 
     <section
       id="todaySection"
@@ -146,6 +168,9 @@
 
     </section>
 
+
+    <!-- AUSWERTUNG -->
+
     <section
       id="evaluationSection"
       class="card"
@@ -161,30 +186,51 @@
       </h2>
 
       <div class="entry">
+
         <div>
-          <strong>Heute</strong>
+
+          <strong>
+            Heute
+          </strong>
+
           <div id="evaluationToday">
             0 Stunden
           </div>
+
         </div>
+
       </div>
 
       <div class="entry">
+
         <div>
-          <strong>Diese Woche</strong>
+
+          <strong>
+            Diese Woche
+          </strong>
+
           <div id="evaluationWeek">
             0 Stunden
           </div>
+
         </div>
+
       </div>
 
       <div class="entry">
+
         <div>
-          <strong>Diesen Monat</strong>
+
+          <strong>
+            Diesen Monat
+          </strong>
+
           <div id="evaluationMonth">
             0 Stunden
           </div>
+
         </div>
+
       </div>
 
       <p class="section-label">
@@ -197,6 +243,42 @@
 
     </section>
 
+
+    <!-- KOMMISSIONEN -->
+
+    <section
+      id="commissionSection"
+      class="card"
+      style="display: none;"
+    >
+
+      <p class="section-label">
+        Verwaltung
+      </p>
+
+      <h2>
+        Kommissionen
+      </h2>
+
+      <button
+        id="addCommission"
+        class="primary-button"
+        type="button"
+      >
+        + Kommission hinzufügen
+      </button>
+
+      <div
+        id="commissionList"
+        class="entries-list"
+      >
+      </div>
+
+    </section>
+
+
+    <!-- NAVIGATION -->
+
     <nav
       class="bottom-nav"
       aria-label="Hauptnavigation"
@@ -208,7 +290,9 @@
         type="button"
       >
         ⏱️
-        <span>Erfassung</span>
+        <span>
+          Erfassung
+        </span>
       </button>
 
       <button
@@ -217,15 +301,20 @@
         type="button"
       >
         📊
-        <span>Auswertung</span>
+        <span>
+          Auswertung
+        </span>
       </button>
 
       <button
+        id="navCommissions"
         class="nav-item"
         type="button"
       >
         🏛️
-        <span>Kommissionen</span>
+        <span>
+          Kommissionen
+        </span>
       </button>
 
     </nav>
