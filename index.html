@@ -10,7 +10,7 @@
 
   <meta
     name="theme-color"
-    content="#111827"
+    content="#123b7a"
   >
 
   <meta
@@ -53,7 +53,6 @@
     <header class="topbar">
 
       <div>
-
         <p class="eyebrow">
           Zeiterfassung
         </p>
@@ -62,9 +61,15 @@
           ZeitPol
         </h1>
 
+        <div
+          id="userNameDisplay"
+          class="user-name-display"
+        >
+        </div>
       </div>
 
       <button
+        id="settingsButton"
         class="icon-button"
         type="button"
         aria-label="Einstellungen"
@@ -204,51 +209,43 @@
       </h2>
 
 
-      <div class="entry">
+      <div class="summary-grid">
 
-        <div>
+        <div class="summary-box">
 
-          <strong>
+          <span>
             Heute
-          </strong>
+          </span>
 
-          <div id="evaluationToday">
+          <strong id="evaluationToday">
             0 Stunden
-          </div>
+          </strong>
 
         </div>
 
-      </div>
 
+        <div class="summary-box">
 
-      <div class="entry">
-
-        <div>
-
-          <strong>
+          <span>
             Diese Woche
-          </strong>
+          </span>
 
-          <div id="evaluationWeek">
+          <strong id="evaluationWeek">
             0 Stunden
-          </div>
+          </strong>
 
         </div>
 
-      </div>
 
+        <div class="summary-box">
 
-      <div class="entry">
-
-        <div>
-
-          <strong>
+          <span>
             Diesen Monat
-          </strong>
+          </span>
 
-          <div id="evaluationMonth">
+          <strong id="evaluationMonth">
             0 Stunden
-          </div>
+          </strong>
 
         </div>
 
@@ -263,31 +260,67 @@
           Export
         </p>
 
+        <div class="export-filter">
 
-        <button
-          id="exportExcel"
-          type="button"
-          style="
-            background: transparent;
-            color: inherit;
-            border: 1px solid currentColor;
-            border-radius: 10px;
-            padding: 8px 12px;
-            font-size: 14px;
-            font-weight: 500;
-            box-shadow: none;
-          "
-        >
-          📥 Excel exportieren
-        </button>
+          <div class="filter-field">
+
+            <label for="exportFrom">
+              Von
+            </label>
+
+            <input
+              id="exportFrom"
+              type="date"
+            >
+
+          </div>
+
+
+          <div class="filter-field">
+
+            <label for="exportTo">
+              Bis
+            </label>
+
+            <input
+              id="exportTo"
+              type="date"
+            >
+
+          </div>
+
+        </div>
+
+
+        <div class="export-actions">
+
+          <button
+            id="exportExcel"
+            class="secondary-button"
+            type="button"
+          >
+            📥 Excel exportieren
+          </button>
+
+          <button
+            id="resetExportFilter"
+            class="text-button"
+            type="button"
+          >
+            Filter zurücksetzen
+          </button>
+
+        </div>
 
 
         <small>
-          Alle gespeicherten Zeiteinträge werden exportiert.
+          Ohne Datumsfilter werden alle gespeicherten Einträge exportiert.
         </small>
 
       </div>
 
+
+      <!-- KOMMISSIONEN -->
 
       <p class="section-label">
         Nach Kommission
@@ -303,6 +336,7 @@
 
       <div
         id="commissionDetails"
+        class="details-section"
         style="display: none;"
       >
 
@@ -392,6 +426,53 @@
     </section>
 
 
+    <!-- EINSTELLUNGEN -->
+
+    <section
+      id="settingsSection"
+      class="card"
+      style="display: none;"
+    >
+
+      <p class="section-label">
+        Einstellungen
+      </p>
+
+      <h2>
+        Persönliche Angaben
+      </h2>
+
+
+      <label for="userName">
+        Name
+      </label>
+
+      <input
+        id="userName"
+        type="text"
+        placeholder="z. B. Max Muster"
+        autocomplete="name"
+      >
+
+
+      <button
+        id="saveUserName"
+        class="primary-button"
+        type="button"
+      >
+        Namen speichern
+      </button>
+
+
+      <p
+        id="userNameStatus"
+        class="form-status"
+      >
+      </p>
+
+    </section>
+
+
     <!-- NAVIGATION -->
 
     <nav
@@ -404,7 +485,9 @@
         class="nav-item active"
         type="button"
       >
-        ⏱️
+        <span class="nav-icon">
+          ⏱️
+        </span>
 
         <span>
           Erfassung
@@ -417,7 +500,9 @@
         class="nav-item"
         type="button"
       >
-        📊
+        <span class="nav-icon">
+          📊
+        </span>
 
         <span>
           Auswertung
@@ -430,7 +515,9 @@
         class="nav-item"
         type="button"
       >
-        🏛️
+        <span class="nav-icon">
+          🏛️
+        </span>
 
         <span>
           Kommissionen
