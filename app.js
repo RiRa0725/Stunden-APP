@@ -13,14 +13,25 @@ function saveEntries() {
 localStorage.setItem(STORAGE_KEY, JSON.stringify(timeEntries));
 }
 
+function getTodayEntries() {
+const today = new Date().toDateString();
+
+return timeEntries.filter((entry) => {
+return new Date(entry.date).toDateString() === today;
+});
+}
+
 function renderEntries() {
-if (timeEntries.length === 0) {
+const todayEntries = getTodayEntries();
+
+if (todayEntries.length === 0) {
 entries.className = "empty-state";
 entries.textContent = "Noch keine Einträge vorhanden.";
 } else {
 entries.className = "entries-list";
 
-entries.innerHTML = timeEntries.map((entry) => `
+```
+entries.innerHTML = todayEntries.map((entry) => `
   <div class="entry">
     <div>
       <strong>${entry.hours} Std.</strong>
@@ -29,11 +40,29 @@ entries.innerHTML = timeEntries.map((entry) => `
     </div>
   </div>
 `).join("");
+```
 
 }
 
 entryCount.textContent =
-${timeEntries.length} ${timeEntries.length === 1 ? "Eintrag" : "Einträge"};
+`${todayEntries.length} ${todayEntries.length === 1 ? "Eintrag" : "Einträge"}`;
+}
+
+function renderTotalHours() {
+const todayEntries = getTodayEntries();
+
+const total = todayEntries.reduce((sum, entry) => {
+return sum + Number(String(entry.hours).replace(",", "."));
+}, 0);
+
+const totalElement = document.querySelector("#totalHours");
+
+if (totalElement) {
+totalElement.textContent =
+`${total.toLocaleString("de-CH", {
+        maximumFractionDigits: 2
+      })} Stunden`;
+}
 }
 
 button.addEventListener("click", () => {
@@ -59,6 +88,7 @@ timeEntries.push(entry);
 
 saveEntries();
 renderEntries();
+renderTotalHours();
 
 hoursInput.value = "";
 activityInput.value = "";
@@ -66,3 +96,4 @@ hoursInput.focus();
 });
 
 renderEntries();
+renderTotalHours();
