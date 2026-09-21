@@ -1,32 +1,59 @@
-let running = false;
-let startedAt = null;
-let timerInterval = null;
+const hoursInput = document.querySelector("#hours");
+const commissionInput = document.querySelector("#commission");
+const activityInput = document.querySelector("#activity");
+const button = document.querySelector("#addEntry");
+const entries = document.querySelector("#entries");
+const entryCount = document.querySelector("#entryCount");
 
-const timer = document.querySelector("#timer");
-const button = document.querySelector("#startStop");
+let timeEntries = [];
 
-function formatDuration(ms) {
-  const total = Math.floor(ms / 1000);
-  const h = String(Math.floor(total / 3600)).padStart(2, "0");
-  const m = String(Math.floor((total % 3600) / 60)).padStart(2, "0");
-  const s = String(total % 60).padStart(2, "0");
-  return `${h}:${m}:${s}`;
+function renderEntries() {
+if (timeEntries.length === 0) {
+entries.className = "empty-state";
+entries.textContent = "Noch keine Einträge vorhanden.";
+} else {
+entries.className = "entries-list";
+
+entries.innerHTML = timeEntries.map((entry) => `
+  <div class="entry">
+    <div>
+      <strong>${entry.hours} Std.</strong>
+      <div>${entry.commission}</div>
+      <small>${entry.activity || "Keine Tätigkeit angegeben"}</small>
+    </div>
+  </div>
+`).join("");
+
 }
 
-function renderTimer() {
-  timer.textContent = formatDuration(Date.now() - startedAt);
+entryCount.textContent =
+${timeEntries.length} ${timeEntries.length === 1 ? "Eintrag" : "Einträge"};
 }
 
 button.addEventListener("click", () => {
-  if (!running) {
-    running = true;
-    startedAt = Date.now();
-    button.textContent = "Zeit stoppen";
-    timerInterval = setInterval(renderTimer, 250);
-  } else {
-    running = false;
-    clearInterval(timerInterval);
-    renderTimer();
-    button.textContent = "Zeit starten";
-  }
+const hours = parseFloat(hoursInput.value.replace(",", "."));
+
+if (!hours || hours <= 0) {
+alert("Bitte gib eine gültige Stundenzahl ein.");
+hoursInput.focus();
+return;
+}
+
+const entry = {
+hours: hours.toLocaleString("de-CH", {
+maximumFractionDigits: 2
+}),
+commission: commissionInput.value,
+activity: activityInput.value.trim()
+};
+
+timeEntries.push(entry);
+
+renderEntries();
+
+hoursInput.value = "";
+activityInput.value = "";
+hoursInput.focus();
 });
+
+renderEntries();
