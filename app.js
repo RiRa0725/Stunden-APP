@@ -30,7 +30,6 @@ entries.textContent = "Noch keine Einträge vorhanden.";
 } else {
 entries.className = "entries-list";
 
-```
 entries.innerHTML = todayEntries.map((entry) => `
   <div class="entry">
     <div>
@@ -40,7 +39,6 @@ entries.innerHTML = todayEntries.map((entry) => `
     </div>
   </div>
 `).join("");
-```
 
 }
 
