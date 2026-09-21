@@ -13,6 +13,9 @@ const activityInput =
 const addEntryButton =
   document.getElementById("addEntry");
 
+const entryStatus =
+  document.getElementById("entryStatus");
+
 const recordingSection =
   document.getElementById("recordingSection");
 
@@ -150,8 +153,10 @@ function getTodayString() {
   const today =
     new Date();
 
+
   const year =
     today.getFullYear();
+
 
   const month =
     String(
@@ -161,6 +166,7 @@ function getTodayString() {
       "0"
     );
 
+
   const day =
     String(
       today.getDate()
@@ -168,6 +174,7 @@ function getTodayString() {
       2,
       "0"
     );
+
 
   return (
     year +
@@ -185,8 +192,10 @@ function setDefaultEntryDate() {
   const today =
     getTodayString();
 
+
   entryDateInput.value =
     today;
+
 
   entryDateInput.max =
     today;
@@ -216,7 +225,9 @@ function parseDateString(
 
   if (
     !value ||
-    !/^\d{4}-\d{2}-\d{2}$/.test(value)
+    !/^\d{4}-\d{2}-\d{2}$/.test(
+      value
+    )
   ) {
 
     return null;
@@ -318,7 +329,33 @@ try {
 
 
 /* =========================
-   BENUTZERNAME LADEN
+   ALTE EINTRÄGE
+========================= */
+
+/*
+  Bestehende Einträge aus älteren
+  Versionen werden als quittiert
+  behandelt.
+*/
+
+timeEntries.forEach(
+  function(entry) {
+
+    if (
+      typeof entry.confirmed !==
+      "boolean"
+    ) {
+
+      entry.confirmed = true;
+
+    }
+
+  }
+);
+
+
+/* =========================
+   BENUTZERNAME
 ========================= */
 
 const savedUserName =
@@ -340,7 +377,8 @@ if (savedUserName) {
 ========================= */
 
 if (
-  commissions.length === 0
+  commissions.length ===
+  0
 ) {
 
   commissions = [
@@ -458,8 +496,10 @@ function getStartOfWeek(
   const start =
     new Date(date);
 
+
   const day =
     start.getDay();
+
 
   const difference =
     day === 0
@@ -556,7 +596,8 @@ function renderCommissionSelect() {
 
 
   if (
-    commissions.length === 0
+    commissions.length ===
+    0
   ) {
 
     const option =
@@ -621,7 +662,8 @@ function renderCommissionList() {
 
 
   if (
-    commissions.length === 0
+    commissions.length ===
+    0
   ) {
 
     commissionList.className =
@@ -1070,7 +1112,7 @@ function showRenameForm(
 
 
 /* =========================
-   LÖSCHEN
+   KOMMISSION LÖSCHEN
 ========================= */
 
 function deleteCommission(
@@ -1148,7 +1190,6 @@ function deleteCommission(
 
 
   renderCommissionSelect();
-
 
   renderCommissionList();
 
@@ -1256,6 +1297,15 @@ function renderCommissionEvaluation() {
 
   timeEntries.forEach(
     function(entry) {
+
+      if (
+        entry.confirmed === false
+      ) {
+
+        return;
+
+      }
+
 
       const commission =
         entry.commission ||
@@ -1423,15 +1473,24 @@ function renderCommissionEvaluation() {
 
 
   if (
-    selectedCommission &&
-    commissionTotals[
-      selectedCommission
-    ] !== undefined
+    selectedCommission
   ) {
 
-    showCommissionDetails(
-      selectedCommission
-    );
+    const stillExists =
+      commissionTotals[
+        selectedCommission
+      ] !== undefined;
+
+
+    if (
+      stillExists
+    ) {
+
+      showCommissionDetails(
+        selectedCommission
+      );
+
+    }
 
   }
 
@@ -1465,19 +1524,32 @@ function showCommissionDetails(
 
           return (
             entry.commission ===
-            commission
+            commission &&
+            entry.confirmed !== false
           );
 
         }
       )
       .map(
-        function(entry) {
+        function(entry, index) {
 
           return {
             entry: entry,
-            date: getEntryDate(
-              entry
-            )
+            originalIndex:
+              timeEntries.indexOf(
+                entry
+              ),
+            date:
+              getEntryDate(
+                entry
+              ),
+            key:
+              entry.id ||
+              String(
+                timeEntries.indexOf(
+                  entry
+                )
+              )
           };
 
         }
@@ -1529,79 +1601,14 @@ function showCommissionDetails(
 
 
   commissionDetailsList.className =
-    "entries-list";
+    "swipe-list";
 
 
   details.forEach(
     function(detail) {
 
-      const entry =
-        detail.entry;
-
-
-      const item =
-        document.createElement(
-          "div"
-        );
-
-
-      item.className =
-        "entry";
-
-
-      const date =
-        document.createElement(
-          "strong"
-        );
-
-
-      date.textContent =
-        detail.date
-          ? formatDate(
-              detail.date
-            )
-          : "Datum unbekannt";
-
-
-      const hours =
-        document.createElement(
-          "div"
-        );
-
-
-      hours.textContent =
-        entry.hours +
-        " Std.";
-
-
-      const activity =
-        document.createElement(
-          "small"
-        );
-
-
-      activity.textContent =
-        entry.activity ||
-        "Keine Tätigkeit angegeben";
-
-
-      item.appendChild(
-        date
-      );
-
-
-      item.appendChild(
-        hours
-      );
-
-
-      item.appendChild(
-        activity
-      );
-
-
-      commissionDetailsList.appendChild(
-        item
+      createSwipeEntry(
+        detail
       );
 
     }
@@ -1671,6 +1678,25 @@ function showCommissionDetails(
   );
 
 
+  const hint =
+    document.createElement(
+      "small"
+    );
+
+
+  hint.className =
+    "swipe-hint";
+
+
+  hint.textContent =
+    "Nach links wischen, um einen falschen Eintrag zu löschen.";
+
+
+  commissionDetailsList.appendChild(
+    hint
+  );
+
+
   const closeButton =
     document.createElement(
       "button"
@@ -1715,6 +1741,330 @@ function showCommissionDetails(
 
   commissionDetails.style.display =
     "";
+
+}
+
+
+/* =========================
+   SWIPE-EINTRAG
+========================= */
+
+function createSwipeEntry(
+  detail
+) {
+
+  const wrapper =
+    document.createElement(
+      "div"
+    );
+
+
+  wrapper.className =
+    "swipe-entry";
+
+
+  const deleteAction =
+    document.createElement(
+      "button"
+    );
+
+
+  deleteAction.type =
+    "button";
+
+
+  deleteAction.className =
+    "swipe-delete";
+
+
+  deleteAction.textContent =
+    "Löschen";
+
+
+  const content =
+    document.createElement(
+      "div"
+    );
+
+
+  content.className =
+    "swipe-content";
+
+
+  const date =
+    document.createElement(
+      "strong"
+    );
+
+
+  date.textContent =
+    detail.date
+      ? formatDate(
+          detail.date
+        )
+      : "Datum unbekannt";
+
+
+  const hours =
+    document.createElement(
+      "div"
+    );
+
+
+  hours.textContent =
+    detail.entry.hours +
+    " Std.";
+
+
+  const activity =
+    document.createElement(
+      "small"
+    );
+
+
+  activity.textContent =
+    detail.entry.activity ||
+    "Keine Tätigkeit angegeben";
+
+
+  const status =
+    document.createElement(
+      "span"
+    );
+
+
+  status.className =
+    "confirmed-badge";
+
+
+  status.textContent =
+    "Quittiert";
+
+
+  content.appendChild(
+    date
+  );
+
+
+  content.appendChild(
+    hours
+  );
+
+
+  content.appendChild(
+    activity
+  );
+
+
+  content.appendChild(
+    status
+  );
+
+
+  wrapper.appendChild(
+    deleteAction
+  );
+
+
+  wrapper.appendChild(
+    content
+  );
+
+
+  commissionDetailsList.appendChild(
+    wrapper
+  );
+
+
+  let startX =
+    0;
+
+  let currentX =
+    0;
+
+  let dragging =
+    false;
+
+
+  content.addEventListener(
+    "touchstart",
+    function(event) {
+
+      startX =
+        event.touches[0].clientX;
+
+      currentX =
+        startX;
+
+      dragging =
+        true;
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  content.addEventListener(
+    "touchmove",
+    function(event) {
+
+      if (!dragging) {
+        return;
+      }
+
+
+      currentX =
+        event.touches[0].clientX;
+
+
+      const difference =
+        currentX -
+        startX;
+
+
+      if (
+        difference < 0
+      ) {
+
+        const offset =
+          Math.max(
+            -90,
+            difference
+          );
+
+
+        content.style.transform =
+          "translateX(" +
+          offset +
+          "px)";
+
+      }
+
+    },
+    {
+      passive: true
+    }
+  );
+
+
+  content.addEventListener(
+    "touchend",
+    function() {
+
+      if (!dragging) {
+        return;
+      }
+
+
+      dragging =
+        false;
+
+
+      const difference =
+        currentX -
+        startX;
+
+
+      if (
+        difference <= -50
+      ) {
+
+        content.classList.add(
+          "swiped"
+        );
+
+        content.style.transform =
+          "translateX(-90px)";
+
+      } else {
+
+        content.classList.remove(
+          "swiped"
+        );
+
+        content.style.transform =
+          "translateX(0)";
+
+      }
+
+    }
+  );
+
+
+  deleteAction.addEventListener(
+    "click",
+    function() {
+
+      deleteTimeEntry(
+        detail.originalIndex
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================
+   ZEITEINTRAG LÖSCHEN
+========================= */
+
+function deleteTimeEntry(
+  index
+) {
+
+  if (
+    index < 0 ||
+    index >= timeEntries.length
+  ) {
+
+    return;
+
+  }
+
+
+  const entry =
+    timeEntries[index];
+
+
+  const confirmed =
+    confirm(
+      "Diesen quittierten Zeiteintrag wirklich löschen?"
+    );
+
+
+  if (
+    !confirmed
+  ) {
+
+    return;
+
+  }
+
+
+  timeEntries.splice(
+    index,
+    1
+  );
+
+
+  saveEntries();
+
+
+  renderEvaluation();
+
+
+  if (
+    selectedCommission
+  ) {
+
+    showCommissionDetails(
+      selectedCommission
+    );
+
+  }
 
 }
 
@@ -1793,13 +2143,25 @@ function resetExportFilter() {
 
 function exportToExcel() {
 
+  const confirmedEntries =
+    timeEntries.filter(
+      function(entry) {
+
+        return (
+          entry.confirmed !== false
+        );
+
+      }
+    );
+
+
   if (
-    timeEntries.length ===
+    confirmedEntries.length ===
     0
   ) {
 
     alert(
-      "Es sind noch keine Zeiteinträge vorhanden."
+      "Es sind noch keine quittierten Zeiteinträge vorhanden."
     );
 
 
@@ -1833,7 +2195,7 @@ function exportToExcel() {
 
 
   const filteredEntries =
-    timeEntries.filter(
+    confirmedEntries.filter(
       function(entry) {
 
         const entryDate =
@@ -1901,7 +2263,7 @@ function exportToExcel() {
   ) {
 
     alert(
-      "Für den gewählten Zeitraum wurden keine Einträge gefunden."
+      "Für den gewählten Zeitraum wurden keine quittierten Einträge gefunden."
     );
 
 
@@ -1949,10 +2311,15 @@ function exportToExcel() {
       function(a, b) {
 
         const dateA =
-          getEntryDate(a);
+          getEntryDate(
+            a
+          );
+
 
         const dateB =
-          getEntryDate(b);
+          getEntryDate(
+            b
+          );
 
 
         const timeA =
@@ -2051,7 +2418,8 @@ function exportToExcel() {
       "Datum",
       "Kommission",
       "Tätigkeit",
-      "Stunden"
+      "Stunden",
+      "Status"
     ]
       .map(
         escapeCSV
@@ -2082,7 +2450,8 @@ function exportToExcel() {
           dateText,
           entry.commission || "",
           entry.activity || "",
-          entry.hours || ""
+          entry.hours || "",
+          "Quittiert"
         ]
           .map(
             escapeCSV
@@ -2113,7 +2482,8 @@ function exportToExcel() {
         {
           maximumFractionDigits: 2
         }
-      )
+      ),
+      ""
     ]
       .map(
         escapeCSV
@@ -2203,7 +2573,7 @@ function exportToExcel() {
           "Ravo Export",
 
         text:
-          "Zeiterfassung aus Ravo",
+          "Quittierte Zeiterfassung aus Ravo",
 
         files: [file]
 
@@ -2347,6 +2717,10 @@ function showRecording() {
     "active"
   );
 
+
+  entryStatus.textContent =
+    "";
+
 }
 
 
@@ -2365,11 +2739,6 @@ function showEvaluation() {
     "active"
   );
 
-
-  /*
-    Export bei jedem Öffnen
-    geschlossen starten.
-  */
 
   exportDetails.open =
     false;
@@ -2429,7 +2798,7 @@ function showSettings() {
 
 
 /* =========================
-   STUNDEN ERFASSEN
+   STUNDEN QUITTIEREN
 ========================= */
 
 addEntryButton.addEventListener(
@@ -2474,7 +2843,9 @@ addEntryButton.addEventListener(
 
     if (
       value === "" ||
-      !Number.isFinite(hours) ||
+      !Number.isFinite(
+        hours
+      ) ||
       hours <= 0
     ) {
 
@@ -2508,6 +2879,13 @@ addEntryButton.addEventListener(
 
     const entry = {
 
+      id:
+        Date.now().toString() +
+        "-" +
+        Math.random()
+          .toString(36)
+          .slice(2),
+
       date:
         selectedDate,
 
@@ -2523,7 +2901,10 @@ addEntryButton.addEventListener(
         commissionInput.value,
 
       activity:
-        activityInput.value.trim()
+        activityInput.value.trim(),
+
+      confirmed:
+        true
 
     };
 
@@ -2544,6 +2925,10 @@ addEntryButton.addEventListener(
 
 
     setDefaultEntryDate();
+
+
+    entryStatus.textContent =
+      "✓ Stunden quittiert und gespeichert.";
 
 
     renderEvaluation();
