@@ -16,6 +16,7 @@
   --border: #d9e2ef;
 
   --danger: #ffb4ad;
+  --danger-dark: #a61b12;
 
   --shadow:
     0 8px 24px rgba(18, 59, 122, 0.08);
@@ -93,7 +94,8 @@ button {
 
   justify-content: space-between;
 
-  margin-bottom: 18px;
+  margin-bottom:
+    18px;
 
   padding:
     4px
@@ -107,9 +109,11 @@ button {
   color:
     var(--blue-700);
 
-  font-size: 12px;
+  font-size:
+    12px;
 
-  font-weight: 800;
+  font-weight:
+    800;
 
   letter-spacing:
     0.08em;
@@ -119,14 +123,17 @@ button {
 }
 
 h1 {
-  margin: 0;
+  margin:
+    0;
 
   color:
     var(--blue-900);
 
-  font-size: 32px;
+  font-size:
+    32px;
 
-  line-height: 1;
+  line-height:
+    1;
 
   letter-spacing:
     -0.03em;
@@ -138,9 +145,11 @@ h2 {
     0
     16px;
 
-  font-size: 22px;
+  font-size:
+    22px;
 
-  line-height: 1.2;
+  line-height:
+    1.2;
 }
 
 h3 {
@@ -149,37 +158,48 @@ h3 {
     0
     14px;
 
-  font-size: 20px;
+  font-size:
+    20px;
 }
 
 .user-name-display {
-  margin-top: 5px;
+  margin-top:
+    5px;
 
   color:
     var(--muted);
 
-  font-size: 13px;
+  font-size:
+    13px;
 }
 
 .user-name-display:empty {
-  display: none;
+  display:
+    none;
 }
 
 .icon-button {
-  display: grid;
+  display:
+    grid;
 
-  width: 44px;
-  height: 44px;
+  width:
+    44px;
 
-  padding: 0;
+  height:
+    44px;
 
-  place-items: center;
+  padding:
+    0;
+
+  place-items:
+    center;
 
   border:
     1px solid
     var(--border);
 
-  border-radius: 14px;
+  border-radius:
+    14px;
 
   background:
     var(--card);
@@ -190,15 +210,19 @@ h3 {
   box-shadow:
     var(--shadow);
 
-  font-size: 19px;
+  font-size:
+    19px;
 
-  cursor: pointer;
+  cursor:
+    pointer;
 }
 
 .card {
-  margin-bottom: 16px;
+  margin-bottom:
+    16px;
 
-  padding: 20px;
+  padding:
+    20px;
 
   border:
     1px solid
@@ -227,9 +251,11 @@ h3 {
   color:
     var(--blue-700);
 
-  font-size: 12px;
+  font-size:
+    12px;
 
-  font-weight: 800;
+  font-weight:
+    800;
 
   letter-spacing:
     0.07em;
@@ -239,7 +265,8 @@ h3 {
 }
 
 label {
-  display: block;
+  display:
+    block;
 
   margin:
     16px 0 8px;
@@ -247,16 +274,20 @@ label {
   color:
     var(--text);
 
-  font-size: 14px;
+  font-size:
+    14px;
 
-  font-weight: 700;
+  font-weight:
+    700;
 }
 
 input,
 select {
-  width: 100%;
+  width:
+    100%;
 
-  min-height: 48px;
+  min-height:
+    48px;
 
   padding:
     11px
@@ -269,7 +300,8 @@ select {
   border-radius:
     12px;
 
-  outline: none;
+  outline:
+    none;
 
   background:
     #fff;
@@ -277,7 +309,8 @@ select {
   color:
     var(--text);
 
-  font-size: 16px;
+  font-size:
+    16px;
 
   transition:
     border-color 0.15s ease,
@@ -300,11 +333,14 @@ input[type="date"] {
 }
 
 .primary-button {
-  width: 100%;
+  width:
+    100%;
 
-  min-height: 48px;
+  min-height:
+    48px;
 
-  margin-top: 18px;
+  margin-top:
+    18px;
 
   padding:
     12px
@@ -323,180 +359,51 @@ input[type="date"] {
   color:
     #fff;
 
-  font-size: 15px;
+  font-size:
+    15px;
 
-  font-weight: 800;
+  font-weight:
+    800;
 
-  cursor: pointer;
+  cursor:
+    pointer;
 
   box-shadow:
     0 6px 14px
     rgba(18, 59, 122, 0.18);
 }
 
-.secondary-button {
-  min-height: 40px;
+.primary-button:active,
+.secondary-button:active,
+.small-button:active,
+.text-button:active,
+.export-button:active,
+.export-reset-button:active,
+.nav-item:active {
+  transform:
+    scale(0.98);
+}
 
-  padding:
-    9px
+.entry-status {
+  min-height:
+    20px;
+
+  margin:
+    10px
+    0
+    0;
+
+  color:
+    var(--blue-700);
+
+  font-size:
     13px;
 
-  border:
-    1px solid
-    rgba(255, 255, 255, 0.4);
-
-  border-radius:
-    10px;
-
-  background:
-    transparent;
-
-  color:
-    #fff;
-
-  font-size: 14px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-}
-
-.secondary-button:hover {
-  background:
-    rgba(255, 255, 255, 0.10);
-}
-
-.small-button {
-  min-height: 36px;
-
-  padding:
-    7px
-    10px;
-
-  border:
-    1px solid
-    rgba(255, 255, 255, 0.35);
-
-  border-radius:
-    9px;
-
-  background:
-    rgba(255, 255, 255, 0.08);
-
-  color:
-    #fff;
-
-  font-size: 13px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-}
-
-.danger-button {
-  color:
-    var(--danger);
-
-  border-color:
-    rgba(255, 180, 173, 0.4);
-}
-
-.text-button {
-  min-height: 36px;
-
-  padding:
-    6px
-    4px;
-
-  border: 0;
-
-  background:
-    transparent;
-
-  color:
-    var(--yellow);
-
-  font-size: 13px;
-
-  font-weight: 700;
-
-  cursor: pointer;
-}
-
-.entries-list {
-  display: grid;
-
-  gap: 10px;
-}
-
-.entry {
-  display: block;
-
-  padding:
-    14px;
-
-  border:
-    1px solid
-    var(--border);
-
-  border-radius:
-    13px;
-
-  background:
-    var(--blue-050);
-}
-
-.entry strong {
-  display: block;
-
-  color:
-    var(--blue-900);
-
-  font-size: 15px;
-}
-
-.entry div {
-  margin-top: 3px;
-
-  color:
-    var(--text);
-
-  font-size: 14px;
-}
-
-.entry small {
-  display: block;
-
-  margin-top: 5px;
-
-  color:
-    var(--muted);
-
-  font-size: 13px;
-}
-
-.empty-state {
-  padding:
-    18px
-    12px;
-
-  border:
-    1px dashed
-    var(--border);
-
-  border-radius:
-    12px;
-
-  background:
-    var(--blue-050);
-
-  color:
-    var(--muted);
+  font-weight:
+    700;
 
   text-align:
     center;
-
-  font-size: 14px;
 }
 
 
@@ -542,16 +449,19 @@ h3 {
 }
 
 .summary-grid {
-  display: grid;
+  display:
+    grid;
 
   grid-template-columns:
     repeat(2, 1fr);
 
-  gap: 10px;
+  gap:
+    10px;
 }
 
 .summary-box {
-  min-width: 0;
+  min-width:
+    0;
 
   padding:
     14px;
@@ -568,33 +478,42 @@ h3 {
 }
 
 .summary-box span {
-  display: block;
+  display:
+    block;
 
-  margin-bottom: 6px;
+  margin-bottom:
+    6px;
 
   color:
     rgba(255, 255, 255, 0.78);
 
-  font-size: 12px;
+  font-size:
+    12px;
 }
 
 .summary-box strong {
-  display: block;
+  display:
+    block;
 
   color:
     #fff;
 
-  font-size: 15px;
+  font-size:
+    15px;
 }
 
 .commission-summary-item {
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
+  align-items:
+    center;
 
-  justify-content: space-between;
+  justify-content:
+    space-between;
 
-  gap: 12px;
+  gap:
+    12px;
 
   padding:
     14px;
@@ -622,7 +541,39 @@ h3 {
   color:
     rgba(255, 255, 255, 0.82);
 
-  font-size: 14px;
+  font-size:
+    14px;
+}
+
+.secondary-button {
+  min-height:
+    40px;
+
+  padding:
+    9px
+    13px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.4);
+
+  border-radius:
+    10px;
+
+  background:
+    transparent;
+
+  color:
+    #fff;
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
 }
 
 .details-section {
@@ -666,6 +617,199 @@ h3 {
 
 
 /* =========================
+   SWIPE-DELETE
+========================= */
+
+.swipe-list {
+  display:
+    grid;
+
+  gap:
+    10px;
+}
+
+.swipe-entry {
+  position:
+    relative;
+
+  overflow:
+    hidden;
+
+  border-radius:
+    13px;
+
+  background:
+    var(--danger-dark);
+}
+
+.swipe-content {
+  position:
+    relative;
+
+  z-index:
+    2;
+
+  min-height:
+    92px;
+
+  padding:
+    14px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.18);
+
+  border-radius:
+    13px;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  color:
+    #fff;
+
+  transform:
+    translateX(0);
+
+  transition:
+    transform 0.18s ease;
+
+  touch-action:
+    pan-y;
+
+  user-select:
+    none;
+
+  -webkit-user-select:
+    none;
+}
+
+.swipe-content strong {
+  display:
+    block;
+
+  color:
+    #fff;
+
+  font-size:
+    15px;
+}
+
+.swipe-content div {
+  margin-top:
+    3px;
+
+  color:
+    #fff;
+
+  font-size:
+    14px;
+}
+
+.swipe-content small {
+  display:
+    block;
+
+  margin-top:
+    5px;
+
+  color:
+    rgba(255, 255, 255, 0.76);
+
+  font-size:
+    13px;
+}
+
+.swipe-delete {
+  position:
+    absolute;
+
+  top:
+    0;
+
+  right:
+    0;
+
+  bottom:
+    0;
+
+  z-index:
+    1;
+
+  width:
+    90px;
+
+  border:
+    0;
+
+  background:
+    var(--danger-dark);
+
+  color:
+    #fff;
+
+  font-size:
+    13px;
+
+  font-weight:
+    800;
+
+  cursor:
+    pointer;
+}
+
+.confirmed-badge {
+  display:
+    inline-flex;
+
+  margin-top:
+    8px;
+
+  padding:
+    4px
+    7px;
+
+  border-radius:
+    999px;
+
+  background:
+    rgba(244, 197, 66, 0.2);
+
+  color:
+    var(--yellow);
+
+  font-size:
+    10px;
+
+  font-weight:
+    800;
+
+  text-transform:
+    uppercase;
+
+  letter-spacing:
+    0.05em;
+}
+
+.swipe-hint {
+  display:
+    block;
+
+  margin-top:
+    4px;
+
+  color:
+    rgba(255, 255, 255, 0.58);
+
+  font-size:
+    11px;
+
+  text-align:
+    center;
+}
+
+
+/* =========================
    EXPORT
 ========================= */
 
@@ -682,13 +826,17 @@ h3 {
 }
 
 .export-details summary {
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
+  align-items:
+    center;
 
-  justify-content: space-between;
+  justify-content:
+    space-between;
 
-  min-height: 42px;
+  min-height:
+    42px;
 
   padding:
     9px
@@ -707,18 +855,22 @@ h3 {
   color:
     #fff;
 
-  font-size: 14px;
+  font-size:
+    14px;
 
-  font-weight: 700;
+  font-weight:
+    700;
 
-  cursor: pointer;
+  cursor:
+    pointer;
 
   list-style:
     none;
 }
 
 .export-details summary::-webkit-details-marker {
-  display: none;
+  display:
+    none;
 }
 
 .export-details summary::after {
@@ -728,7 +880,8 @@ h3 {
   color:
     var(--yellow);
 
-  font-size: 18px;
+  font-size:
+    18px;
 }
 
 .export-details[open]
@@ -749,16 +902,19 @@ summary::after {
   color:
     rgba(255, 255, 255, 0.76);
 
-  font-size: 13px;
+  font-size:
+    13px;
 }
 
 .export-filter {
-  display: grid;
+  display:
+    grid;
 
   grid-template-columns:
     1fr 1fr;
 
-  gap: 10px;
+  gap:
+    10px;
 }
 
 .export-filter label {
@@ -786,20 +942,25 @@ summary::after {
 }
 
 .export-actions {
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
+  align-items:
+    center;
 
-  gap: 8px;
+  gap:
+    8px;
 
-  flex-wrap: wrap;
+  flex-wrap:
+    wrap;
 
   margin-top:
     14px;
 }
 
 .export-button {
-  min-height: 40px;
+  min-height:
+    40px;
 
   padding:
     9px
@@ -818,21 +979,26 @@ summary::after {
   color:
     #fff;
 
-  font-size: 14px;
+  font-size:
+    14px;
 
-  font-weight: 700;
+  font-weight:
+    700;
 
-  cursor: pointer;
+  cursor:
+    pointer;
 }
 
 .export-reset-button {
-  min-height: 40px;
+  min-height:
+    40px;
 
   padding:
     6px
     4px;
 
-  border: 0;
+  border:
+    0;
 
   background:
     transparent;
@@ -840,15 +1006,19 @@ summary::after {
   color:
     rgba(255, 255, 255, 0.8);
 
-  font-size: 13px;
+  font-size:
+    13px;
 
-  font-weight: 600;
+  font-weight:
+    600;
 
-  cursor: pointer;
+  cursor:
+    pointer;
 }
 
 .export-content small {
-  display: block;
+  display:
+    block;
 
   margin-top:
     9px;
@@ -856,7 +1026,8 @@ summary::after {
   color:
     rgba(255, 255, 255, 0.65);
 
-  font-size: 12px;
+  font-size:
+    12px;
 
   line-height:
     1.4;
@@ -967,21 +1138,26 @@ input:focus {
 }
 
 .commission-input-row {
-  display: grid;
+  display:
+    grid;
 
   grid-template-columns:
     1fr auto;
 
-  gap: 8px;
+  gap:
+    8px;
 
-  align-items: end;
+  align-items:
+    end;
 }
 
 .commission-input-row
 .primary-button {
-  width: auto;
+  width:
+    auto;
 
-  min-height: 48px;
+  min-height:
+    48px;
 
   margin-top:
     0;
@@ -992,30 +1168,72 @@ input:focus {
 
 .commission-info {
   margin:
-    0
-    0
-    18px;
+    0 0 18px;
 
   color:
     rgba(255, 255, 255, 0.75);
 
-  font-size: 14px;
+  font-size:
+    14px;
 
   line-height:
     1.5;
 }
 
 .entry-actions {
-  display: flex;
+  display:
+    flex;
 
-  align-items: center;
+  align-items:
+    center;
 
-  gap: 8px;
+  gap:
+    8px;
 
-  flex-wrap: wrap;
+  flex-wrap:
+    wrap;
 
   margin-top:
     10px;
+}
+
+.small-button {
+  min-height:
+    36px;
+
+  padding:
+    7px
+    10px;
+
+  border:
+    1px solid
+    rgba(255, 255, 255, 0.35);
+
+  border-radius:
+    9px;
+
+  background:
+    rgba(255, 255, 255, 0.08);
+
+  color:
+    #fff;
+
+  font-size:
+    13px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+}
+
+.danger-button {
+  color:
+    var(--danger);
+
+  border-color:
+    rgba(255, 180, 173, 0.4);
 }
 
 
@@ -1035,9 +1253,11 @@ input:focus {
   color:
     var(--blue-700);
 
-  font-size: 13px;
+  font-size:
+    13px;
 
-  font-weight: 700;
+  font-weight:
+    700;
 }
 
 
@@ -1046,9 +1266,11 @@ input:focus {
 ========================= */
 
 .bottom-nav {
-  position: fixed;
+  position:
+    fixed;
 
-  left: 50%;
+  left:
+    50%;
 
   bottom:
     max(
@@ -1056,9 +1278,11 @@ input:focus {
       env(safe-area-inset-bottom)
     );
 
-  z-index: 20;
+  z-index:
+    20;
 
-  display: grid;
+  display:
+    grid;
 
   grid-template-columns:
     repeat(3, 1fr);
@@ -1072,7 +1296,8 @@ input:focus {
   transform:
     translateX(-50%);
 
-  padding: 8px;
+  padding:
+    8px;
 
   border:
     1px solid
@@ -1093,19 +1318,26 @@ input:focus {
 }
 
 .nav-item {
-  display: flex;
+  display:
+    flex;
 
-  flex-direction: column;
+  flex-direction:
+    column;
 
-  align-items: center;
+  align-items:
+    center;
 
-  justify-content: center;
+  justify-content:
+    center;
 
-  gap: 3px;
+  gap:
+    3px;
 
-  min-height: 58px;
+  min-height:
+    58px;
 
-  border: 0;
+  border:
+    0;
 
   border-radius:
     13px;
@@ -1116,15 +1348,19 @@ input:focus {
   color:
     var(--muted);
 
-  font-size: 11px;
+  font-size:
+    11px;
 
-  font-weight: 700;
+  font-weight:
+    700;
 
-  cursor: pointer;
+  cursor:
+    pointer;
 }
 
 .nav-icon {
-  font-size: 19px;
+  font-size:
+    19px;
 
   line-height:
     1;
@@ -1201,9 +1437,7 @@ input:focus {
       stretch;
   }
 
-  .export-actions
   .export-button,
-  .export-actions
   .export-reset-button {
     width:
       100%;
