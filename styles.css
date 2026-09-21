@@ -30,14 +30,12 @@
 
 html {
   min-height: 100%;
-
   background:
     var(--background);
 }
 
 body {
   margin: 0;
-
   min-height: 100vh;
 
   background:
@@ -76,9 +74,7 @@ button {
 
 .app-shell {
   width: 100%;
-
   max-width: 680px;
-
   margin: 0 auto;
 
   padding:
@@ -95,17 +91,11 @@ button {
 }
 
 .topbar {
-  display:
-    flex;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-  align-items:
-    center;
-
-  justify-content:
-    space-between;
-
-  margin-bottom:
-    18px;
+  margin-bottom: 18px;
 
   padding:
     4px
@@ -952,9 +942,16 @@ h3 {
     0.05em;
 }
 
+
+/*
+  Der Hinweis ist standardmässig unsichtbar.
+  Nach dem ersten erfolgreichen Wischen
+  bekommt er zusätzlich die Klasse .visible.
+*/
+
 .swipe-hint {
   display:
-    block;
+    none;
 
   margin-top:
     4px;
@@ -967,6 +964,11 @@ h3 {
 
   text-align:
     center;
+}
+
+.swipe-hint.visible {
+  display:
+    block;
 }
 
 .total-entry {
@@ -1093,7 +1095,9 @@ summary::after {
 
 .export-description {
   margin:
-    0 0 14px;
+    0
+    0
+    14px;
 
   color:
     rgba(255, 255, 255, 0.76);
@@ -1115,7 +1119,9 @@ summary::after {
 
 .export-filter label {
   margin:
-    0 0 7px;
+    0
+    0
+    7px;
 
   color:
     #fff;
