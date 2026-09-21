@@ -1,0 +1,25 @@
+{
+  "name": "ZeitPol – Zeiterfassung",
+  "short_name": "ZeitPol",
+  "lang": "de-CH",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#f2f4f7",
+  "theme_color": "#111827",
+  "description": "Mobile Zeiterfassung für Kommissionen und Tätigkeiten.",
+  "icons": [
+    {
+      "src": "icons/icon-180.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
