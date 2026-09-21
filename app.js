@@ -112,10 +112,12 @@ try {
 
   if (savedEntries) {
 
-    timeEntries =
-      JSON.parse(
-        savedEntries
-      );
+    const parsedEntries =
+      JSON.parse(savedEntries);
+
+    if (Array.isArray(parsedEntries)) {
+      timeEntries = parsedEntries;
+    }
 
   }
 
@@ -135,10 +137,14 @@ try {
 
   if (savedCommissions) {
 
-    commissions =
+    const parsedCommissions =
       JSON.parse(
         savedCommissions
       );
+
+    if (Array.isArray(parsedCommissions)) {
+      commissions = parsedCommissions;
+    }
 
   }
 
@@ -149,10 +155,9 @@ try {
 }
 
 
-/*
-  Standard-Kommissionen nur anlegen,
-  wenn noch keine vorhanden sind.
-*/
+/* =========================
+   STANDARD-KOMMISSIONEN
+========================= */
 
 if (commissions.length === 0) {
 
@@ -211,17 +216,12 @@ function getHours(entry) {
 
 function getEntryDate(entry) {
 
-  if (!entry.date) {
-
+  if (!entry || !entry.date) {
     return null;
-
   }
 
   const date =
-    new Date(
-      entry.date
-    );
-
+    new Date(entry.date);
 
   if (
     Number.isNaN(
@@ -232,7 +232,6 @@ function getEntryDate(entry) {
     return null;
 
   }
-
 
   return date;
 
@@ -268,18 +267,15 @@ function getStartOfWeek(
   const day =
     start.getDay();
 
-
   const difference =
     day === 0
       ? -6
       : 1 - day;
 
-
   start.setDate(
     start.getDate() +
       difference
   );
-
 
   start.setHours(
     0,
@@ -287,7 +283,6 @@ function getStartOfWeek(
     0,
     0
   );
-
 
   return start;
 
@@ -350,7 +345,6 @@ function calculateTotal(
 
   let total = 0;
 
-
   entries.forEach(
     function(entry) {
 
@@ -359,7 +353,6 @@ function calculateTotal(
 
     }
   );
-
 
   return total;
 
@@ -385,17 +378,14 @@ function renderCommissionSelect() {
         "option"
       );
 
-
     option.value = "";
 
     option.textContent =
       "Keine Kommission vorhanden";
 
-
     commissionInput.appendChild(
       option
     );
-
 
     return;
 
@@ -410,13 +400,11 @@ function renderCommissionSelect() {
           "option"
         );
 
-
       option.value =
         commission;
 
       option.textContent =
         commission;
-
 
       commissionInput.appendChild(
         option
@@ -447,7 +435,6 @@ function renderCommissionList() {
 
     commissionList.textContent =
       "Noch keine Kommissionen vorhanden.";
-
 
     return;
 
@@ -817,6 +804,8 @@ function showRenameForm(
         event.key === "Enter"
       ) {
 
+        event.preventDefault();
+
         saveButton.click();
 
       }
@@ -830,9 +819,7 @@ function showRenameForm(
   );
 
   item.appendChild(
-    document.createElement(
-      "br"
-    )
+    document.createElement("br")
   );
 
   item.appendChild(
@@ -1182,8 +1169,7 @@ function renderEvaluation() {
 
 
 /* =========================
-   KOMMISSIONEN
-   KUMULIERT
+   KOMMISSIONEN KUMULIERT
 ========================= */
 
 function renderCommissionEvaluation() {
@@ -1268,22 +1254,6 @@ function renderCommissionEvaluation() {
           "entry";
 
 
-        item.setAttribute(
-          "role",
-          "button"
-        );
-
-
-        item.setAttribute(
-          "tabindex",
-          "0"
-        );
-
-
-        item.style.cursor =
-          "pointer";
-
-
         const content =
           document.createElement(
             "div"
@@ -1312,13 +1282,38 @@ function renderCommissionEvaluation() {
           );
 
 
-        const hint =
+        const button =
           document.createElement(
-            "small"
+            "button"
           );
 
-        hint.textContent =
-          "Tippen für Details";
+        button.type =
+          "button";
+
+        button.textContent =
+          "Details anzeigen";
+
+        button.style.marginTop =
+          "10px";
+
+        button.style.width =
+          "100%";
+
+
+        button.addEventListener(
+          "click",
+          function(event) {
+
+            event.preventDefault();
+
+            event.stopPropagation();
+
+            showCommissionDetails(
+              commission
+            );
+
+          }
+        );
 
 
         content.appendChild(
@@ -1330,45 +1325,12 @@ function renderCommissionEvaluation() {
         );
 
         content.appendChild(
-          hint
+          button
         );
 
 
         item.appendChild(
           content
-        );
-
-
-        item.addEventListener(
-          "click",
-          function() {
-
-            showCommissionDetails(
-              commission
-            );
-
-          }
-        );
-
-
-        item.addEventListener(
-          "keydown",
-          function(event) {
-
-            if (
-              event.key === "Enter" ||
-              event.key === " "
-            ) {
-
-              event.preventDefault();
-
-              showCommissionDetails(
-                commission
-              );
-
-            }
-
-          }
         );
 
 
@@ -1380,12 +1342,6 @@ function renderCommissionEvaluation() {
     );
 
 
-  /*
-    Wenn die vorher ausgewählte
-    Kommission noch existiert,
-    Details erneut anzeigen.
-  */
-
   if (
     selectedCommission &&
     commissionTotals[
@@ -1396,11 +1352,6 @@ function renderCommissionEvaluation() {
     showCommissionDetails(
       selectedCommission
     );
-
-  } else {
-
-    commissionDetails.style.display =
-      "none";
 
   }
 
@@ -1444,7 +1395,9 @@ function showCommissionDetails(
 
           return {
             entry: entry,
-            date: getEntryDate(entry)
+            date: getEntryDate(
+              entry
+            )
           };
 
         }
@@ -1457,10 +1410,12 @@ function showCommissionDetails(
               ? a.date.getTime()
               : 0;
 
+
           const dateB =
             b.date
               ? b.date.getTime()
               : 0;
+
 
           return dateB - dateA;
 
@@ -1571,13 +1526,17 @@ function showCommissionDetails(
   );
 
 
+  const detailEntries =
+    details.map(
+      function(detail) {
+        return detail.entry;
+      }
+    );
+
+
   const detailTotal =
     calculateTotal(
-      details.map(
-        function(detail) {
-          return detail.entry;
-        }
-      )
+      detailEntries
     );
 
 
@@ -1624,6 +1583,43 @@ function showCommissionDetails(
   );
 
 
+  const closeButton =
+    document.createElement(
+      "button"
+    );
+
+  closeButton.type =
+    "button";
+
+  closeButton.textContent =
+    "Details schließen";
+
+  closeButton.style.marginTop =
+    "10px";
+
+  closeButton.style.width =
+    "100%";
+
+
+  closeButton.addEventListener(
+    "click",
+    function() {
+
+      selectedCommission =
+        null;
+
+      commissionDetails.style.display =
+        "none";
+
+    }
+  );
+
+
+  commissionDetailsList.appendChild(
+    closeButton
+  );
+
+
   commissionDetails.style.display =
     "";
 
@@ -1631,7 +1627,7 @@ function showCommissionDetails(
 
 
 /* =========================
-   SEITENWECHSEL
+   ERFASSUNG ANZEIGEN
 ========================= */
 
 function showRecording() {
