@@ -25,7 +25,7 @@
 
   <meta
     name="apple-mobile-web-app-title"
-    content="ZeitPol"
+    content="Ravo"
   >
 
   <link
@@ -43,7 +43,7 @@
     href="styles.css"
   >
 
-  <title>ZeitPol</title>
+  <title>Ravo</title>
 </head>
 
 <body>
@@ -59,7 +59,7 @@
         </p>
 
         <h1>
-          ZeitPol
+          Ravo
         </h1>
 
         <div
@@ -90,7 +90,7 @@
     >
 
       <p class="section-label">
-        Stunden erfassen
+        Erfassung
       </p>
 
 
@@ -149,51 +149,6 @@
     </section>
 
 
-    <!-- HEUTE -->
-
-    <section
-      id="todaySection"
-      class="card"
-    >
-
-      <div class="section-heading">
-
-        <div>
-
-          <p class="section-label">
-            Heute
-          </p>
-
-          <h2>
-            Zeiteinträge
-          </h2>
-
-          <div id="totalHours">
-            0 Stunden
-          </div>
-
-        </div>
-
-        <span
-          id="entryCount"
-          class="badge"
-        >
-          0 Einträge
-        </span>
-
-      </div>
-
-
-      <div
-        id="entries"
-        class="empty-state"
-      >
-        Noch keine Einträge vorhanden.
-      </div>
-
-    </section>
-
-
     <!-- AUSWERTUNG -->
 
     <section
@@ -207,59 +162,11 @@
       </p>
 
       <h2>
-        Übersicht
+        Nach Kommission
       </h2>
 
 
-      <div class="summary-grid">
-
-        <div class="summary-box">
-
-          <span>
-            Heute
-          </span>
-
-          <strong id="evaluationToday">
-            0 Stunden
-          </strong>
-
-        </div>
-
-
-        <div class="summary-box">
-
-          <span>
-            Diese Woche
-          </span>
-
-          <strong id="evaluationWeek">
-            0 Stunden
-          </strong>
-
-        </div>
-
-
-        <div class="summary-box">
-
-          <span>
-            Diesen Monat
-          </span>
-
-          <strong id="evaluationMonth">
-            0 Stunden
-          </strong>
-
-        </div>
-
-      </div>
-
-
-      <!-- KOMMISSIONEN -->
-
-      <p class="section-label">
-        Nach Kommission
-      </p>
-
+      <!-- KOMMISSIONEN ZUERST -->
 
       <div id="evaluationCommissions">
         Noch keine Einträge vorhanden.
@@ -287,6 +194,47 @@
         <div
           id="commissionDetailsList"
         >
+        </div>
+
+      </div>
+
+
+      <!-- ÜBERSICHT -->
+
+      <div class="evaluation-overview">
+
+        <p class="section-label">
+          Übersicht
+        </p>
+
+
+        <div class="summary-grid">
+
+          <div class="summary-box">
+
+            <span>
+              Diese Woche
+            </span>
+
+            <strong id="evaluationWeek">
+              0 Stunden
+            </strong>
+
+          </div>
+
+
+          <div class="summary-box">
+
+            <span>
+              Diesen Monat
+            </span>
+
+            <strong id="evaluationMonth">
+              0 Stunden
+            </strong>
+
+          </div>
+
         </div>
 
       </div>
@@ -454,6 +402,7 @@
       <p class="section-label">
         Einstellungen
       </p>
+
 
       <h2>
         Persönliche Angaben
