@@ -94,8 +94,28 @@ const exportFromInput =
 const exportToInput =
   document.getElementById("exportTo");
 
-const userNameInput =
-  document.getElementById("userName");
+
+/* =========================
+   EINSTELLUNGEN
+========================= */
+
+const userLastNameInput =
+  document.getElementById("userLastName");
+
+const userFirstNameInput =
+  document.getElementById("userFirstName");
+
+const userAddressInput =
+  document.getElementById("userAddress");
+
+const userZipInput =
+  document.getElementById("userZip");
+
+const userCityInput =
+  document.getElementById("userCity");
+
+const userPartyInput =
+  document.getElementById("userParty");
 
 const saveUserNameButton =
   document.getElementById("saveUserName");
@@ -107,13 +127,20 @@ const userNameDisplay =
   document.getElementById("userNameDisplay");
 
 
+/* =========================
+   SPEICHER-SCHLÜSSEL
+========================= */
+
 const ENTRIES_KEY =
   "zeitpol_entries";
 
 const COMMISSIONS_KEY =
   "zeitpol_commissions";
 
-const USER_NAME_KEY =
+const USER_PROFILE_KEY =
+  "zeitpol_user_profile";
+
+const OLD_USER_NAME_KEY =
   "zeitpol_user_name";
 
 
@@ -133,8 +160,10 @@ function getTodayString() {
   const today =
     new Date();
 
+
   const year =
     today.getFullYear();
+
 
   const month =
     String(
@@ -144,6 +173,7 @@ function getTodayString() {
       "0"
     );
 
+
   const day =
     String(
       today.getDate()
@@ -151,6 +181,7 @@ function getTodayString() {
       2,
       "0"
     );
+
 
   return (
     year +
@@ -168,8 +199,10 @@ function setDefaultEntryDate() {
   const today =
     getTodayString();
 
+
   entryDateInput.value =
     today;
+
 
   entryDateInput.max =
     today;
@@ -208,8 +241,10 @@ function parseDateString(
 
   }
 
+
   const parts =
     value.split("-");
+
 
   return new Date(
     Number(parts[0]),
@@ -235,12 +270,16 @@ try {
       ENTRIES_KEY
     );
 
-  if (savedEntries) {
+
+  if (
+    savedEntries
+  ) {
 
     const parsedEntries =
       JSON.parse(
         savedEntries
       );
+
 
     if (
       Array.isArray(
@@ -269,12 +308,16 @@ try {
       COMMISSIONS_KEY
     );
 
-  if (savedCommissions) {
+
+  if (
+    savedCommissions
+  ) {
 
     const parsedCommissions =
       JSON.parse(
         savedCommissions
       );
+
 
     if (
       Array.isArray(
@@ -318,23 +361,159 @@ timeEntries.forEach(
 
 
 /* =========================
-   BENUTZERNAME
+   BENUTZERPROFIL LADEN
 ========================= */
 
-const savedUserName =
-  localStorage.getItem(
-    USER_NAME_KEY
-  );
+function loadUserProfile() {
+
+  let profile = {
+
+    lastName:
+      "",
+
+    firstName:
+      "",
+
+    address:
+      "",
+
+    zip:
+      "",
+
+    city:
+      "",
+
+    party:
+      ""
+
+  };
 
 
-if (
-  savedUserName
-) {
+  try {
 
-  userNameInput.value =
-    savedUserName;
+    const savedProfile =
+      localStorage.getItem(
+        USER_PROFILE_KEY
+      );
+
+
+    if (
+      savedProfile
+    ) {
+
+      const parsedProfile =
+        JSON.parse(
+          savedProfile
+        );
+
+
+      if (
+        parsedProfile &&
+        typeof parsedProfile ===
+        "object"
+      ) {
+
+        profile = {
+
+          ...profile,
+          ...parsedProfile
+
+        };
+
+      }
+
+    }
+
+  } catch (error) {
+
+    profile = {
+
+      lastName:
+        "",
+
+      firstName:
+        "",
+
+      address:
+        "",
+
+      zip:
+        "",
+
+      city:
+        "",
+
+      party:
+        ""
+
+    };
+
+  }
+
+
+  /*
+    Übernahme des bisherigen
+    gespeicherten Namens.
+  */
+
+  const oldName =
+    localStorage.getItem(
+      OLD_USER_NAME_KEY
+    );
+
+
+  if (
+    oldName &&
+    !profile.lastName &&
+    !profile.firstName
+  ) {
+
+    const parts =
+      oldName.trim().split(/\s+/);
+
+
+    if (
+      parts.length >= 2
+    ) {
+
+      profile.firstName =
+        parts.shift();
+
+      profile.lastName =
+        parts.join(" ");
+
+    } else {
+
+      profile.lastName =
+        oldName.trim();
+
+    }
+
+  }
+
+
+  userLastNameInput.value =
+    profile.lastName;
+
+  userFirstNameInput.value =
+    profile.firstName;
+
+  userAddressInput.value =
+    profile.address;
+
+  userZipInput.value =
+    profile.zip;
+
+  userCityInput.value =
+    profile.city;
+
+  userPartyInput.value =
+    profile.party;
 
 }
+
+
+loadUserProfile();
 
 
 /* =========================
@@ -418,6 +597,7 @@ function getEntryDate(
 
   }
 
+
   if (
     /^\d{4}-\d{2}-\d{2}$/.test(
       entry.date
@@ -430,10 +610,12 @@ function getEntryDate(
 
   }
 
+
   const date =
     new Date(
       entry.date
     );
+
 
   if (
     Number.isNaN(
@@ -444,6 +626,7 @@ function getEntryDate(
     return null;
 
   }
+
 
   return date;
 
@@ -457,18 +640,22 @@ function getStartOfWeek(
   const start =
     new Date(date);
 
+
   const day =
     start.getDay();
+
 
   const difference =
     day === 0
       ? -6
       : 1 - day;
 
+
   start.setDate(
     start.getDate() +
       difference
   );
+
 
   start.setHours(
     0,
@@ -476,6 +663,7 @@ function getStartOfWeek(
     0,
     0
   );
+
 
   return start;
 
@@ -507,7 +695,8 @@ function formatHours(
     hours.toLocaleString(
       "de-CH",
       {
-        maximumFractionDigits: 2
+        maximumFractionDigits:
+          2
       }
     ) +
     " Stunden"
@@ -523,6 +712,7 @@ function calculateTotal(
   let total =
     0;
 
+
   entries.forEach(
     function(entry) {
 
@@ -531,6 +721,7 @@ function calculateTotal(
 
     }
   );
+
 
   return total;
 
@@ -546,6 +737,7 @@ function renderCommissionSelect() {
   commissionInput.innerHTML =
     "";
 
+
   if (
     commissions.length ===
     0
@@ -556,19 +748,24 @@ function renderCommissionSelect() {
         "option"
       );
 
+
     option.value =
       "";
 
+
     option.textContent =
       "Keine Kommission vorhanden";
+
 
     commissionInput.appendChild(
       option
     );
 
+
     return;
 
   }
+
 
   commissions.forEach(
     function(commission) {
@@ -578,11 +775,14 @@ function renderCommissionSelect() {
           "option"
         );
 
+
       option.value =
         commission;
 
+
       option.textContent =
         commission;
+
 
       commissionInput.appendChild(
         option
@@ -603,6 +803,7 @@ function renderCommissionList() {
   commissionList.innerHTML =
     "";
 
+
   if (
     commissions.length ===
     0
@@ -611,15 +812,19 @@ function renderCommissionList() {
     commissionList.className =
       "empty-state";
 
+
     commissionList.textContent =
       "Noch keine Kommissionen vorhanden.";
+
 
     return;
 
   }
 
+
   commissionList.className =
     "entries-list";
+
 
   commissions.forEach(
     function(
@@ -632,49 +837,62 @@ function renderCommissionList() {
           "div"
         );
 
+
       item.className =
         "entry";
+
 
       const name =
         document.createElement(
           "strong"
         );
 
+
       name.textContent =
         commission;
+
 
       const actions =
         document.createElement(
           "div"
         );
 
+
       actions.className =
         "entry-actions";
+
 
       const renameButton =
         document.createElement(
           "button"
         );
 
+
       renameButton.type =
         "button";
+
 
       renameButton.className =
         "small-button";
 
+
       renameButton.textContent =
         "✏️ Umbenennen";
+
 
       const deleteButton =
         document.createElement(
           "button"
         );
 
+
       deleteButton.type =
         "button";
 
+
       deleteButton.className =
         "small-button danger-button";
+
 
       deleteButton.textContent =
         "🗑️ Löschen";
@@ -710,17 +928,21 @@ function renderCommissionList() {
         renameButton
       );
 
+
       actions.appendChild(
         deleteButton
       );
+
 
       item.appendChild(
         name
       );
 
+
       item.appendChild(
         actions
       );
+
 
       commissionList.appendChild(
         item
@@ -741,6 +963,7 @@ function addCommission() {
   const name =
     newCommissionInput.value.trim();
 
+
   if (
     name === ""
   ) {
@@ -750,6 +973,7 @@ function addCommission() {
     return;
 
   }
+
 
   const exists =
     commissions.some(
@@ -763,6 +987,7 @@ function addCommission() {
       }
     );
 
+
   if (
     exists
   ) {
@@ -771,21 +996,26 @@ function addCommission() {
       "Diese Kommission gibt es bereits."
     );
 
+
     newCommissionInput.focus();
 
     return;
 
   }
 
+
   commissions.push(
     name
   );
 
+
   saveCommissions();
+
 
   renderCommissionSelect();
 
   renderCommissionList();
+
 
   newCommissionInput.value =
     "";
@@ -808,16 +1038,20 @@ function showRenameForm(
   item.innerHTML =
     "";
 
+
   const input =
     document.createElement(
       "input"
     );
 
+
   input.type =
     "text";
 
+
   input.value =
     oldName;
+
 
   input.autocomplete =
     "off";
@@ -828,6 +1062,7 @@ function showRenameForm(
       "div"
     );
 
+
   actions.className =
     "entry-actions";
 
@@ -837,11 +1072,14 @@ function showRenameForm(
       "button"
     );
 
+
   saveButton.type =
     "button";
 
+
   saveButton.className =
     "small-button";
+
 
   saveButton.textContent =
     "Speichern";
@@ -852,11 +1090,14 @@ function showRenameForm(
       "button"
     );
 
+
   cancelButton.type =
     "button";
 
+
   cancelButton.className =
     "small-button";
+
 
   cancelButton.textContent =
     "Abbrechen";
@@ -869,6 +1110,7 @@ function showRenameForm(
       const newName =
         input.value.trim();
 
+
       if (
         newName === ""
       ) {
@@ -878,6 +1120,7 @@ function showRenameForm(
         return;
 
       }
+
 
       const exists =
         commissions.some(
@@ -895,6 +1138,7 @@ function showRenameForm(
           }
         );
 
+
       if (
         exists
       ) {
@@ -903,11 +1147,13 @@ function showRenameForm(
           "Diese Kommission gibt es bereits."
         );
 
+
         input.focus();
 
         return;
 
       }
+
 
       timeEntries.forEach(
         function(entry) {
@@ -925,12 +1171,15 @@ function showRenameForm(
         }
       );
 
+
       commissions[index] =
         newName;
+
 
       saveCommissions();
 
       saveEntries();
+
 
       renderCommissionSelect();
 
@@ -974,17 +1223,21 @@ function showRenameForm(
     input
   );
 
+
   item.appendChild(
     actions
   );
+
 
   actions.appendChild(
     saveButton
   );
 
+
   actions.appendChild(
     cancelButton
   );
+
 
   input.focus();
 
@@ -1001,6 +1254,7 @@ function deleteCommission(
 
   const commission =
     commissions[index];
+
 
   const used =
     timeEntries.some(
@@ -1052,6 +1306,7 @@ function deleteCommission(
 
   saveCommissions();
 
+
   renderCommissionSelect();
 
   renderCommissionList();
@@ -1070,6 +1325,7 @@ function prepareEntry() {
   const selectedDate =
     entryDateInput.value.trim();
 
+
   const value =
     hoursInput.value
       .trim()
@@ -1077,6 +1333,7 @@ function prepareEntry() {
         ",",
         "."
       );
+
 
   const hours =
     Number(
@@ -1092,7 +1349,9 @@ function prepareEntry() {
       "Bitte wähle ein Datum aus."
     );
 
+
     entryDateInput.focus();
+
 
     return;
 
@@ -1111,7 +1370,9 @@ function prepareEntry() {
       "Bitte gib eine gültige Stundenzahl ein."
     );
 
+
     hoursInput.focus();
+
 
     return;
 
@@ -1127,6 +1388,7 @@ function prepareEntry() {
       "Bitte lege zuerst eine Kommission an."
     );
 
+
     return;
 
   }
@@ -1141,7 +1403,8 @@ function prepareEntry() {
       hours.toLocaleString(
         "de-CH",
         {
-          maximumFractionDigits: 2
+          maximumFractionDigits:
+            2
         }
       ),
 
@@ -1171,6 +1434,7 @@ function showPendingSummary() {
 
     entrySummary.style.display =
       "none";
+
 
     return;
 
@@ -1231,23 +1495,30 @@ function editPendingEntry() {
   entryDateInput.value =
     pendingEntry.date;
 
+
   hoursInput.value =
     pendingEntry.hours;
+
 
   commissionInput.value =
     pendingEntry.commission;
 
+
   activityInput.value =
     pendingEntry.activity;
+
 
   pendingEntry =
     null;
 
+
   entrySummary.style.display =
     "none";
 
+
   entryStatus.textContent =
     "";
+
 
   hoursInput.focus();
 
@@ -1350,9 +1621,35 @@ function renderEvaluation() {
     );
 
 
-  const startOfMonth =
-    getStartOfMonth(
-      now
+  const monthEntries =
+    timeEntries.filter(
+      function(entry) {
+
+        if (
+          entry.confirmed ===
+          false
+        ) {
+
+          return false;
+
+        }
+
+
+        const date =
+          getEntryDate(
+            entry
+          );
+
+
+        return (
+          date &&
+          date.getFullYear() ===
+            now.getFullYear() &&
+          date.getMonth() ===
+            now.getMonth()
+        );
+
+      }
     );
 
 
@@ -1379,39 +1676,6 @@ function renderEvaluation() {
         return (
           date &&
           date >= startOfWeek
-        );
-
-      }
-    );
-
-
-  const monthEntries =
-    timeEntries.filter(
-      function(entry) {
-
-        if (
-          entry.confirmed ===
-          false
-        ) {
-
-          return false;
-
-        }
-
-
-        const date =
-          getEntryDate(
-            entry
-          );
-
-
-        return (
-          date &&
-          date.getFullYear() ===
-            now.getFullYear() &&
-
-          date.getMonth() ===
-            now.getMonth()
         );
 
       }
@@ -2095,36 +2359,81 @@ function deleteTimeEntry(
 
 
 /* =========================
-   BENUTZERNAME
+   BENUTZERPROFIL
 ========================= */
 
-function renderUserName() {
+function getUserProfile() {
 
-  const name =
-    userNameInput.value.trim();
+  return {
 
+    lastName:
+      userLastNameInput.value.trim(),
 
-  userNameDisplay.textContent =
-    name;
+    firstName:
+      userFirstNameInput.value.trim(),
+
+    address:
+      userAddressInput.value.trim(),
+
+    zip:
+      userZipInput.value.trim(),
+
+    city:
+      userCityInput.value.trim(),
+
+    party:
+      userPartyInput.value.trim()
+
+  };
 
 }
 
 
-function saveUserName() {
+function getDisplayName() {
 
-  const name =
-    userNameInput.value.trim();
+  const profile =
+    getUserProfile();
+
+
+  return [
+    profile.firstName,
+    profile.lastName
+  ]
+    .filter(
+      Boolean
+    )
+    .join(" ");
+
+}
+
+
+function renderUserName() {
+
+  userNameDisplay.textContent =
+    getDisplayName();
+
+}
+
+
+function saveUserProfile() {
+
+  const lastName =
+    userLastNameInput.value.trim();
+
+
+  const firstName =
+    userFirstNameInput.value.trim();
 
 
   if (
-    name === ""
+    lastName === ""
   ) {
 
     userNameStatus.textContent =
-      "Bitte gib einen Namen ein.";
+      "Bitte gib deinen Namen ein.";
 
 
-    userNameInput.focus();
+    userLastNameInput.focus();
 
 
     return;
@@ -2132,9 +2441,44 @@ function saveUserName() {
   }
 
 
+  if (
+    firstName === ""
+  ) {
+
+    userNameStatus.textContent =
+      "Bitte gib deinen Vornamen ein.";
+
+
+    userFirstNameInput.focus();
+
+
+    return;
+
+  }
+
+
+  const profile =
+    getUserProfile();
+
+
   localStorage.setItem(
-    USER_NAME_KEY,
-    name
+    USER_PROFILE_KEY,
+    JSON.stringify(
+      profile
+    )
+  );
+
+
+  /*
+    Alten Schlüssel ebenfalls
+    aktuell halten, damit ältere
+    Versionen der App den Namen
+    weiterhin finden.
+  */
+
+  localStorage.setItem(
+    OLD_USER_NAME_KEY,
+    getDisplayName()
   );
 
 
@@ -2142,7 +2486,7 @@ function saveUserName() {
 
 
   userNameStatus.textContent =
-    "Name gespeichert.";
+    "Angaben gespeichert.";
 
 }
 
@@ -2219,11 +2563,6 @@ function exportToExcel() {
 
   }
 
-
-  /*
-    Nur quittierte Einträge
-    innerhalb des gewählten Zeitraums.
-  */
 
   const filteredEntries =
     confirmedEntries.filter(
@@ -2315,11 +2654,6 @@ function exportToExcel() {
   }
 
 
-  /*
-    Nach Datum sortieren.
-    Ältestes Datum zuerst.
-  */
-
   const sortedEntries =
     [...filteredEntries].sort(
       function(a, b) {
@@ -2356,15 +2690,6 @@ function exportToExcel() {
       }
     );
 
-
-  /*
-    CSV für Excel.
-    Genau vier Spalten:
-    Datum
-    Kommission
-    Tätigkeit
-    Stunden
-  */
 
   function escapeCSV(
     value
@@ -2405,7 +2730,8 @@ function exportToExcel() {
 
 
   /*
-    Überschrift
+    Excel-Liste:
+    Datum | Kommission | Tätigkeit | Stunden
   */
 
   rows.push(
@@ -2422,10 +2748,6 @@ function exportToExcel() {
   );
 
 
-  /*
-    Zeiteinträge
-  */
-
   sortedEntries.forEach(
     function(entry) {
 
@@ -2437,9 +2759,7 @@ function exportToExcel() {
 
       const dateText =
         date
-          ? formatDate(
-              date
-            )
+          ? formatDate(date)
           : "";
 
 
@@ -2472,10 +2792,6 @@ function exportToExcel() {
   );
 
 
-  /*
-    Gesamtzeile
-  */
-
   const total =
     calculateTotal(
       sortedEntries
@@ -2504,12 +2820,6 @@ function exportToExcel() {
       .join(";")
   );
 
-
-  /*
-    UTF-8 BOM sorgt dafür,
-    dass Umlaute in Excel korrekt
-    dargestellt werden.
-  */
 
   const csv =
     "\uFEFF" +
@@ -2577,11 +2887,6 @@ function exportToExcel() {
       }
     );
 
-
-  /*
-    Auf dem iPhone direkt
-    über das Teilen-Menü.
-  */
 
   if (
     navigator.share &&
@@ -2809,7 +3114,11 @@ function showSettings() {
   renderUserName();
 
 
-  userNameInput.focus();
+  userNameStatus.textContent =
+    "";
+
+
+  userLastNameInput.focus();
 
 }
 
@@ -2884,25 +3193,38 @@ saveUserNameButton.addEventListener(
   "click",
   function() {
 
-    saveUserName();
+    saveUserProfile();
 
   }
 );
 
 
-userNameInput.addEventListener(
-  "keydown",
-  function(event) {
+[
+  userLastNameInput,
+  userFirstNameInput,
+  userAddressInput,
+  userZipInput,
+  userCityInput,
+  userPartyInput
+].forEach(
+  function(input) {
 
-    if (
-      event.key === "Enter"
-    ) {
+    input.addEventListener(
+      "keydown",
+      function(event) {
 
-      event.preventDefault();
+        if (
+          event.key === "Enter"
+        ) {
 
-      saveUserName();
+          event.preventDefault();
 
-    }
+          saveUserProfile();
+
+        }
+
+      }
+    );
 
   }
 );
