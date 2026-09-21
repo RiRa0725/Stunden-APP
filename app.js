@@ -1,3 +1,6 @@
+const entryDateInput =
+  document.getElementById("entryDate");
+
 const hoursInput =
   document.getElementById("hours");
 
@@ -100,6 +103,53 @@ let selectedCommission = null;
 
 
 /* =========================
+   DATUM
+========================= */
+
+function getTodayString() {
+
+  const today =
+    new Date();
+
+  const year =
+    today.getFullYear();
+
+  const month =
+    String(
+      today.getMonth() + 1
+    ).padStart(2, "0");
+
+  const day =
+    String(
+      today.getDate()
+    ).padStart(2, "0");
+
+  return (
+    year +
+    "-" +
+    month +
+    "-" +
+    day
+  );
+
+}
+
+
+function setDefaultEntryDate() {
+
+  const today =
+    getTodayString();
+
+  entryDateInput.value =
+    today;
+
+  entryDateInput.max =
+    today;
+
+}
+
+
+/* =========================
    DATEN LADEN
 ========================= */
 
@@ -113,10 +163,19 @@ try {
   if (savedEntries) {
 
     const parsedEntries =
-      JSON.parse(savedEntries);
+      JSON.parse(
+        savedEntries
+      );
 
-    if (Array.isArray(parsedEntries)) {
-      timeEntries = parsedEntries;
+    if (
+      Array.isArray(
+        parsedEntries
+      )
+    ) {
+
+      timeEntries =
+        parsedEntries;
+
     }
 
   }
@@ -142,8 +201,15 @@ try {
         savedCommissions
       );
 
-    if (Array.isArray(parsedCommissions)) {
-      commissions = parsedCommissions;
+    if (
+      Array.isArray(
+        parsedCommissions
+      )
+    ) {
+
+      commissions =
+        parsedCommissions;
+
     }
 
   }
@@ -159,7 +225,9 @@ try {
    STANDARD-KOMMISSIONEN
 ========================= */
 
-if (commissions.length === 0) {
+if (
+  commissions.length === 0
+) {
 
   commissions = [
     "Kommission 001",
@@ -207,8 +275,9 @@ function saveCommissions() {
 function getHours(entry) {
 
   return Number(
-    String(entry.hours)
-      .replace(",", ".")
+    String(
+      entry.hours
+    ).replace(",", ".")
   ) || 0;
 
 }
@@ -216,12 +285,53 @@ function getHours(entry) {
 
 function getEntryDate(entry) {
 
-  if (!entry || !entry.date) {
+  if (
+    !entry ||
+    !entry.date
+  ) {
+
     return null;
+
   }
 
+
+  /*
+    Neue Einträge speichern das Datum
+    als YYYY-MM-DD.
+  */
+
+  if (
+    /^\d{4}-\d{2}-\d{2}$/.test(
+      entry.date
+    )
+  ) {
+
+    const parts =
+      entry.date.split("-");
+
+    return new Date(
+      Number(parts[0]),
+      Number(parts[1]) - 1,
+      Number(parts[2]),
+      12,
+      0,
+      0,
+      0
+    );
+
+  }
+
+
+  /*
+    Alte Einträge aus der bisherigen
+    Version verwenden ISO-Datumswerte.
+  */
+
   const date =
-    new Date(entry.date);
+    new Date(
+      entry.date
+    );
+
 
   if (
     Number.isNaN(
@@ -232,6 +342,7 @@ function getEntryDate(entry) {
     return null;
 
   }
+
 
   return date;
 
@@ -272,10 +383,12 @@ function getStartOfWeek(
       ? -6
       : 1 - day;
 
+
   start.setDate(
     start.getDate() +
       difference
   );
+
 
   start.setHours(
     0,
@@ -283,6 +396,7 @@ function getStartOfWeek(
     0,
     0
   );
+
 
   return start;
 
@@ -345,6 +459,7 @@ function calculateTotal(
 
   let total = 0;
 
+
   entries.forEach(
     function(entry) {
 
@@ -353,6 +468,7 @@ function calculateTotal(
 
     }
   );
+
 
   return total;
 
@@ -383,6 +499,7 @@ function renderCommissionSelect() {
     option.textContent =
       "Keine Kommission vorhanden";
 
+
     commissionInput.appendChild(
       option
     );
@@ -406,6 +523,7 @@ function renderCommissionSelect() {
       option.textContent =
         commission;
 
+
       commissionInput.appendChild(
         option
       );
@@ -417,7 +535,7 @@ function renderCommissionSelect() {
 
 
 /* =========================
-   KOMMISSIONEN VERWALTEN
+   KOMMISSIONSLISTE
 ========================= */
 
 function renderCommissionList() {
@@ -456,6 +574,7 @@ function renderCommissionList() {
           "div"
         );
 
+
       item.className =
         "entry";
 
@@ -464,6 +583,7 @@ function renderCommissionList() {
         document.createElement(
           "strong"
         );
+
 
       name.textContent =
         commission;
@@ -474,6 +594,7 @@ function renderCommissionList() {
           "div"
         );
 
+
       actions.style.marginTop =
         "10px";
 
@@ -482,6 +603,7 @@ function renderCommissionList() {
         document.createElement(
           "button"
         );
+
 
       renameButton.type =
         "button";
@@ -494,6 +616,7 @@ function renderCommissionList() {
         document.createElement(
           "button"
         );
+
 
       deleteButton.type =
         "button";
@@ -627,7 +750,7 @@ function addCommission() {
 
 
 /* =========================
-   KOMMISSION UMBENENNEN
+   UMBENENNEN
 ========================= */
 
 function showRenameForm(
@@ -645,6 +768,7 @@ function showRenameForm(
       "input"
     );
 
+
   input.type =
     "text";
 
@@ -660,6 +784,7 @@ function showRenameForm(
       "button"
     );
 
+
   saveButton.type =
     "button";
 
@@ -674,6 +799,7 @@ function showRenameForm(
     document.createElement(
       "button"
     );
+
 
   cancelButton.type =
     "button";
@@ -773,7 +899,6 @@ function showRenameForm(
 
       saveEntries();
 
-
       renderCommissionSelect();
 
       renderCommissionList();
@@ -819,7 +944,9 @@ function showRenameForm(
   );
 
   item.appendChild(
-    document.createElement("br")
+    document.createElement(
+      "br"
+    )
   );
 
   item.appendChild(
@@ -837,7 +964,7 @@ function showRenameForm(
 
 
 /* =========================
-   KOMMISSION LÖSCHEN
+   LÖSCHEN
 ========================= */
 
 function deleteCommission(
@@ -980,6 +1107,7 @@ function renderEntries() {
             "div"
           );
 
+
         item.className =
           "entry";
 
@@ -988,6 +1116,7 @@ function renderEntries() {
           document.createElement(
             "strong"
           );
+
 
         hours.textContent =
           entry.hours +
@@ -999,6 +1128,7 @@ function renderEntries() {
             "div"
           );
 
+
         commission.textContent =
           entry.commission;
 
@@ -1007,6 +1137,7 @@ function renderEntries() {
           document.createElement(
             "small"
           );
+
 
         activity.textContent =
           entry.activity ||
@@ -1169,7 +1300,7 @@ function renderEvaluation() {
 
 
 /* =========================
-   KOMMISSIONEN KUMULIERT
+   AUSWERTUNG PRO KOMMISSION
 ========================= */
 
 function renderCommissionEvaluation() {
@@ -1216,7 +1347,8 @@ function renderCommissionEvaluation() {
   if (
     Object.keys(
       commissionTotals
-    ).length === 0
+    ).length ===
+    0
   ) {
 
     evaluationCommissions.className =
@@ -1265,6 +1397,7 @@ function renderCommissionEvaluation() {
             "strong"
           );
 
+
         name.textContent =
           commission;
 
@@ -1273,6 +1406,7 @@ function renderCommissionEvaluation() {
           document.createElement(
             "div"
           );
+
 
         hours.textContent =
           formatHours(
@@ -1287,11 +1421,13 @@ function renderCommissionEvaluation() {
             "button"
           );
 
+
         button.type =
           "button";
 
         button.textContent =
           "Details anzeigen";
+
 
         button.style.marginTop =
           "10px";
@@ -1458,6 +1594,7 @@ function showCommissionDetails(
           "div"
         );
 
+
       item.className =
         "entry";
 
@@ -1490,6 +1627,7 @@ function showCommissionDetails(
           "div"
         );
 
+
       hours.textContent =
         entry.hours +
         " Std.";
@@ -1499,6 +1637,7 @@ function showCommissionDetails(
         document.createElement(
           "small"
         );
+
 
       activity.textContent =
         entry.activity ||
@@ -1529,7 +1668,9 @@ function showCommissionDetails(
   const detailEntries =
     details.map(
       function(detail) {
+
         return detail.entry;
+
       }
     );
 
@@ -1545,6 +1686,7 @@ function showCommissionDetails(
       "div"
     );
 
+
   totalItem.className =
     "entry";
 
@@ -1554,6 +1696,7 @@ function showCommissionDetails(
       "strong"
     );
 
+
   totalLabel.textContent =
     "Gesamt";
 
@@ -1562,6 +1705,7 @@ function showCommissionDetails(
     document.createElement(
       "div"
     );
+
 
   totalValue.textContent =
     formatHours(
@@ -1588,11 +1732,13 @@ function showCommissionDetails(
       "button"
     );
 
+
   closeButton.type =
     "button";
 
   closeButton.textContent =
     "Details schließen";
+
 
   closeButton.style.marginTop =
     "10px";
@@ -1627,7 +1773,7 @@ function showCommissionDetails(
 
 
 /* =========================
-   ERFASSUNG ANZEIGEN
+   ERFASSUNG
 ========================= */
 
 function showRecording() {
@@ -1661,7 +1807,7 @@ function showRecording() {
 
 
 /* =========================
-   AUSWERTUNG ANZEIGEN
+   AUSWERTUNG
 ========================= */
 
 function showEvaluation() {
@@ -1698,7 +1844,7 @@ function showEvaluation() {
 
 
 /* =========================
-   KOMMISSIONEN ANZEIGEN
+   KOMMISSIONEN
 ========================= */
 
 function showCommissions() {
@@ -1742,6 +1888,10 @@ addEntryButton.addEventListener(
   "click",
   function() {
 
+    const selectedDate =
+      entryDateInput.value;
+
+
     const value =
       hoursInput.value
         .trim()
@@ -1750,6 +1900,21 @@ addEntryButton.addEventListener(
 
     const hours =
       Number(value);
+
+
+    if (
+      selectedDate === ""
+    ) {
+
+      alert(
+        "Bitte wähle ein Datum aus."
+      );
+
+      entryDateInput.focus();
+
+      return;
+
+    }
 
 
     if (
@@ -1785,6 +1950,16 @@ addEntryButton.addEventListener(
 
     const entry = {
 
+      /*
+        Das Datum wird direkt als
+        YYYY-MM-DD gespeichert.
+        Dadurch gibt es keine
+        Zeitzonen-Probleme.
+      */
+
+      date:
+        selectedDate,
+
       hours:
         hours.toLocaleString(
           "de-CH",
@@ -1797,10 +1972,7 @@ addEntryButton.addEventListener(
         commissionInput.value,
 
       activity:
-        activityInput.value.trim(),
-
-      date:
-        new Date().toISOString()
+        activityInput.value.trim()
 
     };
 
@@ -1822,6 +1994,14 @@ addEntryButton.addEventListener(
 
     activityInput.value =
       "";
+
+
+    /*
+      Nach dem Speichern wieder
+      auf heute zurückstellen.
+    */
+
+    setDefaultEntryDate();
 
 
     hoursInput.focus();
@@ -1878,7 +2058,7 @@ addCommissionButton.addEventListener(
 );
 
 
-/* Enter im Kommissionsfeld */
+/* Enter bei neuer Kommission */
 
 newCommissionInput.addEventListener(
   "keydown",
@@ -1901,6 +2081,8 @@ newCommissionInput.addEventListener(
 /* =========================
    START
 ========================= */
+
+setDefaultEntryDate();
 
 renderCommissionSelect();
 
