@@ -664,12 +664,6 @@ h2 {
     #fff;
 }
 
-.evaluation-card
-h3 {
-  color:
-    #fff;
-}
-
 .commission-evaluation-list {
   display:
     grid;
@@ -683,8 +677,13 @@ h3 {
     grid;
 
   gap:
-    8px;
+    0;
 }
+
+
+/*
+  Kommission als klickbare Zeile.
+*/
 
 .commission-summary-item {
   display:
@@ -698,6 +697,9 @@ h3 {
 
   gap:
     12px;
+
+  width:
+    100%;
 
   padding:
     14px;
@@ -715,6 +717,34 @@ h3 {
     13px;
 
   background:
+    rgba(
+      255,
+      255,
+      255,
+      0.08
+    );
+
+  color:
+    #fff;
+
+  text-align:
+    left;
+
+  cursor:
+    pointer;
+
+  appearance:
+    none;
+
+  -webkit-appearance:
+    none;
+}
+
+.commission-summary-item.open {
+  border-radius:
+    13px 13px 0 0;
+
+  border-bottom-color:
     rgba(
       255,
       255,
@@ -748,9 +778,70 @@ strong {
     14px;
 }
 
+.commission-arrow {
+  flex:
+    0 0 auto;
+
+  color:
+    var(--yellow);
+
+  font-size:
+    22px;
+
+  font-weight:
+    300;
+
+  line-height:
+    1;
+}
+
+
+/* =========================
+   DETAILS
+========================= */
+
 .commission-details-list {
-  padding-left:
+  overflow:
+    hidden;
+
+  padding:
     8px;
+
+  border:
+    1px solid
+    rgba(
+      255,
+      255,
+      255,
+      0.18
+    );
+
+  border-top:
+    0;
+
+  border-radius:
+    0 0 13px 13px;
+
+  background:
+    rgba(
+      255,
+      255,
+      255,
+      0.04
+    );
+
+  transition:
+    padding 0.18s ease;
+}
+
+.commission-details-list.collapsed {
+  display:
+    none;
+}
+
+.commission-details-list.expanded {
+  display:
+    grid;
 }
 
 
@@ -910,11 +1001,6 @@ small {
   cursor:
     pointer;
 }
-
-
-/* =========================
-   QUITTIERT
-========================= */
 
 .confirmed-badge {
   display:
@@ -1528,7 +1614,12 @@ strong {
 
   border:
     1px solid
-    var(--border);
+    rgba(
+      255,
+      255,
+      255,
+      0.2
+    );
 
   border-radius:
     13px;
@@ -1736,6 +1827,12 @@ strong {
   .summary-header {
     flex-direction:
       column;
+  }
+
+
+  .commission-summary-item {
+    padding:
+      13px;
   }
 
 
