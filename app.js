@@ -133,10 +133,8 @@ function getTodayString() {
   const today =
     new Date();
 
-
   const year =
     today.getFullYear();
-
 
   const month =
     String(
@@ -146,7 +144,6 @@ function getTodayString() {
       "0"
     );
 
-
   const day =
     String(
       today.getDate()
@@ -154,7 +151,6 @@ function getTodayString() {
       2,
       "0"
     );
-
 
   return (
     year +
@@ -172,10 +168,8 @@ function setDefaultEntryDate() {
   const today =
     getTodayString();
 
-
   entryDateInput.value =
     today;
-
 
   entryDateInput.max =
     today;
@@ -214,10 +208,8 @@ function parseDateString(
 
   }
 
-
   const parts =
     value.split("-");
-
 
   return new Date(
     Number(parts[0]),
@@ -243,14 +235,12 @@ try {
       ENTRIES_KEY
     );
 
-
   if (savedEntries) {
 
     const parsedEntries =
       JSON.parse(
         savedEntries
       );
-
 
     if (
       Array.isArray(
@@ -279,14 +269,12 @@ try {
       COMMISSIONS_KEY
     );
 
-
   if (savedCommissions) {
 
     const parsedCommissions =
       JSON.parse(
         savedCommissions
       );
-
 
     if (
       Array.isArray(
@@ -430,7 +418,6 @@ function getEntryDate(
 
   }
 
-
   if (
     /^\d{4}-\d{2}-\d{2}$/.test(
       entry.date
@@ -443,12 +430,10 @@ function getEntryDate(
 
   }
 
-
   const date =
     new Date(
       entry.date
     );
-
 
   if (
     Number.isNaN(
@@ -459,7 +444,6 @@ function getEntryDate(
     return null;
 
   }
-
 
   return date;
 
@@ -473,22 +457,18 @@ function getStartOfWeek(
   const start =
     new Date(date);
 
-
   const day =
     start.getDay();
-
 
   const difference =
     day === 0
       ? -6
       : 1 - day;
 
-
   start.setDate(
     start.getDate() +
       difference
   );
-
 
   start.setHours(
     0,
@@ -496,7 +476,6 @@ function getStartOfWeek(
     0,
     0
   );
-
 
   return start;
 
@@ -544,7 +523,6 @@ function calculateTotal(
   let total =
     0;
 
-
   entries.forEach(
     function(entry) {
 
@@ -553,7 +531,6 @@ function calculateTotal(
 
     }
   );
-
 
   return total;
 
@@ -569,7 +546,6 @@ function renderCommissionSelect() {
   commissionInput.innerHTML =
     "";
 
-
   if (
     commissions.length ===
     0
@@ -580,24 +556,19 @@ function renderCommissionSelect() {
         "option"
       );
 
-
     option.value =
       "";
 
-
     option.textContent =
       "Keine Kommission vorhanden";
-
 
     commissionInput.appendChild(
       option
     );
 
-
     return;
 
   }
-
 
   commissions.forEach(
     function(commission) {
@@ -607,14 +578,11 @@ function renderCommissionSelect() {
           "option"
         );
 
-
       option.value =
         commission;
 
-
       option.textContent =
         commission;
-
 
       commissionInput.appendChild(
         option
@@ -635,7 +603,6 @@ function renderCommissionList() {
   commissionList.innerHTML =
     "";
 
-
   if (
     commissions.length ===
     0
@@ -644,19 +611,15 @@ function renderCommissionList() {
     commissionList.className =
       "empty-state";
 
-
     commissionList.textContent =
       "Noch keine Kommissionen vorhanden.";
-
 
     return;
 
   }
 
-
   commissionList.className =
     "entries-list";
-
 
   commissions.forEach(
     function(
@@ -669,66 +632,52 @@ function renderCommissionList() {
           "div"
         );
 
-
       item.className =
         "entry";
-
 
       const name =
         document.createElement(
           "strong"
         );
 
-
       name.textContent =
         commission;
-
 
       const actions =
         document.createElement(
           "div"
         );
 
-
       actions.className =
         "entry-actions";
-
 
       const renameButton =
         document.createElement(
           "button"
         );
 
-
       renameButton.type =
         "button";
-
 
       renameButton.className =
         "small-button";
 
-
       renameButton.textContent =
         "✏️ Umbenennen";
-
 
       const deleteButton =
         document.createElement(
           "button"
         );
 
-
       deleteButton.type =
         "button";
-
 
       deleteButton.className =
         "small-button danger-button";
 
-
       deleteButton.textContent =
         "🗑️ Löschen";
-
 
       renameButton.addEventListener(
         "click",
@@ -743,7 +692,6 @@ function renderCommissionList() {
         }
       );
 
-
       deleteButton.addEventListener(
         "click",
         function() {
@@ -755,26 +703,21 @@ function renderCommissionList() {
         }
       );
 
-
       actions.appendChild(
         renameButton
       );
-
 
       actions.appendChild(
         deleteButton
       );
 
-
       item.appendChild(
         name
       );
 
-
       item.appendChild(
         actions
       );
-
 
       commissionList.appendChild(
         item
@@ -795,7 +738,6 @@ function addCommission() {
   const name =
     newCommissionInput.value.trim();
 
-
   if (
     name === ""
   ) {
@@ -805,7 +747,6 @@ function addCommission() {
     return;
 
   }
-
 
   const exists =
     commissions.some(
@@ -819,7 +760,6 @@ function addCommission() {
       }
     );
 
-
   if (
     exists
   ) {
@@ -828,31 +768,24 @@ function addCommission() {
       "Diese Kommission gibt es bereits."
     );
 
-
     newCommissionInput.focus();
-
 
     return;
 
   }
 
-
   commissions.push(
     name
   );
 
-
   saveCommissions();
-
 
   renderCommissionSelect();
 
   renderCommissionList();
 
-
   newCommissionInput.value =
     "";
-
 
   newCommissionInput.focus();
 
@@ -872,70 +805,55 @@ function showRenameForm(
   item.innerHTML =
     "";
 
-
   const input =
     document.createElement(
       "input"
     );
 
-
   input.type =
     "text";
-
 
   input.value =
     oldName;
 
-
   input.autocomplete =
     "off";
-
 
   const actions =
     document.createElement(
       "div"
     );
 
-
   actions.className =
     "entry-actions";
-
 
   const saveButton =
     document.createElement(
       "button"
     );
 
-
   saveButton.type =
     "button";
-
 
   saveButton.className =
     "small-button";
 
-
   saveButton.textContent =
     "Speichern";
-
 
   const cancelButton =
     document.createElement(
       "button"
     );
 
-
   cancelButton.type =
     "button";
-
 
   cancelButton.className =
     "small-button";
 
-
   cancelButton.textContent =
     "Abbrechen";
-
 
   saveButton.addEventListener(
     "click",
@@ -943,7 +861,6 @@ function showRenameForm(
 
       const newName =
         input.value.trim();
-
 
       if (
         newName === ""
@@ -954,7 +871,6 @@ function showRenameForm(
         return;
 
       }
-
 
       const exists =
         commissions.some(
@@ -972,7 +888,6 @@ function showRenameForm(
           }
         );
 
-
       if (
         exists
       ) {
@@ -981,14 +896,11 @@ function showRenameForm(
           "Diese Kommission gibt es bereits."
         );
 
-
         input.focus();
-
 
         return;
 
       }
-
 
       timeEntries.forEach(
         function(entry) {
@@ -1006,29 +918,12 @@ function showRenameForm(
         }
       );
 
-
       commissions[index] =
         newName;
-
-
-      if (
-        pendingEntry &&
-        pendingEntry.commission ===
-        oldName
-      ) {
-
-        pendingEntry.commission =
-          newName;
-
-        showPendingSummary();
-
-      }
-
 
       saveCommissions();
 
       saveEntries();
-
 
       renderCommissionSelect();
 
@@ -1039,7 +934,6 @@ function showRenameForm(
     }
   );
 
-
   cancelButton.addEventListener(
     "click",
     function() {
@@ -1048,7 +942,6 @@ function showRenameForm(
 
     }
   );
-
 
   input.addEventListener(
     "keydown",
@@ -1067,26 +960,21 @@ function showRenameForm(
     }
   );
 
-
   item.appendChild(
     input
   );
-
 
   item.appendChild(
     actions
   );
 
-
   actions.appendChild(
     saveButton
   );
 
-
   actions.appendChild(
     cancelButton
   );
-
 
   input.focus();
 
@@ -1104,7 +992,6 @@ function deleteCommission(
   const commission =
     commissions[index];
 
-
   const used =
     timeEntries.some(
       function(entry) {
@@ -1117,10 +1004,8 @@ function deleteCommission(
       }
     );
 
-
   let message =
     "Möchtest du diese Kommission wirklich löschen?";
-
 
   if (
     used
@@ -1131,12 +1016,10 @@ function deleteCommission(
 
   }
 
-
   const confirmed =
     confirm(
       message
     );
-
 
   if (
     !confirmed
@@ -1146,35 +1029,12 @@ function deleteCommission(
 
   }
 
-
   commissions.splice(
     index,
     1
   );
 
-
-  if (
-    pendingEntry &&
-    pendingEntry.commission ===
-    commission
-  ) {
-
-    pendingEntry =
-      null;
-
-
-    entrySummary.style.display =
-      "none";
-
-
-    entryStatus.textContent =
-      "Bitte wähle eine neue Kommission.";
-
-  }
-
-
   saveCommissions();
-
 
   renderCommissionSelect();
 
@@ -1194,7 +1054,6 @@ function prepareEntry() {
   const selectedDate =
     entryDateInput.value.trim();
 
-
   const value =
     hoursInput.value
       .trim()
@@ -1203,12 +1062,10 @@ function prepareEntry() {
         "."
       );
 
-
   const hours =
     Number(
       value
     );
-
 
   if (
     selectedDate === ""
@@ -1218,14 +1075,11 @@ function prepareEntry() {
       "Bitte wähle ein Datum aus."
     );
 
-
     entryDateInput.focus();
-
 
     return;
 
   }
-
 
   if (
     value === "" ||
@@ -1239,14 +1093,11 @@ function prepareEntry() {
       "Bitte gib eine gültige Stundenzahl ein."
     );
 
-
     hoursInput.focus();
-
 
     return;
 
   }
-
 
   if (
     commissions.length ===
@@ -1257,11 +1108,9 @@ function prepareEntry() {
       "Bitte lege zuerst eine Kommission an."
     );
 
-
     return;
 
   }
-
 
   pendingEntry = {
 
@@ -1284,7 +1133,6 @@ function prepareEntry() {
 
   };
 
-
   showPendingSummary();
 
 }
@@ -1303,43 +1151,33 @@ function showPendingSummary() {
     entrySummary.style.display =
       "none";
 
-
     return;
 
   }
-
 
   const date =
     getEntryDate(
       pendingEntry
     );
 
-
   summaryDate.textContent =
     date
-      ? formatDate(
-          date
-        )
+      ? formatDate(date)
       : "Datum unbekannt";
-
 
   summaryHours.textContent =
     pendingEntry.hours +
     " Std.";
 
-
   summaryCommission.textContent =
     pendingEntry.commission;
-
 
   summaryActivity.textContent =
     pendingEntry.activity ||
     "Keine Tätigkeit angegeben";
 
-
   entrySummary.style.display =
     "";
-
 
   entryStatus.textContent =
     "";
@@ -1361,34 +1199,26 @@ function editPendingEntry() {
 
   }
 
-
   entryDateInput.value =
     pendingEntry.date;
-
 
   hoursInput.value =
     pendingEntry.hours;
 
-
   commissionInput.value =
     pendingEntry.commission;
-
 
   activityInput.value =
     pendingEntry.activity;
 
-
   pendingEntry =
     null;
-
 
   entrySummary.style.display =
     "none";
 
-
   entryStatus.textContent =
     "";
-
 
   hoursInput.focus();
 
@@ -1408,7 +1238,6 @@ function confirmEntry() {
     return;
 
   }
-
 
   const entry = {
 
@@ -1436,22 +1265,17 @@ function confirmEntry() {
 
   };
 
-
   timeEntries.push(
     entry
   );
 
-
   saveEntries();
-
 
   pendingEntry =
     null;
 
-
   entrySummary.style.display =
     "none";
-
 
   hoursInput.value =
     "";
@@ -1459,16 +1283,12 @@ function confirmEntry() {
   activityInput.value =
     "";
 
-
   setDefaultEntryDate();
-
 
   entryStatus.textContent =
     "✓ Stunden quittiert und gespeichert.";
 
-
   renderEvaluation();
-
 
   hoursInput.focus();
 
@@ -1484,18 +1304,15 @@ function renderEvaluation() {
   const now =
     new Date();
 
-
   const startOfWeek =
     getStartOfWeek(
       now
     );
 
-
   const startOfMonth =
     getStartOfMonth(
       now
     );
-
 
   const weekEntries =
     timeEntries.filter(
@@ -1510,12 +1327,10 @@ function renderEvaluation() {
 
         }
 
-
         const date =
           getEntryDate(
             entry
           );
-
 
         return (
           date &&
@@ -1524,7 +1339,6 @@ function renderEvaluation() {
 
       }
     );
-
 
   const monthEntries =
     timeEntries.filter(
@@ -1539,25 +1353,21 @@ function renderEvaluation() {
 
         }
 
-
         const date =
           getEntryDate(
             entry
           );
 
-
         return (
           date &&
           date.getFullYear() ===
             now.getFullYear() &&
-
           date.getMonth() ===
             now.getMonth()
         );
 
       }
     );
-
 
   evaluationWeek.textContent =
     formatHours(
@@ -1566,14 +1376,12 @@ function renderEvaluation() {
       )
     );
 
-
   evaluationMonth.textContent =
     formatHours(
       calculateTotal(
         monthEntries
       )
     );
-
 
   renderCommissionEvaluation();
 
@@ -1589,10 +1397,8 @@ function renderCommissionEvaluation() {
   evaluationCommissions.innerHTML =
     "";
 
-
   const commissionGroups =
     {};
-
 
   timeEntries.forEach(
     function(entry) {
@@ -1606,11 +1412,9 @@ function renderCommissionEvaluation() {
 
       }
 
-
       const commission =
         entry.commission ||
         "Ohne Kommission";
-
 
       if (
         !commissionGroups[
@@ -1624,7 +1428,6 @@ function renderCommissionEvaluation() {
 
       }
 
-
       commissionGroups[
         commission
       ].push(
@@ -1634,12 +1437,10 @@ function renderCommissionEvaluation() {
     }
   );
 
-
   const commissionNames =
     Object.keys(
       commissionGroups
     ).sort();
-
 
   if (
     commissionNames.length ===
@@ -1649,15 +1450,12 @@ function renderCommissionEvaluation() {
     evaluationCommissions.className =
       "empty-state";
 
-
     evaluationCommissions.textContent =
       "Noch keine Einträge vorhanden.";
-
 
     return;
 
   }
-
 
   evaluationCommissions.className =
     "commission-evaluation-list";
@@ -1700,12 +1498,10 @@ function renderCommissionEvaluation() {
                   ? a.date.getTime()
                   : 0;
 
-
               const dateB =
                 b.date
                   ? b.date.getTime()
                   : 0;
-
 
               return (
                 dateB -
@@ -1721,16 +1517,23 @@ function renderCommissionEvaluation() {
           "section"
         );
 
-
       commissionBlock.className =
         "commission-block";
 
 
+      /*
+        Kommissionszeile:
+        Klick öffnet oder schliesst
+        die Details.
+      */
+
       const commissionHeader =
         document.createElement(
-          "div"
+          "button"
         );
 
+      commissionHeader.type =
+        "button";
 
       commissionHeader.className =
         "commission-summary-item";
@@ -1747,7 +1550,6 @@ function renderCommissionEvaluation() {
           "strong"
         );
 
-
       name.textContent =
         commission;
 
@@ -1757,10 +1559,8 @@ function renderCommissionEvaluation() {
           "div"
         );
 
-
       hours.className =
         "commission-summary-hours";
-
 
       hours.textContent =
         formatHours(
@@ -1776,10 +1576,21 @@ function renderCommissionEvaluation() {
         );
 
 
+      const arrow =
+        document.createElement(
+          "span"
+        );
+
+      arrow.className =
+        "commission-arrow";
+
+      arrow.textContent =
+        "＋";
+
+
       content.appendChild(
         name
       );
-
 
       content.appendChild(
         hours
@@ -1790,20 +1601,27 @@ function renderCommissionEvaluation() {
         content
       );
 
+      commissionHeader.appendChild(
+        arrow
+      );
+
 
       commissionBlock.appendChild(
         commissionHeader
       );
 
 
+      /*
+        Details zunächst geschlossen.
+      */
+
       const detailsList =
         document.createElement(
           "div"
         );
 
-
       detailsList.className =
-        "commission-details-list swipe-list";
+        "commission-details-list swipe-list collapsed";
 
 
       entries.forEach(
@@ -1820,6 +1638,63 @@ function renderCommissionEvaluation() {
 
       commissionBlock.appendChild(
         detailsList
+      );
+
+
+      /*
+        Ein Klick auf die Kommission
+        klappt die Details auf oder zu.
+      */
+
+      commissionHeader.addEventListener(
+        "click",
+        function() {
+
+          const isOpen =
+            detailsList.classList.contains(
+              "expanded"
+            );
+
+
+          if (
+            isOpen
+          ) {
+
+            detailsList.classList.remove(
+              "expanded"
+            );
+
+            detailsList.classList.add(
+              "collapsed"
+            );
+
+            arrow.textContent =
+              "＋";
+
+            commissionHeader.classList.remove(
+              "open"
+            );
+
+          } else {
+
+            detailsList.classList.remove(
+              "collapsed"
+            );
+
+            detailsList.classList.add(
+              "expanded"
+            );
+
+            arrow.textContent =
+              "−";
+
+            commissionHeader.classList.add(
+              "open"
+            );
+
+          }
+
+        }
       );
 
 
@@ -1847,7 +1722,6 @@ function createSwipeEntry(
       "div"
     );
 
-
   wrapper.className =
     "swipe-entry";
 
@@ -1857,18 +1731,14 @@ function createSwipeEntry(
       "button"
     );
 
-
   deleteAction.type =
     "button";
-
 
   deleteAction.className =
     "swipe-delete";
 
-
   deleteAction.textContent =
     "Löschen";
-
 
   deleteAction.setAttribute(
     "aria-label",
@@ -1881,7 +1751,6 @@ function createSwipeEntry(
       "div"
     );
 
-
   content.className =
     "swipe-content";
 
@@ -1891,12 +1760,9 @@ function createSwipeEntry(
       "strong"
     );
 
-
   date.textContent =
     detail.date
-      ? formatDate(
-          detail.date
-        )
+      ? formatDate(detail.date)
       : "Datum unbekannt";
 
 
@@ -1904,7 +1770,6 @@ function createSwipeEntry(
     document.createElement(
       "div"
     );
-
 
   hours.textContent =
     detail.entry.hours +
@@ -1916,7 +1781,6 @@ function createSwipeEntry(
       "small"
     );
 
-
   activity.textContent =
     detail.entry.activity ||
     "Keine Tätigkeit angegeben";
@@ -1927,10 +1791,8 @@ function createSwipeEntry(
       "span"
     );
 
-
   status.className =
     "confirmed-badge";
-
 
   status.textContent =
     "Quittiert";
@@ -1940,16 +1802,13 @@ function createSwipeEntry(
     date
   );
 
-
   content.appendChild(
     hours
   );
 
-
   content.appendChild(
     activity
   );
-
 
   content.appendChild(
     status
@@ -1960,11 +1819,9 @@ function createSwipeEntry(
     deleteAction
   );
 
-
   wrapper.appendChild(
     content
   );
-
 
   parent.appendChild(
     wrapper
@@ -1974,10 +1831,8 @@ function createSwipeEntry(
   let startX =
     0;
 
-
   let currentX =
     0;
-
 
   let dragging =
     false;
@@ -1990,10 +1845,8 @@ function createSwipeEntry(
       startX =
         event.touches[0].clientX;
 
-
       currentX =
         startX;
-
 
       dragging =
         true;
@@ -2082,7 +1935,6 @@ function createSwipeEntry(
           "swiped"
         );
 
-
         content.style.transform =
           "translateX(-90px)";
 
@@ -2091,7 +1943,6 @@ function createSwipeEntry(
         content.classList.remove(
           "swiped"
         );
-
 
         content.style.transform =
           "translateX(0)";
@@ -2154,9 +2005,7 @@ function deleteTimeEntry(
     1
   );
 
-
   saveEntries();
-
 
   renderEvaluation();
 
@@ -2171,7 +2020,6 @@ function renderUserName() {
 
   const name =
     userNameInput.value.trim();
-
 
   userNameDisplay.textContent =
     name;
@@ -2192,9 +2040,7 @@ function saveUserName() {
     userNameStatus.textContent =
       "Bitte gib einen Namen ein.";
 
-
     userNameInput.focus();
-
 
     return;
 
@@ -2259,7 +2105,6 @@ function exportToExcel() {
       "Es sind noch keine quittierten Zeiteinträge vorhanden."
     );
 
-
     return;
 
   }
@@ -2282,7 +2127,6 @@ function exportToExcel() {
     alert(
       "Das Startdatum darf nicht nach dem Enddatum liegen."
     );
-
 
     return;
 
@@ -2361,7 +2205,6 @@ function exportToExcel() {
       "Für den gewählten Zeitraum wurden keine quittierten Einträge gefunden."
     );
 
-
     return;
 
   }
@@ -2410,24 +2253,20 @@ function exportToExcel() {
             a
           );
 
-
         const dateB =
           getEntryDate(
             b
           );
-
 
         const timeA =
           dateA
             ? dateA.getTime()
             : 0;
 
-
         const timeB =
           dateB
             ? dateB.getTime()
             : 0;
-
 
         return (
           timeB -
@@ -2803,15 +2642,12 @@ function showRecording() {
 
   clearNavActive();
 
-
   recordingSection.style.display =
     "";
-
 
   navRecording.classList.add(
     "active"
   );
-
 
   entryStatus.textContent =
     "";
@@ -2825,19 +2661,15 @@ function showEvaluation() {
 
   clearNavActive();
 
-
   evaluationSection.style.display =
     "";
-
 
   navEvaluation.classList.add(
     "active"
   );
 
-
   exportDetails.open =
     false;
-
 
   renderEvaluation();
 
@@ -2850,15 +2682,12 @@ function showCommissions() {
 
   clearNavActive();
 
-
   commissionSection.style.display =
     "";
-
 
   navCommissions.classList.add(
     "active"
   );
-
 
   renderCommissionList();
 
@@ -2871,13 +2700,10 @@ function showSettings() {
 
   clearNavActive();
 
-
   settingsSection.style.display =
     "";
 
-
   renderUserName();
-
 
   userNameInput.focus();
 
