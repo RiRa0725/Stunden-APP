@@ -14,7 +14,6 @@ entries.textContent = "Noch keine Einträge vorhanden.";
 } else {
 entries.className = "entries-list";
 
-```
 entries.innerHTML = timeEntries.map((entry) => `
   <div class="entry">
     <div>
@@ -24,7 +23,6 @@ entries.innerHTML = timeEntries.map((entry) => `
     </div>
   </div>
 `).join("");
-```
 
 }
 
