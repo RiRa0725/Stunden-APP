@@ -679,6 +679,7 @@ function renderCommissionList() {
       deleteButton.textContent =
         "🗑️ Löschen";
 
+
       renameButton.addEventListener(
         "click",
         function() {
@@ -692,6 +693,7 @@ function renderCommissionList() {
         }
       );
 
+
       deleteButton.addEventListener(
         "click",
         function() {
@@ -702,6 +704,7 @@ function renderCommissionList() {
 
         }
       );
+
 
       actions.appendChild(
         renameButton
@@ -819,6 +822,7 @@ function showRenameForm(
   input.autocomplete =
     "off";
 
+
   const actions =
     document.createElement(
       "div"
@@ -826,6 +830,7 @@ function showRenameForm(
 
   actions.className =
     "entry-actions";
+
 
   const saveButton =
     document.createElement(
@@ -841,6 +846,7 @@ function showRenameForm(
   saveButton.textContent =
     "Speichern";
 
+
   const cancelButton =
     document.createElement(
       "button"
@@ -854,6 +860,7 @@ function showRenameForm(
 
   cancelButton.textContent =
     "Abbrechen";
+
 
   saveButton.addEventListener(
     "click",
@@ -934,6 +941,7 @@ function showRenameForm(
     }
   );
 
+
   cancelButton.addEventListener(
     "click",
     function() {
@@ -942,6 +950,7 @@ function showRenameForm(
 
     }
   );
+
 
   input.addEventListener(
     "keydown",
@@ -959,6 +968,7 @@ function showRenameForm(
 
     }
   );
+
 
   item.appendChild(
     input
@@ -1004,8 +1014,10 @@ function deleteCommission(
       }
     );
 
+
   let message =
     "Möchtest du diese Kommission wirklich löschen?";
+
 
   if (
     used
@@ -1016,10 +1028,12 @@ function deleteCommission(
 
   }
 
+
   const confirmed =
     confirm(
       message
     );
+
 
   if (
     !confirmed
@@ -1029,10 +1043,12 @@ function deleteCommission(
 
   }
 
+
   commissions.splice(
     index,
     1
   );
+
 
   saveCommissions();
 
@@ -1067,6 +1083,7 @@ function prepareEntry() {
       value
     );
 
+
   if (
     selectedDate === ""
   ) {
@@ -1080,6 +1097,7 @@ function prepareEntry() {
     return;
 
   }
+
 
   if (
     value === "" ||
@@ -1099,6 +1117,7 @@ function prepareEntry() {
 
   }
 
+
   if (
     commissions.length ===
     0
@@ -1111,6 +1130,7 @@ function prepareEntry() {
     return;
 
   }
+
 
   pendingEntry = {
 
@@ -1132,6 +1152,7 @@ function prepareEntry() {
       activityInput.value.trim()
 
   };
+
 
   showPendingSummary();
 
@@ -1155,29 +1176,36 @@ function showPendingSummary() {
 
   }
 
+
   const date =
     getEntryDate(
       pendingEntry
     );
+
 
   summaryDate.textContent =
     date
       ? formatDate(date)
       : "Datum unbekannt";
 
+
   summaryHours.textContent =
     pendingEntry.hours +
     " Std.";
 
+
   summaryCommission.textContent =
     pendingEntry.commission;
+
 
   summaryActivity.textContent =
     pendingEntry.activity ||
     "Keine Tätigkeit angegeben";
 
+
   entrySummary.style.display =
     "";
+
 
   entryStatus.textContent =
     "";
@@ -1198,6 +1226,7 @@ function editPendingEntry() {
     return;
 
   }
+
 
   entryDateInput.value =
     pendingEntry.date;
@@ -1239,6 +1268,7 @@ function confirmEntry() {
 
   }
 
+
   const entry = {
 
     id:
@@ -1265,17 +1295,22 @@ function confirmEntry() {
 
   };
 
+
   timeEntries.push(
     entry
   );
 
+
   saveEntries();
+
 
   pendingEntry =
     null;
 
+
   entrySummary.style.display =
     "none";
+
 
   hoursInput.value =
     "";
@@ -1283,12 +1318,16 @@ function confirmEntry() {
   activityInput.value =
     "";
 
+
   setDefaultEntryDate();
+
 
   entryStatus.textContent =
     "✓ Stunden quittiert und gespeichert.";
 
+
   renderEvaluation();
+
 
   hoursInput.focus();
 
@@ -1304,15 +1343,18 @@ function renderEvaluation() {
   const now =
     new Date();
 
+
   const startOfWeek =
     getStartOfWeek(
       now
     );
 
+
   const startOfMonth =
     getStartOfMonth(
       now
     );
+
 
   const weekEntries =
     timeEntries.filter(
@@ -1327,10 +1369,12 @@ function renderEvaluation() {
 
         }
 
+
         const date =
           getEntryDate(
             entry
           );
+
 
         return (
           date &&
@@ -1339,6 +1383,7 @@ function renderEvaluation() {
 
       }
     );
+
 
   const monthEntries =
     timeEntries.filter(
@@ -1353,10 +1398,12 @@ function renderEvaluation() {
 
         }
 
+
         const date =
           getEntryDate(
             entry
           );
+
 
         return (
           date &&
@@ -1369,6 +1416,7 @@ function renderEvaluation() {
       }
     );
 
+
   evaluationWeek.textContent =
     formatHours(
       calculateTotal(
@@ -1376,12 +1424,14 @@ function renderEvaluation() {
       )
     );
 
+
   evaluationMonth.textContent =
     formatHours(
       calculateTotal(
         monthEntries
       )
     );
+
 
   renderCommissionEvaluation();
 
@@ -1397,8 +1447,10 @@ function renderCommissionEvaluation() {
   evaluationCommissions.innerHTML =
     "";
 
+
   const commissionGroups =
     {};
+
 
   timeEntries.forEach(
     function(entry) {
@@ -1412,9 +1464,11 @@ function renderCommissionEvaluation() {
 
       }
 
+
       const commission =
         entry.commission ||
         "Ohne Kommission";
+
 
       if (
         !commissionGroups[
@@ -1428,6 +1482,7 @@ function renderCommissionEvaluation() {
 
       }
 
+
       commissionGroups[
         commission
       ].push(
@@ -1437,10 +1492,12 @@ function renderCommissionEvaluation() {
     }
   );
 
+
   const commissionNames =
     Object.keys(
       commissionGroups
     ).sort();
+
 
   if (
     commissionNames.length ===
@@ -1450,12 +1507,15 @@ function renderCommissionEvaluation() {
     evaluationCommissions.className =
       "empty-state";
 
+
     evaluationCommissions.textContent =
       "Noch keine Einträge vorhanden.";
+
 
     return;
 
   }
+
 
   evaluationCommissions.className =
     "commission-evaluation-list";
@@ -1498,10 +1558,12 @@ function renderCommissionEvaluation() {
                   ? a.date.getTime()
                   : 0;
 
+
               const dateB =
                 b.date
                   ? b.date.getTime()
                   : 0;
+
 
               return (
                 dateB -
@@ -1517,14 +1579,14 @@ function renderCommissionEvaluation() {
           "section"
         );
 
+
       commissionBlock.className =
         "commission-block";
 
 
       /*
-        Kommissionszeile:
-        Klick öffnet oder schliesst
-        die Details.
+        Die Kommission ist komplett
+        anklickbar.
       */
 
       const commissionHeader =
@@ -1532,8 +1594,10 @@ function renderCommissionEvaluation() {
           "button"
         );
 
+
       commissionHeader.type =
         "button";
+
 
       commissionHeader.className =
         "commission-summary-item";
@@ -1550,6 +1614,7 @@ function renderCommissionEvaluation() {
           "strong"
         );
 
+
       name.textContent =
         commission;
 
@@ -1559,8 +1624,10 @@ function renderCommissionEvaluation() {
           "div"
         );
 
+
       hours.className =
         "commission-summary-hours";
+
 
       hours.textContent =
         formatHours(
@@ -1581,8 +1648,10 @@ function renderCommissionEvaluation() {
           "span"
         );
 
+
       arrow.className =
         "commission-arrow";
+
 
       arrow.textContent =
         "＋";
@@ -1592,6 +1661,7 @@ function renderCommissionEvaluation() {
         name
       );
 
+
       content.appendChild(
         hours
       );
@@ -1600,6 +1670,7 @@ function renderCommissionEvaluation() {
       commissionHeader.appendChild(
         content
       );
+
 
       commissionHeader.appendChild(
         arrow
@@ -1612,7 +1683,7 @@ function renderCommissionEvaluation() {
 
 
       /*
-        Details zunächst geschlossen.
+        Details werden ausdrücklich versteckt.
       */
 
       const detailsList =
@@ -1620,8 +1691,13 @@ function renderCommissionEvaluation() {
           "div"
         );
 
+
       detailsList.className =
-        "commission-details-list swipe-list collapsed";
+        "commission-details-list";
+
+
+      detailsList.style.display =
+        "none";
 
 
       entries.forEach(
@@ -1642,34 +1718,30 @@ function renderCommissionEvaluation() {
 
 
       /*
-        Ein Klick auf die Kommission
-        klappt die Details auf oder zu.
+        Klick auf Kommission:
+        Details ein- oder ausblenden.
       */
 
       commissionHeader.addEventListener(
         "click",
         function() {
 
-          const isOpen =
-            detailsList.classList.contains(
-              "expanded"
-            );
+          const currentlyOpen =
+            detailsList.style.display !==
+            "none";
 
 
           if (
-            isOpen
+            currentlyOpen
           ) {
 
-            detailsList.classList.remove(
-              "expanded"
-            );
+            detailsList.style.display =
+              "none";
 
-            detailsList.classList.add(
-              "collapsed"
-            );
 
             arrow.textContent =
               "＋";
+
 
             commissionHeader.classList.remove(
               "open"
@@ -1677,16 +1749,13 @@ function renderCommissionEvaluation() {
 
           } else {
 
-            detailsList.classList.remove(
-              "collapsed"
-            );
+            detailsList.style.display =
+              "grid";
 
-            detailsList.classList.add(
-              "expanded"
-            );
 
             arrow.textContent =
               "−";
+
 
             commissionHeader.classList.add(
               "open"
@@ -1722,6 +1791,7 @@ function createSwipeEntry(
       "div"
     );
 
+
   wrapper.className =
     "swipe-entry";
 
@@ -1731,14 +1801,18 @@ function createSwipeEntry(
       "button"
     );
 
+
   deleteAction.type =
     "button";
+
 
   deleteAction.className =
     "swipe-delete";
 
+
   deleteAction.textContent =
     "Löschen";
+
 
   deleteAction.setAttribute(
     "aria-label",
@@ -1751,6 +1825,7 @@ function createSwipeEntry(
       "div"
     );
 
+
   content.className =
     "swipe-content";
 
@@ -1759,6 +1834,7 @@ function createSwipeEntry(
     document.createElement(
       "strong"
     );
+
 
   date.textContent =
     detail.date
@@ -1771,6 +1847,7 @@ function createSwipeEntry(
       "div"
     );
 
+
   hours.textContent =
     detail.entry.hours +
     " Std.";
@@ -1780,6 +1857,7 @@ function createSwipeEntry(
     document.createElement(
       "small"
     );
+
 
   activity.textContent =
     detail.entry.activity ||
@@ -1791,8 +1869,10 @@ function createSwipeEntry(
       "span"
     );
 
+
   status.className =
     "confirmed-badge";
+
 
   status.textContent =
     "Quittiert";
@@ -1802,13 +1882,16 @@ function createSwipeEntry(
     date
   );
 
+
   content.appendChild(
     hours
   );
 
+
   content.appendChild(
     activity
   );
+
 
   content.appendChild(
     status
@@ -1819,9 +1902,11 @@ function createSwipeEntry(
     deleteAction
   );
 
+
   wrapper.appendChild(
     content
   );
+
 
   parent.appendChild(
     wrapper
@@ -1831,8 +1916,10 @@ function createSwipeEntry(
   let startX =
     0;
 
+
   let currentX =
     0;
+
 
   let dragging =
     false;
@@ -1845,8 +1932,10 @@ function createSwipeEntry(
       startX =
         event.touches[0].clientX;
 
+
       currentX =
         startX;
+
 
       dragging =
         true;
@@ -1935,6 +2024,7 @@ function createSwipeEntry(
           "swiped"
         );
 
+
         content.style.transform =
           "translateX(-90px)";
 
@@ -1943,6 +2033,7 @@ function createSwipeEntry(
         content.classList.remove(
           "swiped"
         );
+
 
         content.style.transform =
           "translateX(0)";
@@ -1955,7 +2046,10 @@ function createSwipeEntry(
 
   deleteAction.addEventListener(
     "click",
-    function() {
+    function(event) {
+
+      event.stopPropagation();
+
 
       deleteTimeEntry(
         detail.originalIndex
@@ -2005,6 +2099,7 @@ function deleteTimeEntry(
     1
   );
 
+
   saveEntries();
 
   renderEvaluation();
@@ -2020,6 +2115,7 @@ function renderUserName() {
 
   const name =
     userNameInput.value.trim();
+
 
   userNameDisplay.textContent =
     name;
@@ -2040,7 +2136,9 @@ function saveUserName() {
     userNameStatus.textContent =
       "Bitte gib einen Namen ein.";
 
+
     userNameInput.focus();
+
 
     return;
 
@@ -2105,6 +2203,7 @@ function exportToExcel() {
       "Es sind noch keine quittierten Zeiteinträge vorhanden."
     );
 
+
     return;
 
   }
@@ -2127,6 +2226,7 @@ function exportToExcel() {
     alert(
       "Das Startdatum darf nicht nach dem Enddatum liegen."
     );
+
 
     return;
 
@@ -2205,6 +2305,7 @@ function exportToExcel() {
       "Für den gewählten Zeitraum wurden keine quittierten Einträge gefunden."
     );
 
+
     return;
 
   }
@@ -2253,20 +2354,24 @@ function exportToExcel() {
             a
           );
 
+
         const dateB =
           getEntryDate(
             b
           );
+
 
         const timeA =
           dateA
             ? dateA.getTime()
             : 0;
 
+
         const timeB =
           dateB
             ? dateB.getTime()
             : 0;
+
 
         return (
           timeB -
@@ -2642,12 +2747,15 @@ function showRecording() {
 
   clearNavActive();
 
+
   recordingSection.style.display =
     "";
+
 
   navRecording.classList.add(
     "active"
   );
+
 
   entryStatus.textContent =
     "";
@@ -2661,15 +2769,19 @@ function showEvaluation() {
 
   clearNavActive();
 
+
   evaluationSection.style.display =
     "";
+
 
   navEvaluation.classList.add(
     "active"
   );
 
+
   exportDetails.open =
     false;
+
 
   renderEvaluation();
 
@@ -2682,12 +2794,15 @@ function showCommissions() {
 
   clearNavActive();
 
+
   commissionSection.style.display =
     "";
+
 
   navCommissions.classList.add(
     "active"
   );
+
 
   renderCommissionList();
 
@@ -2700,10 +2815,13 @@ function showSettings() {
 
   clearNavActive();
 
+
   settingsSection.style.display =
     "";
 
+
   renderUserName();
+
 
   userNameInput.focus();
 
