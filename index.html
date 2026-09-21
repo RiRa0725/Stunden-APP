@@ -70,6 +70,7 @@
 
       </div>
 
+
       <button
         id="settingsButton"
         class="icon-button"
@@ -98,6 +99,7 @@
         Datum
       </label>
 
+
       <input
         id="entryDate"
         type="date"
@@ -108,6 +110,7 @@
       <label for="hours">
         Stunden
       </label>
+
 
       <input
         id="hours"
@@ -122,6 +125,7 @@
         Kommission
       </label>
 
+
       <select id="commission">
       </select>
 
@@ -129,6 +133,7 @@
       <label for="activity">
         Tätigkeit
       </label>
+
 
       <input
         id="activity"
@@ -143,8 +148,15 @@
         class="primary-button"
         type="button"
       >
-        Stunden erfassen
+        Stunden quittieren
       </button>
+
+
+      <p
+        id="entryStatus"
+        class="entry-status"
+      >
+      </p>
 
     </section>
 
@@ -161,12 +173,11 @@
         Auswertung
       </p>
 
+
       <h2>
         Nach Kommission
       </h2>
 
-
-      <!-- KOMMISSIONEN ZUERST -->
 
       <div id="evaluationCommissions">
         Noch keine Einträge vorhanden.
@@ -191,9 +202,7 @@
         </h3>
 
 
-        <div
-          id="commissionDetailsList"
-        >
+        <div id="commissionDetailsList">
         </div>
 
       </div>
@@ -216,6 +225,7 @@
               Diese Woche
             </span>
 
+
             <strong id="evaluationWeek">
               0 Stunden
             </strong>
@@ -229,6 +239,7 @@
               Diesen Monat
             </span>
 
+
             <strong id="evaluationMonth">
               0 Stunden
             </strong>
@@ -240,7 +251,7 @@
       </div>
 
 
-      <!-- EXPORT GANZ UNTEN -->
+      <!-- EXPORT -->
 
       <details
         id="exportDetails"
@@ -255,7 +266,7 @@
         <div class="export-content">
 
           <p class="export-description">
-            Zeiteinträge als Excel-Datei exportieren.
+            Quittierte Zeiteinträge als Excel-Datei exportieren.
           </p>
 
 
@@ -266,6 +277,7 @@
               <label for="exportFrom">
                 Von
               </label>
+
 
               <input
                 id="exportFrom"
@@ -280,6 +292,7 @@
               <label for="exportTo">
                 Bis
               </label>
+
 
               <input
                 id="exportTo"
@@ -314,7 +327,7 @@
 
 
           <small>
-            Ohne Datumsfilter werden alle gespeicherten Einträge exportiert.
+            Ohne Datumsfilter werden alle quittierten Einträge exportiert.
           </small>
 
         </div>
