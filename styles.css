@@ -29,7 +29,8 @@
 
 html {
   min-height: 100%;
-  background: var(--background);
+  background:
+    var(--background);
 }
 
 body {
@@ -44,7 +45,8 @@ body {
       #f8fbff 100%
     );
 
-  color: var(--text);
+  color:
+    var(--text);
 
   font-family:
     -apple-system,
@@ -55,7 +57,8 @@ body {
     Arial,
     sans-serif;
 
-  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing:
+    antialiased;
 }
 
 button,
@@ -133,7 +136,7 @@ h2 {
   margin:
     4px
     0
-    0;
+    16px;
 
   font-size: 22px;
 
@@ -292,7 +295,8 @@ select:focus {
 }
 
 input[type="date"] {
-  color-scheme: light;
+  color-scheme:
+    light;
 }
 
 .primary-button {
@@ -339,7 +343,7 @@ input[type="date"] {
 
   border:
     1px solid
-    rgba(255, 255, 255, 0.45);
+    rgba(255, 255, 255, 0.4);
 
   border-radius:
     10px;
@@ -360,11 +364,6 @@ input[type="date"] {
 .secondary-button:hover {
   background:
     rgba(255, 255, 255, 0.10);
-}
-
-.compact-button {
-  flex:
-    0 0 auto;
 }
 
 .small-button {
@@ -394,11 +393,6 @@ input[type="date"] {
   cursor: pointer;
 }
 
-.small-button:hover {
-  background:
-    rgba(255, 255, 255, 0.15);
-}
-
 .danger-button {
   color:
     var(--danger);
@@ -420,53 +414,13 @@ input[type="date"] {
     transparent;
 
   color:
-    var(--blue-700);
+    var(--yellow);
 
   font-size: 13px;
 
   font-weight: 700;
 
   cursor: pointer;
-}
-
-.section-heading {
-  display: flex;
-
-  align-items: flex-start;
-
-  justify-content: space-between;
-
-  gap: 14px;
-
-  margin-bottom: 16px;
-}
-
-.badge {
-  display: inline-flex;
-
-  align-items: center;
-
-  min-height: 28px;
-
-  padding:
-    5px
-    9px;
-
-  border-radius:
-    999px;
-
-  background:
-    var(--yellow-light);
-
-  color:
-    #6c5100;
-
-  font-size: 12px;
-
-  font-weight: 800;
-
-  white-space:
-    nowrap;
 }
 
 .entries-list {
@@ -545,26 +499,62 @@ input[type="date"] {
   font-size: 14px;
 }
 
+
+/* =========================
+   AUSWERTUNG
+========================= */
+
+.evaluation-card {
+  background:
+    var(--blue-900);
+
+  border-color:
+    var(--blue-800);
+
+  color:
+    #fff;
+}
+
+.evaluation-card
+.section-label {
+  color:
+    var(--yellow);
+}
+
+.evaluation-card
+h2,
+.evaluation-card
+h3 {
+  color:
+    #fff;
+}
+
+.evaluation-overview {
+  margin-top:
+    24px;
+
+  padding-top:
+    20px;
+
+  border-top:
+    1px solid
+    rgba(255, 255, 255, 0.18);
+}
+
 .summary-grid {
   display: grid;
 
   grid-template-columns:
-    repeat(3, 1fr);
+    repeat(2, 1fr);
 
   gap: 10px;
-
-  margin:
-    16px
-    0
-    22px;
 }
 
 .summary-box {
   min-width: 0;
 
   padding:
-    13px
-    11px;
+    14px;
 
   border:
     1px solid
@@ -575,15 +565,12 @@ input[type="date"] {
 
   background:
     rgba(255, 255, 255, 0.08);
-
-  text-align:
-    left;
 }
 
 .summary-box span {
   display: block;
 
-  margin-bottom: 5px;
+  margin-bottom: 6px;
 
   color:
     rgba(255, 255, 255, 0.78);
@@ -597,7 +584,7 @@ input[type="date"] {
   color:
     #fff;
 
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .commission-summary-item {
@@ -629,7 +616,8 @@ input[type="date"] {
 }
 
 .commission-summary-hours {
-  margin-top: 3px;
+  margin-top:
+    4px;
 
   color:
     rgba(255, 255, 255, 0.82);
@@ -638,9 +626,11 @@ input[type="date"] {
 }
 
 .details-section {
-  margin-top: 20px;
+  margin-top:
+    20px;
 
-  padding-top: 18px;
+  padding-top:
+    18px;
 
   border-top:
     1px solid
@@ -653,9 +643,6 @@ input[type="date"] {
 
   background:
     rgba(255, 255, 255, 0.08);
-
-  color:
-    #fff;
 }
 
 .details-section .entry strong,
@@ -670,23 +657,28 @@ input[type="date"] {
 }
 
 .total-entry {
-  margin-top: 2px;
-
   border-color:
-    var(--yellow);
+    var(--yellow) !important;
 
   background:
     rgba(244, 197, 66, 0.18) !important;
 }
 
+
+/* =========================
+   EXPORT
+========================= */
+
 .export-details {
-  margin-top: 24px;
+  margin-top:
+    24px;
+
+  padding-top:
+    18px;
 
   border-top:
     1px solid
     rgba(255, 255, 255, 0.18);
-
-  padding-top: 18px;
 }
 
 .export-details summary {
@@ -721,7 +713,8 @@ input[type="date"] {
 
   cursor: pointer;
 
-  list-style: none;
+  list-style:
+    none;
 }
 
 .export-details summary::-webkit-details-marker {
@@ -736,8 +729,6 @@ input[type="date"] {
     var(--yellow);
 
   font-size: 18px;
-
-  font-weight: 400;
 }
 
 .export-details[open]
@@ -792,14 +783,6 @@ summary::after {
 .export-filter input:focus {
   border-color:
     var(--yellow);
-
-  box-shadow:
-    0 0 0 3px
-    rgba(244, 197, 66, 0.16);
-}
-
-.export-filter input[type="date"] {
-  color-scheme: dark;
 }
 
 .export-actions {
@@ -811,7 +794,8 @@ summary::after {
 
   flex-wrap: wrap;
 
-  margin-top: 14px;
+  margin-top:
+    14px;
 }
 
 .export-button {
@@ -841,11 +825,6 @@ summary::after {
   cursor: pointer;
 }
 
-.export-button:hover {
-  background:
-    rgba(255, 255, 255, 0.1);
-}
-
 .export-reset-button {
   min-height: 40px;
 
@@ -871,56 +850,22 @@ summary::after {
 .export-content small {
   display: block;
 
-  margin-top: 9px;
+  margin-top:
+    9px;
 
   color:
     rgba(255, 255, 255, 0.65);
 
   font-size: 12px;
 
-  line-height: 1.4;
+  line-height:
+    1.4;
 }
 
-.commission-form {
-  margin-bottom: 20px;
-}
 
-.commission-input-row {
-  display: grid;
-
-  grid-template-columns:
-    1fr auto;
-
-  gap: 8px;
-
-  align-items: end;
-}
-
-.commission-input-row
-.primary-button {
-  width: auto;
-
-  min-height: 48px;
-
-  margin-top: 0;
-
-  white-space:
-    nowrap;
-}
-
-.commission-info {
-  margin:
-    0
-    0
-    18px;
-
-  color:
-    rgba(255, 255, 255, 0.75);
-
-  font-size: 14px;
-
-  line-height: 1.5;
-}
+/* =========================
+   KOMMISSIONEN
+========================= */
 
 .commission-card {
   background:
@@ -1021,33 +966,66 @@ input:focus {
     none;
 }
 
-.evaluation-card {
-  background:
-    var(--blue-900);
+.commission-input-row {
+  display: grid;
 
-  border-color:
-    var(--blue-800);
+  grid-template-columns:
+    1fr auto;
 
-  color:
-    #fff;
+  gap: 8px;
+
+  align-items: end;
 }
 
-.evaluation-card
-.section-label {
-  color:
-    var(--yellow);
+.commission-input-row
+.primary-button {
+  width: auto;
+
+  min-height: 48px;
+
+  margin-top:
+    0;
+
+  white-space:
+    nowrap;
 }
 
-.evaluation-card
-h2,
-.evaluation-card
-h3 {
+.commission-info {
+  margin:
+    0
+    0
+    18px;
+
   color:
-    #fff;
+    rgba(255, 255, 255, 0.75);
+
+  font-size: 14px;
+
+  line-height:
+    1.5;
 }
+
+.entry-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 8px;
+
+  flex-wrap: wrap;
+
+  margin-top:
+    10px;
+}
+
+
+/* =========================
+   EINSTELLUNGEN
+========================= */
 
 .form-status {
-  min-height: 20px;
+  min-height:
+    20px;
 
   margin:
     10px
@@ -1062,17 +1040,10 @@ h3 {
   font-weight: 700;
 }
 
-.entry-actions {
-  display: flex;
 
-  align-items: center;
-
-  gap: 8px;
-
-  flex-wrap: wrap;
-
-  margin-top: 10px;
-}
+/* =========================
+   NAVIGATION
+========================= */
 
 .bottom-nav {
   position: fixed;
@@ -1080,7 +1051,10 @@ h3 {
   left: 50%;
 
   bottom:
-    max(10px, env(safe-area-inset-bottom));
+    max(
+      10px,
+      env(safe-area-inset-bottom)
+    );
 
   z-index: 20;
 
@@ -1152,7 +1126,8 @@ h3 {
 .nav-icon {
   font-size: 19px;
 
-  line-height: 1;
+  line-height:
+    1;
 }
 
 .nav-item.active {
@@ -1163,16 +1138,24 @@ h3 {
     var(--blue-900);
 }
 
+
+/* =========================
+   MOBILE
+========================= */
+
 @media (max-width: 520px) {
 
   .app-shell {
-    padding-left: 12px;
+    padding-left:
+      12px;
 
-    padding-right: 12px;
+    padding-right:
+      12px;
   }
 
   .card {
-    padding: 17px;
+    padding:
+      17px;
   }
 
   .summary-grid {
@@ -1180,29 +1163,18 @@ h3 {
       1fr;
   }
 
-  .summary-box {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 10px;
-  }
-
-  .summary-box span {
-    margin: 0;
-  }
-
   .commission-summary-item {
-    flex-direction: column;
+    flex-direction:
+      column;
 
-    align-items: stretch;
+    align-items:
+      stretch;
   }
 
   .commission-summary-item
   .secondary-button {
-    width: 100%;
+    width:
+      100%;
   }
 
   .commission-input-row {
@@ -1212,7 +1184,8 @@ h3 {
 
   .commission-input-row
   .primary-button {
-    width: 100%;
+    width:
+      100%;
   }
 
   .export-filter {
@@ -1221,71 +1194,19 @@ h3 {
   }
 
   .export-actions {
-    flex-direction: column;
+    flex-direction:
+      column;
 
-    align-items: stretch;
+    align-items:
+      stretch;
   }
 
   .export-actions
   .export-button,
   .export-actions
   .export-reset-button {
-    width: 100%;
-  }
-
-}
-
-@media (prefers-color-scheme: dark) {
-
-  :root {
-    --text: #f4f7fb;
-    --muted: #aeb9c9;
-
-    --background: #0e1726;
-    --card: #142238;
-    --border: #293b56;
-
-    --blue-050: #192943;
-    --blue-100: #213756;
-
-    --yellow-light: #3a3214;
-  }
-
-  html,
-  body {
-    background:
-      #0e1726;
-  }
-
-  .icon-button {
-    background:
-      var(--card);
-
-    color:
-      #fff;
-  }
-
-  input,
-  select {
-    background:
-      var(--card);
-
-    color:
-      #fff;
-  }
-
-  input[type="date"] {
-    color-scheme: dark;
-  }
-
-  .bottom-nav {
-    background:
-      rgba(20, 34, 56, 0.96);
-  }
-
-  .nav-item.active {
-    background:
-      #3a3214;
+    width:
+      100%;
   }
 
 }
