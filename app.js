@@ -1,51 +1,79 @@
-const enteredValue =
-  hoursInput.value
-    .trim()
-    .replace(",", ".");
+const hoursInput = document.getElementById("hours");
+const commissionInput = document.getElementById("commission");
+const activityInput = document.getElementById("activity");
+const addEntryButton = document.getElementById("addEntry");
+const entriesContainer = document.getElementById("entries");
+const entryCount = document.getElementById("entryCount");
+const totalHours = document.getElementById("totalHours");
 
-const hours =
-  Number(enteredValue);
+const STORAGE_KEY = "zeitpol_entries";
 
-if (
-  enteredValue === "" ||
-  !Number.isFinite(hours) ||
-  hours <= 0
-) {
+let timeEntries = [];
 
-  alert(
-    "Bitte gib eine gültige Stundenzahl ein."
-  );
+try {
+const savedEntries = localStorage.getItem(STORAGE_KEY);
 
-  hoursInput.focus();
-
-  return;
+if (savedEntries) {
+timeEntries = JSON.parse(savedEntries);
+}
+} catch (error) {
+timeEntries = [];
 }
 
-const entry = {
-  hours: hours.toLocaleString(
-    "de-CH",
-    {
-      maximumFractionDigits: 2
-    }
-  ),
+function saveEntries() {
+localStorage.setItem(
+STORAGE_KEY,
+JSON.stringify(timeEntries)
+);
+}
 
-  commission:
-    commissionInput.value,
+function getHours(entry) {
+const value = String(entry.hours)
+.replace(",", ".")
+.trim();
 
-  activity:
-    activityInput.value.trim(),
+const number = Number(value);
 
-  date:
-    new Date().toISOString()
-};
+if (Number.isFinite(number)) {
+return number;
+}
 
-timeEntries.push(entry);
+return 0;
+}
 
-saveEntries();
+function renderEntries() {
+if (timeEntries.length === 0) {
+entriesContainer.className = "empty-state";
+entriesContainer.textContent =
+"Noch keine Einträge vorhanden.";
+} else {
+entriesContainer.className = "entries-list";
+entriesContainer.innerHTML = "";
+  }
+
+if (timeEntries.length === 1) {
+entryCount.textContent = "1 Eintrag";
+} else {
+entryCount.textContent =
+timeEntries.length + " Einträge";
+}
+
+let total = 0;
+
+timeEntries.forEach(function(entry) {
+total += getHours(entry);
+});
+
+totalHours.textContent =
+total.toLocaleString("de-CH", {
+maximumFractionDigits: 2
+}) + " Stunden";
+}
+
+addEntryButton.addEventListener(
+"click",
+function() {
+  }
+);
 
 renderEntries();
-
-hoursInput.value = "";
-activityInput.value = "";
-
-hoursInput.focus();
