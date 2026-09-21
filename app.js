@@ -126,6 +126,12 @@ const userNameStatus =
 const userNameDisplay =
   document.getElementById("userNameDisplay");
 
+const lightModeButton =
+  document.getElementById("lightModeButton");
+
+const darkModeButton =
+  document.getElementById("darkModeButton");
+
 
 /* =========================
    SPEICHER-SCHLÜSSEL
@@ -142,6 +148,9 @@ const USER_PROFILE_KEY =
 
 const OLD_USER_NAME_KEY =
   "zeitpol_user_name";
+
+const THEME_KEY =
+  "ravo_theme";
 
 
 let timeEntries = [];
@@ -160,10 +169,8 @@ function getTodayString() {
   const today =
     new Date();
 
-
   const year =
     today.getFullYear();
-
 
   const month =
     String(
@@ -173,7 +180,6 @@ function getTodayString() {
       "0"
     );
 
-
   const day =
     String(
       today.getDate()
@@ -181,7 +187,6 @@ function getTodayString() {
       2,
       "0"
     );
-
 
   return (
     year +
@@ -199,10 +204,8 @@ function setDefaultEntryDate() {
   const today =
     getTodayString();
 
-
   entryDateInput.value =
     today;
-
 
   entryDateInput.max =
     today;
@@ -241,10 +244,8 @@ function parseDateString(
 
   }
 
-
   const parts =
     value.split("-");
-
 
   return new Date(
     Number(parts[0]),
@@ -270,7 +271,6 @@ try {
       ENTRIES_KEY
     );
 
-
   if (
     savedEntries
   ) {
@@ -279,7 +279,6 @@ try {
       JSON.parse(
         savedEntries
       );
-
 
     if (
       Array.isArray(
@@ -308,7 +307,6 @@ try {
       COMMISSIONS_KEY
     );
 
-
   if (
     savedCommissions
   ) {
@@ -317,7 +315,6 @@ try {
       JSON.parse(
         savedCommissions
       );
-
 
     if (
       Array.isArray(
@@ -361,7 +358,7 @@ timeEntries.forEach(
 
 
 /* =========================
-   BENUTZERPROFIL LADEN
+   BENUTZERPROFIL
 ========================= */
 
 function loadUserProfile() {
@@ -396,7 +393,6 @@ function loadUserProfile() {
         USER_PROFILE_KEY
       );
 
-
     if (
       savedProfile
     ) {
@@ -405,7 +401,6 @@ function loadUserProfile() {
         JSON.parse(
           savedProfile
         );
-
 
       if (
         parsedProfile &&
@@ -452,7 +447,7 @@ function loadUserProfile() {
 
 
   /*
-    Bisher gespeicherten Namen
+    Alten gespeicherten Namen
     übernehmen.
   */
 
@@ -469,7 +464,9 @@ function loadUserProfile() {
   ) {
 
     const parts =
-      oldName.trim().split(/\s+/);
+      oldName.trim().split(
+        /\s+/
+      );
 
 
     if (
@@ -565,6 +562,91 @@ function saveCommissions() {
 
 
 /* =========================
+   NACHT / TAG
+========================= */
+
+function applyTheme(
+  theme
+) {
+
+  if (
+    theme ===
+    "dark"
+  ) {
+
+    document.body.dataset.theme =
+      "dark";
+
+  } else {
+
+    document.body.dataset.theme =
+      "light";
+
+  }
+
+
+  localStorage.setItem(
+    THEME_KEY,
+    theme
+  );
+
+
+  updateThemeButtons();
+
+}
+
+
+function loadTheme() {
+
+  const savedTheme =
+    localStorage.getItem(
+      THEME_KEY
+    );
+
+
+  if (
+    savedTheme ===
+    "dark"
+  ) {
+
+    document.body.dataset.theme =
+      "dark";
+
+  } else {
+
+    document.body.dataset.theme =
+      "light";
+
+  }
+
+
+  updateThemeButtons();
+
+}
+
+
+function updateThemeButtons() {
+
+  const isDark =
+    document.body.dataset.theme ===
+    "dark";
+
+
+  lightModeButton.classList.toggle(
+    "selected",
+    !isDark
+  );
+
+
+  darkModeButton.classList.toggle(
+    "selected",
+    isDark
+  );
+
+}
+
+
+/* =========================
    HILFSFUNKTIONEN
 ========================= */
 
@@ -640,22 +722,18 @@ function getStartOfWeek(
   const start =
     new Date(date);
 
-
   const day =
     start.getDay();
-
 
   const difference =
     day === 0
       ? -6
       : 1 - day;
 
-
   start.setDate(
     start.getDate() +
       difference
   );
-
 
   start.setHours(
     0,
@@ -663,7 +741,6 @@ function getStartOfWeek(
     0,
     0
   );
-
 
   return start;
 
@@ -712,7 +789,6 @@ function calculateTotal(
   let total =
     0;
 
-
   entries.forEach(
     function(entry) {
 
@@ -721,7 +797,6 @@ function calculateTotal(
 
     }
   );
-
 
   return total;
 
@@ -748,19 +823,15 @@ function renderCommissionSelect() {
         "option"
       );
 
-
     option.value =
       "";
-
 
     option.textContent =
       "Keine Kommission vorhanden";
 
-
     commissionInput.appendChild(
       option
     );
-
 
     return;
 
@@ -775,14 +846,11 @@ function renderCommissionSelect() {
           "option"
         );
 
-
       option.value =
         commission;
 
-
       option.textContent =
         commission;
-
 
       commissionInput.appendChild(
         option
@@ -812,10 +880,8 @@ function renderCommissionList() {
     commissionList.className =
       "empty-state";
 
-
     commissionList.textContent =
       "Noch keine Kommissionen vorhanden.";
-
 
     return;
 
@@ -837,7 +903,6 @@ function renderCommissionList() {
           "div"
         );
 
-
       item.className =
         "entry";
 
@@ -846,7 +911,6 @@ function renderCommissionList() {
         document.createElement(
           "strong"
         );
-
 
       name.textContent =
         commission;
@@ -857,7 +921,6 @@ function renderCommissionList() {
           "div"
         );
 
-
       actions.className =
         "entry-actions";
 
@@ -867,14 +930,11 @@ function renderCommissionList() {
           "button"
         );
 
-
       renameButton.type =
         "button";
 
-
       renameButton.className =
         "small-button";
-
 
       renameButton.textContent =
         "✏️ Umbenennen";
@@ -885,14 +945,11 @@ function renderCommissionList() {
           "button"
         );
 
-
       deleteButton.type =
         "button";
 
-
       deleteButton.className =
         "small-button danger-button";
-
 
       deleteButton.textContent =
         "🗑️ Löschen";
@@ -928,21 +985,17 @@ function renderCommissionList() {
         renameButton
       );
 
-
       actions.appendChild(
         deleteButton
       );
-
 
       item.appendChild(
         name
       );
 
-
       item.appendChild(
         actions
       );
-
 
       commissionList.appendChild(
         item
@@ -996,9 +1049,7 @@ function addCommission() {
       "Diese Kommission gibt es bereits."
     );
 
-
     newCommissionInput.focus();
-
 
     return;
 
@@ -1009,18 +1060,14 @@ function addCommission() {
     name
   );
 
-
   saveCommissions();
-
 
   renderCommissionSelect();
 
   renderCommissionList();
 
-
   newCommissionInput.value =
     "";
-
 
   newCommissionInput.focus();
 
@@ -1046,14 +1093,11 @@ function showRenameForm(
       "input"
     );
 
-
   input.type =
     "text";
 
-
   input.value =
     oldName;
-
 
   input.autocomplete =
     "off";
@@ -1064,7 +1108,6 @@ function showRenameForm(
       "div"
     );
 
-
   actions.className =
     "entry-actions";
 
@@ -1074,14 +1117,11 @@ function showRenameForm(
       "button"
     );
 
-
   saveButton.type =
     "button";
 
-
   saveButton.className =
     "small-button";
-
 
   saveButton.textContent =
     "Speichern";
@@ -1092,14 +1132,11 @@ function showRenameForm(
       "button"
     );
 
-
   cancelButton.type =
     "button";
 
-
   cancelButton.className =
     "small-button";
-
 
   cancelButton.textContent =
     "Abbrechen";
@@ -1149,9 +1186,7 @@ function showRenameForm(
           "Diese Kommission gibt es bereits."
         );
 
-
         input.focus();
-
 
         return;
 
@@ -1182,7 +1217,6 @@ function showRenameForm(
       saveCommissions();
 
       saveEntries();
-
 
       renderCommissionSelect();
 
@@ -1227,21 +1261,17 @@ function showRenameForm(
     input
   );
 
-
   item.appendChild(
     actions
   );
-
 
   actions.appendChild(
     saveButton
   );
 
-
   actions.appendChild(
     cancelButton
   );
-
 
   input.focus();
 
@@ -1310,7 +1340,6 @@ function deleteCommission(
 
   saveCommissions();
 
-
   renderCommissionSelect();
 
   renderCommissionList();
@@ -1321,7 +1350,7 @@ function deleteCommission(
 
 
 /* =========================
-   NEUEN EINTRAG VORBEREITEN
+   EINTRAG VORBEREITEN
 ========================= */
 
 function prepareEntry() {
@@ -1353,9 +1382,7 @@ function prepareEntry() {
       "Bitte wähle ein Datum aus."
     );
 
-
     entryDateInput.focus();
-
 
     return;
 
@@ -1374,9 +1401,7 @@ function prepareEntry() {
       "Bitte gib eine gültige Stundenzahl ein."
     );
 
-
     hoursInput.focus();
-
 
     return;
 
@@ -1391,7 +1416,6 @@ function prepareEntry() {
     alert(
       "Bitte lege zuerst eine Kommission an."
     );
-
 
     return;
 
@@ -1439,7 +1463,6 @@ function showPendingSummary() {
     entrySummary.style.display =
       "none";
 
-
     return;
 
   }
@@ -1453,9 +1476,7 @@ function showPendingSummary() {
 
   summaryDate.textContent =
     date
-      ? formatDate(
-          date
-        )
+      ? formatDate(date)
       : "Datum unbekannt";
 
 
@@ -1472,13 +1493,6 @@ function showPendingSummary() {
     pendingEntry.activity ||
     "Keine Tätigkeit angegeben";
 
-
-  /*
-    Die Zusammenfassung befindet
-    sich im HTML bereits über dem
-    Eingabeformular und wird hier
-    nur sichtbar gemacht.
-  */
 
   entrySummary.style.display =
     "block";
@@ -1508,14 +1522,11 @@ function editPendingEntry() {
   entryDateInput.value =
     pendingEntry.date;
 
-
   hoursInput.value =
     pendingEntry.hours;
 
-
   commissionInput.value =
     pendingEntry.commission;
-
 
   activityInput.value =
     pendingEntry.activity;
@@ -1962,12 +1973,6 @@ function renderCommissionEvaluation() {
       );
 
 
-      /*
-        Details immer neu erzeugen
-        und beim Start ausdrücklich
-        verstecken.
-      */
-
       const detailsList =
         document.createElement(
           "div"
@@ -2115,9 +2120,7 @@ function createSwipeEntry(
 
   date.textContent =
     detail.date
-      ? formatDate(
-          detail.date
-        )
+      ? formatDate(detail.date)
       : "Datum unbekannt";
 
 
@@ -2161,16 +2164,13 @@ function createSwipeEntry(
     date
   );
 
-
   content.appendChild(
     hours
   );
 
-
   content.appendChild(
     activity
   );
-
 
   content.appendChild(
     status
@@ -2180,7 +2180,6 @@ function createSwipeEntry(
   wrapper.appendChild(
     deleteAction
   );
-
 
   wrapper.appendChild(
     content
@@ -2195,10 +2194,8 @@ function createSwipeEntry(
   let startX =
     0;
 
-
   let currentX =
     0;
-
 
   let dragging =
     false;
@@ -2211,17 +2208,16 @@ function createSwipeEntry(
       startX =
         event.touches[0].clientX;
 
-
       currentX =
         startX;
-
 
       dragging =
         true;
 
     },
     {
-      passive: true
+      passive:
+        true
     }
   );
 
@@ -2268,7 +2264,8 @@ function createSwipeEntry(
 
     },
     {
-      passive: true
+      passive:
+        true
     }
   );
 
@@ -2460,9 +2457,7 @@ function saveUserProfile() {
     userNameStatus.textContent =
       "Bitte gib deinen Namen ein.";
 
-
     userLastNameInput.focus();
-
 
     return;
 
@@ -2476,9 +2471,7 @@ function saveUserProfile() {
     userNameStatus.textContent =
       "Bitte gib deinen Vornamen ein.";
 
-
     userFirstNameInput.focus();
-
 
     return;
 
@@ -2555,7 +2548,6 @@ function exportToExcel() {
       "Es sind noch keine quittierten Zeiteinträge vorhanden."
     );
 
-
     return;
 
   }
@@ -2578,7 +2570,6 @@ function exportToExcel() {
     alert(
       "Das Startdatum darf nicht nach dem Enddatum liegen."
     );
-
 
     return;
 
@@ -2669,30 +2660,20 @@ function exportToExcel() {
       "Für den gewählten Zeitraum wurden keine quittierten Einträge gefunden."
     );
 
-
     return;
 
   }
 
-
-  /*
-    Ältestes Datum zuerst.
-  */
 
   const sortedEntries =
     [...filteredEntries].sort(
       function(a, b) {
 
         const dateA =
-          getEntryDate(
-            a
-          );
-
+          getEntryDate(a);
 
         const dateB =
-          getEntryDate(
-            b
-          );
+          getEntryDate(b);
 
 
         const timeA =
@@ -2759,9 +2740,7 @@ function exportToExcel() {
 
 
   /*
-    ========================
-    PERSÖNLICHE ANGABEN
-    ========================
+    Persönliche Angaben
   */
 
   rows.push(
@@ -2837,7 +2816,7 @@ function exportToExcel() {
 
 
   /*
-    Export-Zeitraum
+    Zeitraum
   */
 
   if (
@@ -2881,18 +2860,11 @@ function exportToExcel() {
   }
 
 
-  /*
-    Leerzeile vor der
-    eigentlichen Excel-Tabelle.
-  */
-
   rows.push("");
 
 
   /*
-    ========================
-    ZEITTABELLE
-    ========================
+    Zeittabelle
   */
 
   rows.push(
@@ -2955,10 +2927,6 @@ function exportToExcel() {
   );
 
 
-  /*
-    Gesamt
-  */
-
   const total =
     calculateTotal(
       sortedEntries
@@ -2987,11 +2955,6 @@ function exportToExcel() {
       .join(";")
   );
 
-
-  /*
-    UTF-8 BOM für korrekte
-    Umlaute in Excel.
-  */
 
   const csv =
     "\uFEFF" +
@@ -3064,7 +3027,8 @@ function exportToExcel() {
     navigator.share &&
     navigator.canShare &&
     navigator.canShare({
-      files: [file]
+      files:
+        [file]
     })
   ) {
 
@@ -3290,6 +3254,9 @@ function showSettings() {
     "";
 
 
+  updateThemeButtons();
+
+
   userLastNameInput.focus();
 
 }
@@ -3404,6 +3371,34 @@ saveUserNameButton.addEventListener(
 
 
 /* =========================
+   TAG / NACHT
+========================= */
+
+lightModeButton.addEventListener(
+  "click",
+  function() {
+
+    applyTheme(
+      "light"
+    );
+
+  }
+);
+
+
+darkModeButton.addEventListener(
+  "click",
+  function() {
+
+    applyTheme(
+      "dark"
+    );
+
+  }
+);
+
+
+/* =========================
    KOMMISSION
 ========================= */
 
@@ -3463,6 +3458,8 @@ resetExportFilterButton.addEventListener(
 /* =========================
    START
 ========================= */
+
+loadTheme();
 
 setDefaultEntryDate();
 
