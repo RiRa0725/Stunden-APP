@@ -122,12 +122,18 @@ function getTodayString() {
   const month =
     String(
       today.getMonth() + 1
-    ).padStart(2, "0");
+    ).padStart(
+      2,
+      "0"
+    );
 
   const day =
     String(
       today.getDate()
-    ).padStart(2, "0");
+    ).padStart(
+      2,
+      "0"
+    );
 
   return (
     year +
@@ -165,12 +171,14 @@ try {
       ENTRIES_KEY
     );
 
+
   if (savedEntries) {
 
     const parsedEntries =
       JSON.parse(
         savedEntries
       );
+
 
     if (
       Array.isArray(
@@ -199,12 +207,14 @@ try {
       COMMISSIONS_KEY
     );
 
+
   if (savedCommissions) {
 
     const parsedCommissions =
       JSON.parse(
         savedCommissions
       );
+
 
     if (
       Array.isArray(
@@ -282,7 +292,10 @@ function getHours(entry) {
   return Number(
     String(
       entry.hours
-    ).replace(",", ".")
+    ).replace(
+      ",",
+      "."
+    )
   ) || 0;
 
 }
@@ -299,11 +312,6 @@ function getEntryDate(entry) {
 
   }
 
-
-  /*
-    Neue Einträge verwenden
-    YYYY-MM-DD.
-  */
 
   if (
     /^\d{4}-\d{2}-\d{2}$/.test(
@@ -327,11 +335,6 @@ function getEntryDate(entry) {
 
   }
 
-
-  /*
-    Alte Einträge können noch
-    ISO-Datumswerte enthalten.
-  */
 
   const date =
     new Date(
@@ -379,11 +382,12 @@ function getStartOfWeek(
 ) {
 
   const start =
-    new Date(date);
+    new Date(
+      date
+    );
 
   const day =
     start.getDay();
-
 
   const difference =
     day === 0
@@ -464,15 +468,16 @@ function calculateTotal(
   entries
 ) {
 
-  let total =
-    0;
+  let total = 0;
 
 
   entries.forEach(
     function(entry) {
 
       total +=
-        getHours(entry);
+        getHours(
+          entry
+        );
 
     }
   );
@@ -746,6 +751,7 @@ function addCommission() {
 
     newCommissionInput.focus();
 
+
     return;
 
   }
@@ -758,9 +764,7 @@ function addCommission() {
 
   saveCommissions();
 
-
   renderCommissionSelect();
-
 
   renderCommissionList();
 
@@ -890,6 +894,7 @@ function showRenameForm(
 
 
         input.focus();
+
 
         return;
 
@@ -1037,7 +1042,9 @@ function deleteCommission(
 
 
   const confirmed =
-    confirm(message);
+    confirm(
+      message
+    );
 
 
   if (!confirmed) {
@@ -1070,9 +1077,7 @@ function deleteCommission(
 
   saveCommissions();
 
-
   renderCommissionSelect();
-
 
   renderCommissionList();
 
@@ -1098,7 +1103,9 @@ function renderEntries() {
       function(entry) {
 
         const date =
-          getEntryDate(entry);
+          getEntryDate(
+            entry
+          );
 
 
         if (!date) {
@@ -1250,7 +1257,9 @@ function renderEvaluation() {
       function(entry) {
 
         const date =
-          getEntryDate(entry);
+          getEntryDate(
+            entry
+          );
 
 
         return (
@@ -1270,7 +1279,9 @@ function renderEvaluation() {
       function(entry) {
 
         const date =
-          getEntryDate(entry);
+          getEntryDate(
+            entry
+          );
 
 
         return (
@@ -1287,13 +1298,16 @@ function renderEvaluation() {
       function(entry) {
 
         const date =
-          getEntryDate(entry);
+          getEntryDate(
+            entry
+          );
 
 
         return (
           date &&
           date.getFullYear() ===
             now.getFullYear() &&
+
           date.getMonth() ===
             now.getMonth()
         );
@@ -1836,6 +1850,7 @@ function exportToExcel() {
       "Es sind noch keine Zeiteinträge vorhanden."
     );
 
+
     return;
 
   }
@@ -1880,10 +1895,15 @@ function exportToExcel() {
       function(a, b) {
 
         const dateA =
-          getEntryDate(a);
+          getEntryDate(
+            a
+          );
+
 
         const dateB =
-          getEntryDate(b);
+          getEntryDate(
+            b
+          );
 
 
         const timeA =
@@ -1933,15 +1953,25 @@ function exportToExcel() {
 
       const dateText =
         date
-          ? formatDate(date)
+          ? formatDate(
+              date
+            )
           : "";
 
 
       const row = [
+
         dateText,
-        entry.commission || "",
-        entry.activity || "",
-        entry.hours || ""
+
+        entry.commission ||
+          "",
+
+        entry.activity ||
+          "",
+
+        entry.hours ||
+          ""
+
       ];
 
 
@@ -1956,12 +1986,6 @@ function exportToExcel() {
     }
   );
 
-
-  /*
-    UTF-8-BOM sorgt dafür,
-    dass Excel Umlaute wie ä, ö und ü
-    korrekt erkennt.
-  */
 
   const csv =
     "\uFEFF" +
@@ -1996,11 +2020,6 @@ function exportToExcel() {
       }
     );
 
-
-  /*
-    Auf dem iPhone direkt den
-    Teilen-Dialog öffnen.
-  */
 
   if (
     navigator.share &&
@@ -2222,11 +2241,16 @@ addEntryButton.addEventListener(
     const value =
       hoursInput.value
         .trim()
-        .replace(",", ".");
+        .replace(
+          ",",
+          "."
+        );
 
 
     const hours =
-      Number(value);
+      Number(
+        value
+      );
 
 
     if (
@@ -2366,7 +2390,7 @@ navCommissions.addEventListener(
 
 
 /* =========================
-   KOMMISSION HINZUFÜGEN
+   NEUE KOMMISSION
 ========================= */
 
 addCommissionButton.addEventListener(
