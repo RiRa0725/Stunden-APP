@@ -11,67 +11,70 @@ const STORAGE_KEY = "zeitpol_entries";
 let timeEntries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 
 function saveEntries() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(timeEntries));
+localStorage.setItem(STORAGE_KEY, JSON.stringify(timeEntries));
 }
 
 function renderEntries() {
-  if (timeEntries.length === 0) {
-    entries.className = "empty-state";
-    entries.textContent = "Noch keine Einträge vorhanden.";
-  } else {
-    entries.className = "entries-list";
+if (timeEntries.length === 0) {
+entries.className = "empty-state";
+entries.textContent = "Noch keine Einträge vorhanden.";
+} else {
+entries.className = "entries-list";
 
-    entries.innerHTML = timeEntries.map((entry) => `
-      <div class="entry">
-        <div>
-          <strong>${entry.hours} Std.</strong>
-          <div>${entry.commission}</div>
-          <small>${entry.activity || "Keine Tätigkeit angegeben"}</small>
-        </div>
-      </div>
-    `).join("");
-  }
+```
+entries.innerHTML = timeEntries.map((entry) => `
+  <div class="entry">
+    <div>
+      <strong>${entry.hours} Std.</strong>
+      <div>${entry.commission}</div>
+      <small>${entry.activity || "Keine Tätigkeit angegeben"}</small>
+    </div>
+  </div>
+`).join("");
+```
 
-  entryCount.textContent =
-    `${timeEntries.length} ${timeEntries.length === 1 ? "Eintrag" : "Einträge"}`;
+}
 
-  const total = timeEntries.reduce((sum, entry) => {
-    return sum + Number(String(entry.hours).replace(",", "."));
-  }, 0);
+entryCount.textContent =
+`${timeEntries.length} ${timeEntries.length === 1 ? "Eintrag" : "Einträge"}`;
 
-  totalHours.textContent =
-    `${total.toLocaleString("de-CH", {
+const total = timeEntries.reduce((sum, entry) => {
+return sum + Number(String(entry.hours).replace(",", "."));
+}, 0);
+
+totalHours.textContent =
+`${total.toLocaleString("de-CH", {
       maximumFractionDigits: 2
     })} Stunden`;
 }
 
 button.addEventListener("click", () => {
-  const value = hoursInput.value.trim().replace(",", ".");
-  const hours = Number(value);
+const value = hoursInput.value.trim().replace(",", ".");
+const hours = Number(value);
 
-  if (!Number.isFinite(hours) || hours <= 0) {
-    alert("Bitte gib eine gültige Stundenzahl ein.");
-    hoursInput.focus();
-    return;
-  }
+if (!Number.isFinite(hours) || hours <= 0) {
+alert("Bitte gib eine gültige Stundenzahl ein.");
+hoursInput.focus();
+return;
+}
 
-  const entry = {
-    hours: hours.toLocaleString("de-CH", {
-      maximumFractionDigits: 2
-    }),
-    commission: commissionInput.value,
-    activity: activityInput.value.trim(),
-    date: new Date().toISOString()
-  };
+const entry = {
+hours: hours.toLocaleString("de-CH", {
+maximumFractionDigits: 2
+}),
+commission: commissionInput.value,
+activity: activityInput.value.trim(),
+date: new Date().toISOString()
+};
 
-  timeEntries.push(entry);
+timeEntries.push(entry);
 
-  saveEntries();
-  renderEntries();
+saveEntries();
+renderEntries();
 
-  hoursInput.value = "";
-  activityInput.value = "";
-  hoursInput.focus();
+hoursInput.value = "";
+activityInput.value = "";
+hoursInput.focus();
 });
 
 renderEntries();
