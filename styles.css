@@ -10,8 +10,14 @@
   --muted: #667085;
 
   --background: #eef4fb;
+  --background-top: #edf4fc;
+  --background-bottom: #f8fbff;
+
   --card: #ffffff;
   --border: #d9e2ef;
+
+  --input-background: #ffffff;
+  --input-text: #172033;
 
   --danger: #ffb4ad;
   --danger-dark: #a61b12;
@@ -20,6 +26,31 @@
     0 8px 24px rgba(18, 59, 122, 0.08);
 
   --radius: 18px;
+}
+
+
+/* =========================
+   NACHTMODUS
+========================= */
+
+body[data-theme="dark"] {
+  --text: #f3f6fb;
+  --muted: #aeb9c9;
+
+  --background: #0c1422;
+  --background-top: #101b2d;
+  --background-bottom: #0b1320;
+
+  --card: #172235;
+  --border: #2d3a4f;
+
+  --input-background: #111b2b;
+  --input-text: #f3f6fb;
+
+  --yellow-light: #3b3419;
+
+  --shadow:
+    0 8px 24px rgba(0, 0, 0, 0.24);
 }
 
 
@@ -48,8 +79,8 @@ body {
   background:
     linear-gradient(
       180deg,
-      #edf4fc 0%,
-      #f8fbff 100%
+      var(--background-top) 0%,
+      var(--background-bottom) 100%
     );
 
   color:
@@ -66,6 +97,10 @@ body {
 
   -webkit-font-smoothing:
     antialiased;
+
+  transition:
+    background 0.2s ease,
+    color 0.2s ease;
 }
 
 
@@ -82,6 +117,10 @@ button {
     transparent;
 }
 
+
+/* =========================
+   APP
+========================= */
 
 .app-shell {
   width:
@@ -164,6 +203,13 @@ h1 {
 }
 
 
+body[data-theme="dark"]
+h1 {
+  color:
+    #ffffff;
+}
+
+
 h2 {
   margin:
     4px 0 16px;
@@ -242,6 +288,10 @@ h3 {
     pointer;
 }
 
+
+/* =========================
+   CARDS
+========================= */
 
 .card {
   margin-bottom:
@@ -333,13 +383,19 @@ select {
     none;
 
   background:
-    #fff;
+    var(--input-background);
 
   color:
-    var(--text);
+    var(--input-text);
 
   font-size:
     16px;
+}
+
+
+input::placeholder {
+  color:
+    var(--muted);
 }
 
 
@@ -362,6 +418,13 @@ select:focus {
 input[type="date"] {
   color-scheme:
     light;
+}
+
+
+body[data-theme="dark"]
+input[type="date"] {
+  color-scheme:
+    dark;
 }
 
 
@@ -422,7 +485,8 @@ input[type="date"] {
 .export-button:active,
 .export-reset-button:active,
 .nav-item:active,
-.commission-summary-item:active {
+.commission-summary-item:active,
+.theme-button:active {
   transform:
     scale(0.98);
 }
@@ -491,7 +555,7 @@ input[type="date"] {
 
 
 /* =========================
-   EINGABE STATUS
+   STATUS
 ========================= */
 
 .entry-status {
@@ -885,7 +949,7 @@ strong {
 
 
 /* =========================
-   SWIPE LÖSCHEN
+   SWIPE
 ========================= */
 
 .swipe-entry {
@@ -1750,6 +1814,26 @@ strong {
    EINSTELLUNGEN
 ========================= */
 
+#settingsSection {
+  color:
+    var(--text);
+}
+
+
+#settingsSection
+h2 {
+  color:
+    var(--text);
+}
+
+
+#settingsSection
+label {
+  color:
+    var(--text);
+}
+
+
 .form-status {
   min-height:
     20px;
@@ -1769,6 +1853,100 @@ strong {
 
 
 /* =========================
+   TAG / NACHT
+========================= */
+
+.theme-settings {
+  margin-top:
+    24px;
+
+  padding-top:
+    18px;
+
+  border-top:
+    1px solid
+    var(--border);
+}
+
+
+.theme-title {
+  margin:
+    0 0 10px;
+
+  color:
+    var(--text);
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+}
+
+
+.theme-buttons {
+  display:
+    grid;
+
+  grid-template-columns:
+    1fr 1fr;
+
+  gap:
+    8px;
+}
+
+
+.theme-button {
+  min-height:
+    46px;
+
+  padding:
+    10px 12px;
+
+  border:
+    1px solid
+    var(--border);
+
+  border-radius:
+    12px;
+
+  background:
+    var(--card);
+
+  color:
+    var(--text);
+
+  font-size:
+    14px;
+
+  font-weight:
+    700;
+
+  cursor:
+    pointer;
+}
+
+
+.theme-button.selected {
+  border-color:
+    var(--yellow);
+
+  background:
+    var(--yellow-light);
+
+  color:
+    var(--text);
+}
+
+
+body[data-theme="dark"]
+.theme-button.selected {
+  color:
+    #fff;
+}
+
+
+/* =========================
    LEERZUSTAND
 ========================= */
 
@@ -1778,12 +1956,7 @@ strong {
 
   border:
     1px solid
-    rgba(
-      255,
-      255,
-      255,
-      0.2
-    );
+    var(--border);
 
   border-radius:
     13px;
@@ -1797,12 +1970,7 @@ strong {
     );
 
   color:
-    rgba(
-      255,
-      255,
-      255,
-      0.72
-    );
+    var(--muted);
 
   font-size:
     14px;
@@ -1855,12 +2023,7 @@ strong {
     18px;
 
   background:
-    rgba(
-      255,
-      255,
-      255,
-      0.96
-    );
+    var(--card);
 
   box-shadow:
     0 10px 30px
@@ -1933,6 +2096,13 @@ strong {
 
   color:
     var(--blue-900);
+}
+
+
+body[data-theme="dark"]
+.nav-item.active {
+  color:
+    #fff;
 }
 
 
@@ -2035,6 +2205,12 @@ strong {
   .export-reset-button {
     width:
       100%;
+  }
+
+
+  .theme-buttons {
+    grid-template-columns:
+      1fr;
   }
 
 }
