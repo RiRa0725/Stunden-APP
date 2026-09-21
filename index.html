@@ -260,13 +260,46 @@
         Kommissionen
       </h2>
 
-      <button
-        id="addCommission"
-        class="primary-button"
-        type="button"
-      >
-        + Kommission hinzufügen
-      </button>
+      <p class="commission-info">
+        Hier kannst du deine Kommissionen verwalten.
+      </p>
+
+
+      <!-- NEUE KOMMISSION -->
+
+      <div class="commission-form">
+
+        <label for="newCommission">
+          Neue Kommission
+        </label>
+
+        <div class="commission-input-row">
+
+          <input
+            id="newCommission"
+            type="text"
+            placeholder="z. B. Projekt 2026"
+            autocomplete="off"
+          >
+
+          <button
+            id="addCommission"
+            class="primary-button"
+            type="button"
+          >
+            Hinzufügen
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <!-- KOMMISSIONSLISTE -->
+
+      <p class="section-label">
+        Meine Kommissionen
+      </p>
 
       <div
         id="commissionList"
