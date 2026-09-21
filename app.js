@@ -68,84 +68,43 @@ const evaluationMonth =
   document.getElementById("evaluationMonth");
 
 const evaluationCommissions =
-  document.getElementById(
-    "evaluationCommissions"
-  );
-
-const commissionDetails =
-  document.getElementById(
-    "commissionDetails"
-  );
-
-const commissionDetailsTitle =
-  document.getElementById(
-    "commissionDetailsTitle"
-  );
-
-const commissionDetailsList =
-  document.getElementById(
-    "commissionDetailsList"
-  );
+  document.getElementById("evaluationCommissions");
 
 const addCommissionButton =
-  document.getElementById(
-    "addCommission"
-  );
+  document.getElementById("addCommission");
 
 const newCommissionInput =
-  document.getElementById(
-    "newCommission"
-  );
+  document.getElementById("newCommission");
 
 const commissionList =
-  document.getElementById(
-    "commissionList"
-  );
+  document.getElementById("commissionList");
 
 const exportDetails =
-  document.getElementById(
-    "exportDetails"
-  );
+  document.getElementById("exportDetails");
 
 const exportExcelButton =
-  document.getElementById(
-    "exportExcel"
-  );
+  document.getElementById("exportExcel");
 
 const resetExportFilterButton =
-  document.getElementById(
-    "resetExportFilter"
-  );
+  document.getElementById("resetExportFilter");
 
 const exportFromInput =
-  document.getElementById(
-    "exportFrom"
-  );
+  document.getElementById("exportFrom");
 
 const exportToInput =
-  document.getElementById(
-    "exportTo"
-  );
+  document.getElementById("exportTo");
 
 const userNameInput =
-  document.getElementById(
-    "userName"
-  );
+  document.getElementById("userName");
 
 const saveUserNameButton =
-  document.getElementById(
-    "saveUserName"
-  );
+  document.getElementById("saveUserName");
 
 const userNameStatus =
-  document.getElementById(
-    "userNameStatus"
-  );
+  document.getElementById("userNameStatus");
 
 const userNameDisplay =
-  document.getElementById(
-    "userNameDisplay"
-  );
+  document.getElementById("userNameDisplay");
 
 
 const ENTRIES_KEY =
@@ -161,8 +120,6 @@ const USER_NAME_KEY =
 let timeEntries = [];
 
 let commissions = [];
-
-let selectedCommission = null;
 
 let pendingEntry = null;
 
@@ -1055,17 +1012,6 @@ function showRenameForm(
 
 
       if (
-        selectedCommission ===
-        oldName
-      ) {
-
-        selectedCommission =
-          newName;
-
-      }
-
-
-      if (
         pendingEntry &&
         pendingEntry.commission ===
         oldName
@@ -1208,21 +1154,6 @@ function deleteCommission(
 
 
   if (
-    selectedCommission ===
-    commission
-  ) {
-
-    selectedCommission =
-      null;
-
-
-    commissionDetails.style.display =
-      "none";
-
-  }
-
-
-  if (
     pendingEntry &&
     pendingEntry.commission ===
     commission
@@ -1248,6 +1179,8 @@ function deleteCommission(
   renderCommissionSelect();
 
   renderCommissionList();
+
+  renderEvaluation();
 
 }
 
@@ -1657,7 +1590,7 @@ function renderCommissionEvaluation() {
     "";
 
 
-  const commissionTotals =
+  const commissionGroups =
     {};
 
 
@@ -1680,21 +1613,21 @@ function renderCommissionEvaluation() {
 
 
       if (
-        !commissionTotals[
+        !commissionGroups[
           commission
         ]
       ) {
 
-        commissionTotals[
+        commissionGroups[
           commission
-        ] = 0;
+        ] = [];
 
       }
 
 
-      commissionTotals[
+      commissionGroups[
         commission
-      ] += getHours(
+      ].push(
         entry
       );
 
@@ -1702,10 +1635,14 @@ function renderCommissionEvaluation() {
   );
 
 
-  if (
+  const commissionNames =
     Object.keys(
-      commissionTotals
-    ).length ===
+      commissionGroups
+    ).sort();
+
+
+  if (
+    commissionNames.length ===
     0
   ) {
 
@@ -1717,395 +1654,181 @@ function renderCommissionEvaluation() {
       "Noch keine Einträge vorhanden.";
 
 
-    commissionDetails.style.display =
-      "none";
-
-
     return;
 
   }
 
 
   evaluationCommissions.className =
-    "entries-list";
+    "commission-evaluation-list";
 
 
-  Object.keys(
-    commissionTotals
-  )
-    .sort()
-    .forEach(
-      function(commission) {
+  commissionNames.forEach(
+    function(commission) {
 
-        const item =
-          document.createElement(
-            "div"
+      const entries =
+        commissionGroups[
+          commission
+        ]
+          .map(
+            function(entry) {
+
+              return {
+
+                entry:
+                  entry,
+
+                originalIndex:
+                  timeEntries.indexOf(
+                    entry
+                  ),
+
+                date:
+                  getEntryDate(
+                    entry
+                  )
+
+              };
+
+            }
+          )
+          .sort(
+            function(a, b) {
+
+              const dateA =
+                a.date
+                  ? a.date.getTime()
+                  : 0;
+
+
+              const dateB =
+                b.date
+                  ? b.date.getTime()
+                  : 0;
+
+
+              return (
+                dateB -
+                dateA
+              );
+
+            }
           );
 
 
-        item.className =
-          "commission-summary-item";
-
-
-        const content =
-          document.createElement(
-            "div"
-          );
-
-
-        const name =
-          document.createElement(
-            "strong"
-          );
-
-
-        name.textContent =
-          commission;
-
-
-        const hours =
-          document.createElement(
-            "div"
-          );
-
-
-        hours.className =
-          "commission-summary-hours";
-
-
-        hours.textContent =
-          formatHours(
-            commissionTotals[
-              commission
-            ]
-          );
-
-
-        const button =
-          document.createElement(
-            "button"
-          );
-
-
-        button.type =
-          "button";
-
-
-        button.className =
-          "secondary-button";
-
-
-        button.textContent =
-          "Details anzeigen";
-
-
-        button.addEventListener(
-          "click",
-          function() {
-
-            showCommissionDetails(
-              commission
-            );
-
-          }
+      const commissionBlock =
+        document.createElement(
+          "section"
         );
 
 
-        content.appendChild(
-          name
+      commissionBlock.className =
+        "commission-block";
+
+
+      const commissionHeader =
+        document.createElement(
+          "div"
         );
 
 
-        content.appendChild(
-          hours
+      commissionHeader.className =
+        "commission-summary-item";
+
+
+      const content =
+        document.createElement(
+          "div"
         );
 
 
-        item.appendChild(
-          content
+      const name =
+        document.createElement(
+          "strong"
         );
 
 
-        item.appendChild(
-          button
+      name.textContent =
+        commission;
+
+
+      const hours =
+        document.createElement(
+          "div"
         );
 
 
-        evaluationCommissions.appendChild(
-          item
+      hours.className =
+        "commission-summary-hours";
+
+
+      hours.textContent =
+        formatHours(
+          calculateTotal(
+            entries.map(
+              function(detail) {
+
+                return detail.entry;
+
+              }
+            )
+          )
         );
 
-      }
-    );
+
+      content.appendChild(
+        name
+      );
 
 
-  if (
-    selectedCommission
-  ) {
-
-    showCommissionDetails(
-      selectedCommission
-    );
-
-  }
-
-}
+      content.appendChild(
+        hours
+      );
 
 
-/* =========================
-   KOMMISSIONSDETAILS
-========================= */
-
-function showCommissionDetails(
-  commission
-) {
-
-  selectedCommission =
-    commission;
+      commissionHeader.appendChild(
+        content
+      );
 
 
-  commissionDetailsTitle.textContent =
-    commission;
+      commissionBlock.appendChild(
+        commissionHeader
+      );
 
 
-  commissionDetailsList.innerHTML =
-    "";
+      const detailsList =
+        document.createElement(
+          "div"
+        );
 
 
-  const details =
-    timeEntries
-      .filter(
-        function(entry) {
-
-          return (
-            entry.commission ===
-            commission &&
-
-            entry.confirmed !==
-            false
-          );
-
-        }
-      )
-      .map(
-        function(entry) {
-
-          return {
-
-            entry:
-              entry,
-
-            originalIndex:
-              timeEntries.indexOf(
-                entry
-              ),
-
-            date:
-              getEntryDate(
-                entry
-              )
-
-          };
-
-        }
-      )
-      .sort(
-        function(a, b) {
-
-          const dateA =
-            a.date
-              ? a.date.getTime()
-              : 0;
+      detailsList.className =
+        "commission-details-list swipe-list";
 
 
-          const dateB =
-            b.date
-              ? b.date.getTime()
-              : 0;
+      entries.forEach(
+        function(detail) {
 
-
-          return (
-            dateB -
-            dateA
+          createSwipeEntry(
+            detail,
+            detailsList
           );
 
         }
       );
 
 
-  if (
-    details.length ===
-    0
-  ) {
-
-    commissionDetailsList.className =
-      "empty-state";
+      commissionBlock.appendChild(
+        detailsList
+      );
 
 
-    commissionDetailsList.textContent =
-      "Keine Details vorhanden.";
-
-
-    commissionDetails.style.display =
-      "";
-
-
-    return;
-
-  }
-
-
-  commissionDetailsList.className =
-    "swipe-list";
-
-
-  /*
-    Der Hinweis ist zunächst unsichtbar.
-    Er wird erst eingeblendet, sobald
-    ein Eintrag tatsächlich nach links
-    gewischt wurde.
-  */
-
-  const swipeHint =
-    document.createElement(
-      "small"
-    );
-
-
-  swipeHint.className =
-    "swipe-hint";
-
-
-  swipeHint.textContent =
-    "Nach links wischen, um einen falschen Eintrag zu löschen.";
-
-
-  details.forEach(
-    function(detail) {
-
-      createSwipeEntry(
-        detail,
-        function() {
-
-          swipeHint.classList.add(
-            "visible"
-          );
-
-        }
+      evaluationCommissions.appendChild(
+        commissionBlock
       );
 
     }
   );
-
-
-  commissionDetailsList.appendChild(
-    swipeHint
-  );
-
-
-  const detailEntries =
-    details.map(
-      function(detail) {
-
-        return detail.entry;
-
-      }
-    );
-
-
-  const detailTotal =
-    calculateTotal(
-      detailEntries
-    );
-
-
-  const totalItem =
-    document.createElement(
-      "div"
-    );
-
-
-  totalItem.className =
-    "entry total-entry";
-
-
-  const totalLabel =
-    document.createElement(
-      "strong"
-    );
-
-
-  totalLabel.textContent =
-    "Gesamt";
-
-
-  const totalValue =
-    document.createElement(
-      "div"
-    );
-
-
-  totalValue.textContent =
-    formatHours(
-      detailTotal
-    );
-
-
-  totalItem.appendChild(
-    totalLabel
-  );
-
-
-  totalItem.appendChild(
-    totalValue
-  );
-
-
-  commissionDetailsList.appendChild(
-    totalItem
-  );
-
-
-  const closeButton =
-    document.createElement(
-      "button"
-    );
-
-
-  closeButton.type =
-    "button";
-
-
-  closeButton.className =
-    "text-button";
-
-
-  closeButton.textContent =
-    "Details schließen";
-
-
-  closeButton.addEventListener(
-    "click",
-    function() {
-
-      selectedCommission =
-        null;
-
-
-      commissionDetails.style.display =
-        "none";
-
-    }
-  );
-
-
-  commissionDetailsList.appendChild(
-    closeButton
-  );
-
-
-  commissionDetails.style.display =
-    "";
 
 }
 
@@ -2116,7 +1839,7 @@ function showCommissionDetails(
 
 function createSwipeEntry(
   detail,
-  onSwiped
+  parent
 ) {
 
   const wrapper =
@@ -2145,6 +1868,12 @@ function createSwipeEntry(
 
   deleteAction.textContent =
     "Löschen";
+
+
+  deleteAction.setAttribute(
+    "aria-label",
+    "Eintrag löschen"
+  );
 
 
   const content =
@@ -2237,7 +1966,7 @@ function createSwipeEntry(
   );
 
 
-  commissionDetailsList.appendChild(
+  parent.appendChild(
     wrapper
   );
 
@@ -2357,16 +2086,6 @@ function createSwipeEntry(
         content.style.transform =
           "translateX(-90px)";
 
-
-        if (
-          typeof onSwiped ===
-          "function"
-        ) {
-
-          onSwiped();
-
-        }
-
       } else {
 
         content.classList.remove(
@@ -2440,17 +2159,6 @@ function deleteTimeEntry(
 
 
   renderEvaluation();
-
-
-  if (
-    selectedCommission
-  ) {
-
-    showCommissionDetails(
-      selectedCommission
-    );
-
-  }
 
 }
 
@@ -3129,14 +2837,6 @@ function showEvaluation() {
 
   exportDetails.open =
     false;
-
-
-  commissionDetails.style.display =
-    "none";
-
-
-  selectedCommission =
-    null;
 
 
   renderEvaluation();
