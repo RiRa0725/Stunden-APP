@@ -1409,6 +1409,7 @@ function renderEvaluation() {
           date &&
           date.getFullYear() ===
             now.getFullYear() &&
+
           date.getMonth() ===
             now.getMonth()
         );
@@ -1584,11 +1585,6 @@ function renderCommissionEvaluation() {
         "commission-block";
 
 
-      /*
-        Die Kommission ist komplett
-        anklickbar.
-      */
-
       const commissionHeader =
         document.createElement(
           "button"
@@ -1682,10 +1678,6 @@ function renderCommissionEvaluation() {
       );
 
 
-      /*
-        Details werden ausdrücklich versteckt.
-      */
-
       const detailsList =
         document.createElement(
           "div"
@@ -1716,11 +1708,6 @@ function renderCommissionEvaluation() {
         detailsList
       );
 
-
-      /*
-        Klick auf Kommission:
-        Details ein- oder ausblenden.
-      */
 
       commissionHeader.addEventListener(
         "click",
@@ -2233,6 +2220,11 @@ function exportToExcel() {
   }
 
 
+  /*
+    Nur quittierte Einträge
+    innerhalb des gewählten Zeitraums.
+  */
+
   const filteredEntries =
     confirmedEntries.filter(
       function(entry) {
@@ -2252,22 +2244,34 @@ function exportToExcel() {
         }
 
 
-        const entryDateString =
-          entryDate.getFullYear() +
-          "-" +
+        const year =
+          entryDate.getFullYear();
+
+
+        const month =
           String(
             entryDate.getMonth() + 1
           ).padStart(
             2,
             "0"
-          ) +
-          "-" +
+          );
+
+
+        const day =
           String(
             entryDate.getDate()
           ).padStart(
             2,
             "0"
           );
+
+
+        const entryDateString =
+          year +
+          "-" +
+          month +
+          "-" +
+          day;
 
 
         if (
@@ -2311,6 +2315,57 @@ function exportToExcel() {
   }
 
 
+  /*
+    Nach Datum sortieren.
+    Ältestes Datum zuerst.
+  */
+
+  const sortedEntries =
+    [...filteredEntries].sort(
+      function(a, b) {
+
+        const dateA =
+          getEntryDate(
+            a
+          );
+
+
+        const dateB =
+          getEntryDate(
+            b
+          );
+
+
+        const timeA =
+          dateA
+            ? dateA.getTime()
+            : 0;
+
+
+        const timeB =
+          dateB
+            ? dateB.getTime()
+            : 0;
+
+
+        return (
+          timeA -
+          timeB
+        );
+
+      }
+    );
+
+
+  /*
+    CSV für Excel.
+    Genau vier Spalten:
+    Datum
+    Kommission
+    Tätigkeit
+    Stunden
+  */
+
   function escapeCSV(
     value
   ) {
@@ -2345,120 +2400,20 @@ function exportToExcel() {
   }
 
 
-  const sortedEntries =
-    [...filteredEntries].sort(
-      function(a, b) {
-
-        const dateA =
-          getEntryDate(
-            a
-          );
-
-
-        const dateB =
-          getEntryDate(
-            b
-          );
-
-
-        const timeA =
-          dateA
-            ? dateA.getTime()
-            : 0;
-
-
-        const timeB =
-          dateB
-            ? dateB.getTime()
-            : 0;
-
-
-        return (
-          timeB -
-          timeA
-        );
-
-      }
-    );
-
-
-  const userName =
-    userNameInput.value.trim();
-
-
   const rows =
     [];
 
 
-  if (
-    userName
-  ) {
-
-    rows.push(
-      [
-        "Mitarbeiter",
-        userName
-      ]
-        .map(
-          escapeCSV
-        )
-        .join(";")
-    );
-
-  }
-
-
-  if (
-    fromValue ||
-    toValue
-  ) {
-
-    const fromText =
-      fromValue
-        ? formatDate(
-            parseDateString(
-              fromValue
-            )
-          )
-        : "Anfang";
-
-
-    const toText =
-      toValue
-        ? formatDate(
-            parseDateString(
-              toValue
-            )
-          )
-        : "heute";
-
-
-    rows.push(
-      [
-        "Zeitraum",
-        fromText,
-        "bis",
-        toText
-      ]
-        .map(
-          escapeCSV
-        )
-        .join(";")
-    );
-
-  }
-
-
-  rows.push("");
-
+  /*
+    Überschrift
+  */
 
   rows.push(
     [
       "Datum",
       "Kommission",
       "Tätigkeit",
-      "Stunden",
-      "Status"
+      "Stunden"
     ]
       .map(
         escapeCSV
@@ -2466,6 +2421,10 @@ function exportToExcel() {
       .join(";")
   );
 
+
+  /*
+    Zeiteinträge
+  */
 
   sortedEntries.forEach(
     function(entry) {
@@ -2484,13 +2443,24 @@ function exportToExcel() {
           : "";
 
 
+      const hours =
+        getHours(
+          entry
+        );
+
+
       rows.push(
         [
           dateText,
           entry.commission || "",
           entry.activity || "",
-          entry.hours || "",
-          "Quittiert"
+          hours.toLocaleString(
+            "de-CH",
+            {
+              maximumFractionDigits:
+                2
+            }
+          )
         ]
           .map(
             escapeCSV
@@ -2501,6 +2471,10 @@ function exportToExcel() {
     }
   );
 
+
+  /*
+    Gesamtzeile
+  */
 
   const total =
     calculateTotal(
@@ -2519,10 +2493,10 @@ function exportToExcel() {
       total.toLocaleString(
         "de-CH",
         {
-          maximumFractionDigits: 2
+          maximumFractionDigits:
+            2
         }
-      ),
-      ""
+      )
     ]
       .map(
         escapeCSV
@@ -2530,6 +2504,12 @@ function exportToExcel() {
       .join(";")
   );
 
+
+  /*
+    UTF-8 BOM sorgt dafür,
+    dass Umlaute in Excel korrekt
+    dargestellt werden.
+  */
 
   const csv =
     "\uFEFF" +
@@ -2549,7 +2529,7 @@ function exportToExcel() {
 
 
   let filename =
-    "Ravo_Export_" +
+    "Ravo_Excel_" +
     getTodayString();
 
 
@@ -2559,7 +2539,7 @@ function exportToExcel() {
   ) {
 
     filename =
-      "Ravo_Export_" +
+      "Ravo_Excel_" +
       fromValue +
       "_bis_" +
       toValue;
@@ -2569,7 +2549,7 @@ function exportToExcel() {
   ) {
 
     filename =
-      "Ravo_Export_ab_" +
+      "Ravo_Excel_ab_" +
       fromValue;
 
   } else if (
@@ -2577,7 +2557,7 @@ function exportToExcel() {
   ) {
 
     filename =
-      "Ravo_Export_bis_" +
+      "Ravo_Excel_bis_" +
       toValue;
 
   }
@@ -2598,6 +2578,11 @@ function exportToExcel() {
     );
 
 
+  /*
+    Auf dem iPhone direkt
+    über das Teilen-Menü.
+  */
+
   if (
     navigator.share &&
     navigator.canShare &&
@@ -2609,12 +2594,13 @@ function exportToExcel() {
     navigator.share(
       {
         title:
-          "Ravo Export",
+          "Ravo Excel Export",
 
         text:
-          "Quittierte Zeiterfassung aus Ravo",
+          "Zeiterfassung aus Ravo",
 
-        files: [file]
+        files:
+          [file]
 
       }
     ).catch(
