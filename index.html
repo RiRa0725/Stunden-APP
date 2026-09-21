@@ -53,6 +53,7 @@
     <header class="topbar">
 
       <div>
+
         <p class="eyebrow">
           Zeiterfassung
         </p>
@@ -66,6 +67,7 @@
           class="user-name-display"
         >
         </div>
+
       </div>
 
       <button
@@ -196,7 +198,7 @@
 
     <section
       id="evaluationSection"
-      class="card"
+      class="card evaluation-card"
       style="display: none;"
     >
 
@@ -252,74 +254,6 @@
       </div>
 
 
-      <!-- EXPORT -->
-
-      <div class="export-section">
-
-        <p class="section-label">
-          Export
-        </p>
-
-        <div class="export-filter">
-
-          <div class="filter-field">
-
-            <label for="exportFrom">
-              Von
-            </label>
-
-            <input
-              id="exportFrom"
-              type="date"
-            >
-
-          </div>
-
-
-          <div class="filter-field">
-
-            <label for="exportTo">
-              Bis
-            </label>
-
-            <input
-              id="exportTo"
-              type="date"
-            >
-
-          </div>
-
-        </div>
-
-
-        <div class="export-actions">
-
-          <button
-            id="exportExcel"
-            class="secondary-button"
-            type="button"
-          >
-            📥 Excel exportieren
-          </button>
-
-          <button
-            id="resetExportFilter"
-            class="text-button"
-            type="button"
-          >
-            Filter zurücksetzen
-          </button>
-
-        </div>
-
-
-        <small>
-          Ohne Datumsfilter werden alle gespeicherten Einträge exportiert.
-        </small>
-
-      </div>
-
-
       <!-- KOMMISSIONEN -->
 
       <p class="section-label">
@@ -357,6 +291,88 @@
 
       </div>
 
+
+      <!-- EXPORT GANZ UNTEN -->
+
+      <details
+        id="exportDetails"
+        class="export-details"
+      >
+
+        <summary>
+          📥 Export
+        </summary>
+
+
+        <div class="export-content">
+
+          <p class="export-description">
+            Zeiteinträge als Excel-Datei exportieren.
+          </p>
+
+
+          <div class="export-filter">
+
+            <div class="filter-field">
+
+              <label for="exportFrom">
+                Von
+              </label>
+
+              <input
+                id="exportFrom"
+                type="date"
+              >
+
+            </div>
+
+
+            <div class="filter-field">
+
+              <label for="exportTo">
+                Bis
+              </label>
+
+              <input
+                id="exportTo"
+                type="date"
+              >
+
+            </div>
+
+          </div>
+
+
+          <div class="export-actions">
+
+            <button
+              id="exportExcel"
+              class="export-button"
+              type="button"
+            >
+              Excel exportieren
+            </button>
+
+
+            <button
+              id="resetExportFilter"
+              class="export-reset-button"
+              type="button"
+            >
+              Filter zurücksetzen
+            </button>
+
+          </div>
+
+
+          <small>
+            Ohne Datumsfilter werden alle gespeicherten Einträge exportiert.
+          </small>
+
+        </div>
+
+      </details>
+
     </section>
 
 
@@ -364,13 +380,14 @@
 
     <section
       id="commissionSection"
-      class="card"
+      class="card commission-card"
       style="display: none;"
     >
 
       <p class="section-label">
         Verwaltung
       </p>
+
 
       <h2>
         Kommissionen
@@ -447,6 +464,7 @@
         Name
       </label>
 
+
       <input
         id="userName"
         type="text"
@@ -485,6 +503,7 @@
         class="nav-item active"
         type="button"
       >
+
         <span class="nav-icon">
           ⏱️
         </span>
@@ -492,6 +511,7 @@
         <span>
           Erfassung
         </span>
+
       </button>
 
 
@@ -500,6 +520,7 @@
         class="nav-item"
         type="button"
       >
+
         <span class="nav-icon">
           📊
         </span>
@@ -507,6 +528,7 @@
         <span>
           Auswertung
         </span>
+
       </button>
 
 
@@ -515,6 +537,7 @@
         class="nav-item"
         type="button"
       >
+
         <span class="nav-icon">
           🏛️
         </span>
@@ -522,6 +545,7 @@
         <span>
           Kommissionen
         </span>
+
       </button>
 
     </nav>
