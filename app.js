@@ -14,6 +14,7 @@ entries.textContent = "Noch keine Einträge vorhanden.";
 } else {
 entries.className = "entries-list";
 
+```
 entries.innerHTML = timeEntries.map((entry) => `
   <div class="entry">
     <div>
@@ -23,17 +24,19 @@ entries.innerHTML = timeEntries.map((entry) => `
     </div>
   </div>
 `).join("");
+```
 
 }
 
 entryCount.textContent =
-${timeEntries.length} ${timeEntries.length === 1 ? "Eintrag" : "Einträge"};
+`${timeEntries.length} ${timeEntries.length === 1 ? "Eintrag" : "Einträge"}`;
 }
 
 button.addEventListener("click", () => {
-const hours = parseFloat(hoursInput.value.replace(",", "."));
+const value = hoursInput.value.trim().replace(",", ".");
+const hours = Number(value);
 
-if (!hours || hours <= 0) {
+if (!Number.isFinite(hours) || hours <= 0) {
 alert("Bitte gib eine gültige Stundenzahl ein.");
 hoursInput.focus();
 return;
