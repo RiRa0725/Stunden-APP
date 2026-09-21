@@ -70,7 +70,6 @@
 
       </div>
 
-
       <button
         id="settingsButton"
         class="icon-button"
@@ -99,7 +98,6 @@
         Datum
       </label>
 
-
       <input
         id="entryDate"
         type="date"
@@ -110,7 +108,6 @@
       <label for="hours">
         Stunden
       </label>
-
 
       <input
         id="hours"
@@ -125,7 +122,6 @@
         Kommission
       </label>
 
-
       <select id="commission">
       </select>
 
@@ -133,7 +129,6 @@
       <label for="activity">
         Tätigkeit
       </label>
-
 
       <input
         id="activity"
@@ -143,12 +138,14 @@
       >
 
 
+      <!-- EINTRAG VORBEREITEN -->
+
       <button
         id="addEntry"
         class="primary-button"
         type="button"
       >
-        Stunden quittieren
+        Eintragen
       </button>
 
 
@@ -157,6 +154,107 @@
         class="entry-status"
       >
       </p>
+
+
+      <!-- ZUSAMMENFASSUNG -->
+
+      <div
+        id="entrySummary"
+        class="entry-summary"
+        style="display: none;"
+      >
+
+        <div class="summary-header">
+
+          <div>
+
+            <p class="section-label">
+              Bitte prüfen
+            </p>
+
+            <h3>
+              Zusammenfassung
+            </h3>
+
+          </div>
+
+          <span class="pending-badge">
+            Noch nicht gespeichert
+          </span>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Datum
+          </span>
+
+          <strong id="summaryDate">
+          </strong>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Stunden
+          </span>
+
+          <strong id="summaryHours">
+          </strong>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Kommission
+          </span>
+
+          <strong id="summaryCommission">
+          </strong>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Tätigkeit
+          </span>
+
+          <strong id="summaryActivity">
+          </strong>
+
+        </div>
+
+
+        <div class="summary-actions">
+
+          <button
+            id="editEntry"
+            class="secondary-button"
+            type="button"
+          >
+            Ändern
+          </button>
+
+
+          <button
+            id="confirmEntry"
+            class="confirm-button"
+            type="button"
+          >
+            ✓ Quittieren und speichern
+          </button>
+
+        </div>
+
+      </div>
 
     </section>
 
@@ -225,7 +323,6 @@
               Diese Woche
             </span>
 
-
             <strong id="evaluationWeek">
               0 Stunden
             </strong>
@@ -238,7 +335,6 @@
             <span>
               Diesen Monat
             </span>
-
 
             <strong id="evaluationMonth">
               0 Stunden
@@ -278,7 +374,6 @@
                 Von
               </label>
 
-
               <input
                 id="exportFrom"
                 type="date"
@@ -292,7 +387,6 @@
               <label for="exportTo">
                 Bis
               </label>
-
 
               <input
                 id="exportTo"
