@@ -1,7 +1,14 @@
-const hoursInput = document.getElementById("hours");
-const commissionInput = document.getElementById("commission");
-const activityInput = document.getElementById("activity");
-const addEntryButton = document.getElementById("addEntry");
+const hoursInput =
+  document.getElementById("hours");
+
+const commissionInput =
+  document.getElementById("commission");
+
+const activityInput =
+  document.getElementById("activity");
+
+const addEntryButton =
+  document.getElementById("addEntry");
 
 const entriesContainer =
   document.getElementById("entries");
@@ -47,6 +54,21 @@ const evaluationCommissions =
     "evaluationCommissions"
   );
 
+const commissionDetails =
+  document.getElementById(
+    "commissionDetails"
+  );
+
+const commissionDetailsTitle =
+  document.getElementById(
+    "commissionDetailsTitle"
+  );
+
+const commissionDetailsList =
+  document.getElementById(
+    "commissionDetailsList"
+  );
+
 const addCommissionButton =
   document.getElementById(
     "addCommission"
@@ -71,7 +93,10 @@ const COMMISSIONS_KEY =
 
 
 let timeEntries = [];
+
 let commissions = [];
+
+let selectedCommission = null;
 
 
 /* =========================
@@ -79,32 +104,48 @@ let commissions = [];
 ========================= */
 
 try {
+
   const savedEntries =
     localStorage.getItem(
       ENTRIES_KEY
     );
 
   if (savedEntries) {
+
     timeEntries =
-      JSON.parse(savedEntries);
+      JSON.parse(
+        savedEntries
+      );
+
   }
+
 } catch (error) {
+
   timeEntries = [];
+
 }
 
 
 try {
+
   const savedCommissions =
     localStorage.getItem(
       COMMISSIONS_KEY
     );
 
   if (savedCommissions) {
+
     commissions =
-      JSON.parse(savedCommissions);
+      JSON.parse(
+        savedCommissions
+      );
+
   }
+
 } catch (error) {
+
   commissions = [];
+
 }
 
 
@@ -122,6 +163,7 @@ if (commissions.length === 0) {
   ];
 
   saveCommissions();
+
 }
 
 
@@ -133,7 +175,9 @@ function saveEntries() {
 
   localStorage.setItem(
     ENTRIES_KEY,
-    JSON.stringify(timeEntries)
+    JSON.stringify(
+      timeEntries
+    )
   );
 
 }
@@ -143,7 +187,9 @@ function saveCommissions() {
 
   localStorage.setItem(
     COMMISSIONS_KEY,
-    JSON.stringify(commissions)
+    JSON.stringify(
+      commissions
+    )
   );
 
 }
@@ -166,19 +212,27 @@ function getHours(entry) {
 function getEntryDate(entry) {
 
   if (!entry.date) {
+
     return null;
+
   }
 
   const date =
-    new Date(entry.date);
+    new Date(
+      entry.date
+    );
+
 
   if (
     Number.isNaN(
       date.getTime()
     )
   ) {
+
     return null;
+
   }
+
 
   return date;
 
@@ -204,7 +258,9 @@ function isSameDay(
 }
 
 
-function getStartOfWeek(date) {
+function getStartOfWeek(
+  date
+) {
 
   const start =
     new Date(date);
@@ -212,15 +268,18 @@ function getStartOfWeek(date) {
   const day =
     start.getDay();
 
+
   const difference =
     day === 0
       ? -6
       : 1 - day;
 
+
   start.setDate(
     start.getDate() +
       difference
   );
+
 
   start.setHours(
     0,
@@ -229,12 +288,15 @@ function getStartOfWeek(date) {
     0
   );
 
+
   return start;
 
 }
 
 
-function getStartOfMonth(date) {
+function getStartOfMonth(
+  date
+) {
 
   return new Date(
     date.getFullYear(),
@@ -249,7 +311,9 @@ function getStartOfMonth(date) {
 }
 
 
-function formatHours(hours) {
+function formatHours(
+  hours
+) {
 
   return (
     hours.toLocaleString(
@@ -264,32 +328,77 @@ function formatHours(hours) {
 }
 
 
+function formatDate(
+  date
+) {
+
+  return date.toLocaleDateString(
+    "de-CH",
+    {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+function calculateTotal(
+  entries
+) {
+
+  let total = 0;
+
+
+  entries.forEach(
+    function(entry) {
+
+      total +=
+        getHours(entry);
+
+    }
+  );
+
+
+  return total;
+
+}
+
+
 /* =========================
    KOMMISSIONS-AUSWAHL
 ========================= */
 
 function renderCommissionSelect() {
 
-  commissionInput.innerHTML = "";
+  commissionInput.innerHTML =
+    "";
 
 
-  if (commissions.length === 0) {
+  if (
+    commissions.length === 0
+  ) {
 
     const option =
       document.createElement(
         "option"
       );
 
+
     option.value = "";
 
     option.textContent =
       "Keine Kommission vorhanden";
 
+
     commissionInput.appendChild(
       option
     );
 
+
     return;
+
   }
 
 
@@ -301,11 +410,13 @@ function renderCommissionSelect() {
           "option"
         );
 
+
       option.value =
         commission;
 
       option.textContent =
         commission;
+
 
       commissionInput.appendChild(
         option
@@ -318,15 +429,18 @@ function renderCommissionSelect() {
 
 
 /* =========================
-   KOMMISSIONEN ANZEIGEN
+   KOMMISSIONEN VERWALTEN
 ========================= */
 
 function renderCommissionList() {
 
-  commissionList.innerHTML = "";
+  commissionList.innerHTML =
+    "";
 
 
-  if (commissions.length === 0) {
+  if (
+    commissions.length === 0
+  ) {
 
     commissionList.className =
       "empty-state";
@@ -334,7 +448,9 @@ function renderCommissionList() {
     commissionList.textContent =
       "Noch keine Kommissionen vorhanden.";
 
+
     return;
+
   }
 
 
@@ -343,7 +459,10 @@ function renderCommissionList() {
 
 
   commissions.forEach(
-    function(commission, index) {
+    function(
+      commission,
+      index
+    ) {
 
       const item =
         document.createElement(
@@ -463,11 +582,14 @@ function addCommission() {
     newCommissionInput.value.trim();
 
 
-  if (name === "") {
+  if (
+    name === ""
+  ) {
 
     newCommissionInput.focus();
 
     return;
+
   }
 
 
@@ -493,6 +615,7 @@ function addCommission() {
     newCommissionInput.focus();
 
     return;
+
   }
 
 
@@ -508,7 +631,8 @@ function addCommission() {
   renderCommissionList();
 
 
-  newCommissionInput.value = "";
+  newCommissionInput.value =
+    "";
 
   newCommissionInput.focus();
 
@@ -516,7 +640,7 @@ function addCommission() {
 
 
 /* =========================
-   UMBENENNEN
+   KOMMISSION UMBENENNEN
 ========================= */
 
 function showRenameForm(
@@ -525,7 +649,8 @@ function showRenameForm(
   index
 ) {
 
-  item.innerHTML = "";
+  item.innerHTML =
+    "";
 
 
   const input =
@@ -533,7 +658,8 @@ function showRenameForm(
       "input"
     );
 
-  input.type = "text";
+  input.type =
+    "text";
 
   input.value =
     oldName;
@@ -583,17 +709,23 @@ function showRenameForm(
         input.value.trim();
 
 
-      if (newName === "") {
+      if (
+        newName === ""
+      ) {
 
         input.focus();
 
         return;
+
       }
 
 
       const exists =
         commissions.some(
-          function(commission, i) {
+          function(
+            commission,
+            i
+          ) {
 
             return (
               i !== index &&
@@ -614,13 +746,9 @@ function showRenameForm(
         input.focus();
 
         return;
+
       }
 
-
-      /*
-        Bestehende Zeiteinträge
-        ebenfalls umbenennen.
-      */
 
       timeEntries.forEach(
         function(entry) {
@@ -643,13 +771,28 @@ function showRenameForm(
         newName;
 
 
+      if (
+        selectedCommission ===
+        oldName
+      ) {
+
+        selectedCommission =
+          newName;
+
+      }
+
+
       saveCommissions();
+
       saveEntries();
 
 
       renderCommissionSelect();
+
       renderCommissionList();
+
       renderEntries();
+
       renderEvaluation();
 
     }
@@ -666,12 +809,30 @@ function showRenameForm(
   );
 
 
+  input.addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        saveButton.click();
+
+      }
+
+    }
+  );
+
+
   item.appendChild(
     input
   );
 
   item.appendChild(
-    document.createElement("br")
+    document.createElement(
+      "br"
+    )
   );
 
   item.appendChild(
@@ -689,10 +850,12 @@ function showRenameForm(
 
 
 /* =========================
-   LÖSCHEN
+   KOMMISSION LÖSCHEN
 ========================= */
 
-function deleteCommission(index) {
+function deleteCommission(
+  index
+) {
 
   const commission =
     commissions[index];
@@ -718,7 +881,7 @@ function deleteCommission(index) {
   if (used) {
 
     message =
-      "Diese Kommission wird bereits bei Zeiteinträgen verwendet. Trotzdem löschen?";
+      "Diese Kommission wird bereits bei Zeiteinträgen verwendet. Die bisherigen Einträge bleiben erhalten. Trotzdem löschen?";
 
   }
 
@@ -730,7 +893,9 @@ function deleteCommission(index) {
 
 
   if (!confirmed) {
+
     return;
+
   }
 
 
@@ -738,6 +903,20 @@ function deleteCommission(index) {
     index,
     1
   );
+
+
+  if (
+    selectedCommission ===
+    commission
+  ) {
+
+    selectedCommission =
+      null;
+
+    commissionDetails.style.display =
+      "none";
+
+  }
 
 
   saveCommissions();
@@ -768,11 +947,15 @@ function renderEntries() {
       function(entry) {
 
         const date =
-          getEntryDate(entry);
+          getEntryDate(
+            entry
+          );
 
 
         if (!date) {
+
           return false;
+
         }
 
 
@@ -786,7 +969,8 @@ function renderEntries() {
 
 
   if (
-    todayEntries.length === 0
+    todayEntries.length ===
+    0
   ) {
 
     entriesContainer.className =
@@ -866,29 +1050,18 @@ function renderEntries() {
 
 
   entryCount.textContent =
-    todayEntries.length === 1
+    todayEntries.length ===
+    1
       ? "1 Eintrag"
       : todayEntries.length +
         " Einträge";
 
 
-  let total =
-    0;
-
-
-  todayEntries.forEach(
-    function(entry) {
-
-      total +=
-        getHours(entry);
-
-    }
-  );
-
-
   totalHours.textContent =
     formatHours(
-      total
+      calculateTotal(
+        todayEntries
+      )
     );
 
 }
@@ -921,7 +1094,9 @@ function renderEvaluation() {
       function(entry) {
 
         const date =
-          getEntryDate(entry);
+          getEntryDate(
+            entry
+          );
 
 
         return (
@@ -941,7 +1116,9 @@ function renderEvaluation() {
       function(entry) {
 
         const date =
-          getEntryDate(entry);
+          getEntryDate(
+            entry
+          );
 
 
         return (
@@ -958,7 +1135,9 @@ function renderEvaluation() {
       function(entry) {
 
         const date =
-          getEntryDate(entry);
+          getEntryDate(
+            entry
+          );
 
 
         return (
@@ -997,41 +1176,13 @@ function renderEvaluation() {
     );
 
 
-  /*
-    HIER:
-    Stunden pro Kommission
-    werden über ALLE gespeicherten
-    Einträge kumuliert.
-  */
-
   renderCommissionEvaluation();
 
 }
 
 
-function calculateTotal(entries) {
-
-  let total =
-    0;
-
-
-  entries.forEach(
-    function(entry) {
-
-      total +=
-        getHours(entry);
-
-    }
-  );
-
-
-  return total;
-
-}
-
-
 /* =========================
-   AUSWERTUNG PRO KOMMISSION
+   KOMMISSIONEN
    KUMULIERT
 ========================= */
 
@@ -1041,29 +1192,9 @@ function renderCommissionEvaluation() {
     "";
 
 
-  if (
-    timeEntries.length === 0
-  ) {
-
-    evaluationCommissions.className =
-      "empty-state";
-
-    evaluationCommissions.textContent =
-      "Noch keine Einträge vorhanden.";
-
-    return;
-  }
-
-
   const commissionTotals =
     {};
 
-
-  /*
-    Jede gespeicherte Stunde
-    wird der jeweiligen
-    Kommission zugerechnet.
-  */
 
   timeEntries.forEach(
     function(entry) {
@@ -1088,10 +1219,32 @@ function renderCommissionEvaluation() {
 
       commissionTotals[
         commission
-      ] += getHours(entry);
+      ] += getHours(
+        entry
+      );
 
     }
   );
+
+
+  if (
+    Object.keys(
+      commissionTotals
+    ).length === 0
+  ) {
+
+    evaluationCommissions.className =
+      "empty-state";
+
+    evaluationCommissions.textContent =
+      "Noch keine Einträge vorhanden.";
+
+    commissionDetails.style.display =
+      "none";
+
+    return;
+
+  }
 
 
   evaluationCommissions.className =
@@ -1110,8 +1263,25 @@ function renderCommissionEvaluation() {
             "div"
           );
 
+
         item.className =
           "entry";
+
+
+        item.setAttribute(
+          "role",
+          "button"
+        );
+
+
+        item.setAttribute(
+          "tabindex",
+          "0"
+        );
+
+
+        item.style.cursor =
+          "pointer";
 
 
         const content =
@@ -1142,6 +1312,15 @@ function renderCommissionEvaluation() {
           );
 
 
+        const hint =
+          document.createElement(
+            "small"
+          );
+
+        hint.textContent =
+          "Tippen für Details";
+
+
         content.appendChild(
           name
         );
@@ -1150,9 +1329,46 @@ function renderCommissionEvaluation() {
           hours
         );
 
+        content.appendChild(
+          hint
+        );
+
 
         item.appendChild(
           content
+        );
+
+
+        item.addEventListener(
+          "click",
+          function() {
+
+            showCommissionDetails(
+              commission
+            );
+
+          }
+        );
+
+
+        item.addEventListener(
+          "keydown",
+          function(event) {
+
+            if (
+              event.key === "Enter" ||
+              event.key === " "
+            ) {
+
+              event.preventDefault();
+
+              showCommissionDetails(
+                commission
+              );
+
+            }
+
+          }
         );
 
 
@@ -1162,6 +1378,254 @@ function renderCommissionEvaluation() {
 
       }
     );
+
+
+  /*
+    Wenn die vorher ausgewählte
+    Kommission noch existiert,
+    Details erneut anzeigen.
+  */
+
+  if (
+    selectedCommission &&
+    commissionTotals[
+      selectedCommission
+    ] !== undefined
+  ) {
+
+    showCommissionDetails(
+      selectedCommission
+    );
+
+  } else {
+
+    commissionDetails.style.display =
+      "none";
+
+  }
+
+}
+
+
+/* =========================
+   KOMMISSIONSDETAILS
+========================= */
+
+function showCommissionDetails(
+  commission
+) {
+
+  selectedCommission =
+    commission;
+
+
+  commissionDetailsTitle.textContent =
+    commission;
+
+
+  commissionDetailsList.innerHTML =
+    "";
+
+
+  const details =
+    timeEntries
+      .filter(
+        function(entry) {
+
+          return (
+            entry.commission ===
+            commission
+          );
+
+        }
+      )
+      .map(
+        function(entry) {
+
+          return {
+            entry: entry,
+            date: getEntryDate(entry)
+          };
+
+        }
+      )
+      .sort(
+        function(a, b) {
+
+          const dateA =
+            a.date
+              ? a.date.getTime()
+              : 0;
+
+          const dateB =
+            b.date
+              ? b.date.getTime()
+              : 0;
+
+          return dateB - dateA;
+
+        }
+      );
+
+
+  if (
+    details.length ===
+    0
+  ) {
+
+    commissionDetailsList.className =
+      "empty-state";
+
+    commissionDetailsList.textContent =
+      "Keine Details vorhanden.";
+
+    commissionDetails.style.display =
+      "";
+
+    return;
+
+  }
+
+
+  commissionDetailsList.className =
+    "entries-list";
+
+
+  details.forEach(
+    function(detail) {
+
+      const entry =
+        detail.entry;
+
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+      item.className =
+        "entry";
+
+
+      const date =
+        document.createElement(
+          "strong"
+        );
+
+
+      if (
+        detail.date
+      ) {
+
+        date.textContent =
+          formatDate(
+            detail.date
+          );
+
+      } else {
+
+        date.textContent =
+          "Datum unbekannt";
+
+      }
+
+
+      const hours =
+        document.createElement(
+          "div"
+        );
+
+      hours.textContent =
+        entry.hours +
+        " Std.";
+
+
+      const activity =
+        document.createElement(
+          "small"
+        );
+
+      activity.textContent =
+        entry.activity ||
+        "Keine Tätigkeit angegeben";
+
+
+      item.appendChild(
+        date
+      );
+
+      item.appendChild(
+        hours
+      );
+
+      item.appendChild(
+        activity
+      );
+
+
+      commissionDetailsList.appendChild(
+        item
+      );
+
+    }
+  );
+
+
+  const detailTotal =
+    calculateTotal(
+      details.map(
+        function(detail) {
+          return detail.entry;
+        }
+      )
+    );
+
+
+  const totalItem =
+    document.createElement(
+      "div"
+    );
+
+  totalItem.className =
+    "entry";
+
+
+  const totalLabel =
+    document.createElement(
+      "strong"
+    );
+
+  totalLabel.textContent =
+    "Gesamt";
+
+
+  const totalValue =
+    document.createElement(
+      "div"
+    );
+
+  totalValue.textContent =
+    formatHours(
+      detailTotal
+    );
+
+
+  totalItem.appendChild(
+    totalLabel
+  );
+
+  totalItem.appendChild(
+    totalValue
+  );
+
+
+  commissionDetailsList.appendChild(
+    totalItem
+  );
+
+
+  commissionDetails.style.display =
+    "";
 
 }
 
@@ -1200,6 +1664,10 @@ function showRecording() {
 }
 
 
+/* =========================
+   AUSWERTUNG ANZEIGEN
+========================= */
+
 function showEvaluation() {
 
   recordingSection.style.display =
@@ -1232,6 +1700,10 @@ function showEvaluation() {
 
 }
 
+
+/* =========================
+   KOMMISSIONEN ANZEIGEN
+========================= */
 
 function showCommissions() {
 
@@ -1297,11 +1769,13 @@ addEntryButton.addEventListener(
       hoursInput.focus();
 
       return;
+
     }
 
 
     if (
-      commissions.length === 0
+      commissions.length ===
+      0
     ) {
 
       alert(
@@ -1309,6 +1783,7 @@ addEntryButton.addEventListener(
       );
 
       return;
+
     }
 
 
@@ -1351,6 +1826,7 @@ addEntryButton.addEventListener(
 
     activityInput.value =
       "";
+
 
     hoursInput.focus();
 
@@ -1415,6 +1891,8 @@ newCommissionInput.addEventListener(
     if (
       event.key === "Enter"
     ) {
+
+      event.preventDefault();
 
       addCommission();
 
