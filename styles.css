@@ -888,6 +888,26 @@ strong {
 }
 
 
+.commission-summary-sessions {
+  margin-top:
+    3px;
+
+  color:
+    rgba(
+      255,
+      255,
+      255,
+      0.68
+    );
+
+  font-size:
+    12px;
+
+  font-weight:
+    600;
+}
+
+
 .commission-arrow {
   flex:
     0 0 auto;
