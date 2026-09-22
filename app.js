@@ -61,11 +61,14 @@ const navEvaluation =
 const navCommissions =
   document.getElementById("navCommissions");
 
-const evaluationWeek =
-  document.getElementById("evaluationWeek");
+const evaluationSessions =
+  document.getElementById("evaluationSessions");
 
 const evaluationMonth =
   document.getElementById("evaluationMonth");
+
+const evaluationYear =
+  document.getElementById("evaluationYear");
 
 const evaluationCommissions =
   document.getElementById("evaluationCommissions");
@@ -446,11 +449,6 @@ function loadUserProfile() {
   }
 
 
-  /*
-    Alten gespeicherten Namen
-    übernehmen.
-  */
-
   const oldName =
     localStorage.getItem(
       OLD_USER_NAME_KEY
@@ -715,34 +713,19 @@ function getEntryDate(
 }
 
 
-function getStartOfWeek(
+function getStartOfYear(
   date
 ) {
 
-  const start =
-    new Date(date);
-
-  const day =
-    start.getDay();
-
-  const difference =
-    day === 0
-      ? -6
-      : 1 - day;
-
-  start.setDate(
-    start.getDate() +
-      difference
-  );
-
-  start.setHours(
+  return new Date(
+    date.getFullYear(),
+    0,
+    1,
     0,
     0,
     0,
     0
   );
-
-  return start;
 
 }
 
@@ -759,6 +742,23 @@ function getStartOfMonth(
     0,
     0,
     0
+  );
+
+}
+
+
+function getEndOfYear(
+  date
+) {
+
+  return new Date(
+    date.getFullYear(),
+    11,
+    31,
+    23,
+    59,
+    59,
+    999
   );
 
 }
@@ -799,6 +799,15 @@ function calculateTotal(
   );
 
   return total;
+
+}
+
+
+function countSessions(
+  entries
+) {
+
+  return entries.length;
 
 }
 
@@ -1639,44 +1648,27 @@ function renderEvaluation() {
     new Date();
 
 
-  const startOfWeek =
-    getStartOfWeek(
-      now
-    );
-
-
   const startOfMonth =
     getStartOfMonth(
       now
     );
 
 
-  const weekEntries =
-    timeEntries.filter(
-      function(entry) {
+  /*
+    Das Geschäftsjahr /
+    Kalenderjahr läuft immer
+    vom 01.01. bis 31.12.
+  */
 
-        if (
-          entry.confirmed ===
-          false
-        ) {
-
-          return false;
-
-        }
+  const startOfYear =
+    getStartOfYear(
+      now
+    );
 
 
-        const date =
-          getEntryDate(
-            entry
-          );
-
-
-        return (
-          date &&
-          date >= startOfWeek
-        );
-
-      }
+  const endOfYear =
+    getEndOfYear(
+      now
     );
 
 
@@ -1702,29 +1694,79 @@ function renderEvaluation() {
 
         return (
           date &&
-          date.getFullYear() ===
-            now.getFullYear() &&
-
-          date.getMonth() ===
-            now.getMonth()
+          date >= startOfMonth &&
+          date <= now
         );
 
       }
     );
 
 
-  evaluationWeek.textContent =
-    formatHours(
-      calculateTotal(
-        weekEntries
-      )
+  const yearEntries =
+    timeEntries.filter(
+      function(entry) {
+
+        if (
+          entry.confirmed ===
+          false
+        ) {
+
+          return false;
+
+        }
+
+
+        const date =
+          getEntryDate(
+            entry
+          );
+
+
+        return (
+          date &&
+          date >= startOfYear &&
+          date <= endOfYear
+        );
+
+      }
     );
 
+
+  /*
+    Sitzungen = Anzahl
+    der quittierten
+    Zeiteinträge im aktuellen
+    Kalenderjahr.
+  */
+
+  evaluationSessions.textContent =
+    countSessions(
+      yearEntries
+    );
+
+
+  /*
+    Stunden des aktuellen
+    Monats.
+  */
 
   evaluationMonth.textContent =
     formatHours(
       calculateTotal(
         monthEntries
+      )
+    );
+
+
+  /*
+    Stunden des aktuellen
+    Kalenderjahres.
+  */
+
+  evaluationYear.textContent =
+    formatHours(
+      calculateTotal(
+        yearEntries
       )
     );
 
@@ -1934,6 +1976,32 @@ function renderCommissionEvaluation() {
         );
 
 
+      /*
+        Anzahl Sitzungen der
+        jeweiligen Kommission.
+      */
+
+      const sessions =
+        document.createElement(
+          "div"
+        );
+
+
+      sessions.className =
+        "commission-summary-sessions";
+
+
+      sessions.textContent =
+        countSessions(
+          entries
+        ) +
+        (
+          countSessions(entries) === 1
+            ? " Sitzung"
+            : " Sitzungen"
+        );
+
+
       const arrow =
         document.createElement(
           "span"
@@ -1955,6 +2023,11 @@ function renderCommissionEvaluation() {
 
       content.appendChild(
         hours
+      );
+
+
+      content.appendChild(
+        sessions
       );
 
 
@@ -2739,10 +2812,6 @@ function exportToExcel() {
     [];
 
 
-  /*
-    Persönliche Angaben
-  */
-
   rows.push(
     [
       "Name",
@@ -2815,10 +2884,6 @@ function exportToExcel() {
   );
 
 
-  /*
-    Zeitraum
-  */
-
   if (
     fromValue ||
     toValue
@@ -2862,10 +2927,6 @@ function exportToExcel() {
 
   rows.push("");
 
-
-  /*
-    Zeittabelle
-  */
 
   rows.push(
     [
@@ -3300,15 +3361,15 @@ confirmEntryButton.addEventListener(
    NAVIGATION
 ========================= */
 
-navRecording.addEventListener(
-  "click",
-  showRecording
-);
-
-
 navEvaluation.addEventListener(
   "click",
   showEvaluation
+);
+
+
+navRecording.addEventListener(
+  "click",
+  showRecording
 );
 
 
@@ -3475,4 +3536,5 @@ renderEvaluation();
   Ravo startet immer mit
   der Auswertung.
 */
+
 showEvaluation();
