@@ -1,20 +1,65 @@
-const entryDateInput =
-  document.getElementById("entryDate");
+"use strict";
 
-const hoursInput =
-  document.getElementById("hours");
 
-const commissionInput =
-  document.getElementById("commission");
+/* =========================
+   KONSTANTEN
+========================= */
 
-const activityInput =
-  document.getElementById("activity");
+const COMMISSION_KEY =
+  "zeitpol_commissions";
 
-const addEntryButton =
-  document.getElementById("addEntry");
+const TIME_ENTRIES_KEY =
+  "zeitpol_time_entries";
 
-const entryStatus =
-  document.getElementById("entryStatus");
+const USER_PROFILE_KEY =
+  "zeitpol_user_profile";
+
+const OLD_USER_NAME_KEY =
+  "zeitpol_user_name";
+
+const THEME_KEY =
+  "ravo_theme";
+
+
+/* =========================
+   ELEMENTE
+========================= */
+
+const evaluationSection =
+  document.getElementById("evaluationSection");
+
+const entrySection =
+  document.getElementById("entrySection");
+
+const commissionSection =
+  document.getElementById("commissionSection");
+
+const settingsSection =
+  document.getElementById("settingsSection");
+
+
+const evaluationNav =
+  document.getElementById("evaluationNav");
+
+const entryNav =
+  document.getElementById("entryNav");
+
+const commissionNav =
+  document.getElementById("commissionNav");
+
+const settingsButton =
+  document.getElementById("settingsButton");
+
+
+const evaluationCommissions =
+  document.getElementById("evaluationCommissions");
+
+const evaluationSessions =
+  document.getElementById("evaluationSessions");
+
+const evaluationYear =
+  document.getElementById("evaluationYear");
+
 
 const entrySummary =
   document.getElementById("entrySummary");
@@ -31,103 +76,69 @@ const summaryCommission =
 const summaryActivity =
   document.getElementById("summaryActivity");
 
+
+const entryDate =
+  document.getElementById("entryDate");
+
+const entryHours =
+  document.getElementById("entryHours");
+
+const entryCommission =
+  document.getElementById("entryCommission");
+
+const entryActivity =
+  document.getElementById("entryActivity");
+
+const saveEntryButton =
+  document.getElementById("saveEntryButton");
+
 const editEntryButton =
-  document.getElementById("editEntry");
+  document.getElementById("editEntryButton");
 
 const confirmEntryButton =
-  document.getElementById("confirmEntry");
+  document.getElementById("confirmEntryButton");
 
-const recordingSection =
-  document.getElementById("recordingSection");
+const entryStatus =
+  document.getElementById("entryStatus");
 
-const evaluationSection =
-  document.getElementById("evaluationSection");
 
-const commissionSection =
-  document.getElementById("commissionSection");
-
-const settingsSection =
-  document.getElementById("settingsSection");
-
-const settingsButton =
-  document.getElementById("settingsButton");
-
-const navRecording =
-  document.getElementById("navRecording");
-
-const navEvaluation =
-  document.getElementById("navEvaluation");
-
-const navCommissions =
-  document.getElementById("navCommissions");
-
-const evaluationSessions =
-  document.getElementById("evaluationSessions");
-
-const evaluationMonth =
-  document.getElementById("evaluationMonth");
-
-const evaluationYear =
-  document.getElementById("evaluationYear");
-
-const evaluationCommissions =
-  document.getElementById("evaluationCommissions");
+const commissionName =
+  document.getElementById("commissionName");
 
 const addCommissionButton =
-  document.getElementById("addCommission");
-
-const newCommissionInput =
-  document.getElementById("newCommission");
+  document.getElementById("addCommissionButton");
 
 const commissionList =
   document.getElementById("commissionList");
 
-const exportDetails =
-  document.getElementById("exportDetails");
 
-const exportExcelButton =
-  document.getElementById("exportExcel");
+const profileLastName =
+  document.getElementById("profileLastName");
 
-const resetExportFilterButton =
-  document.getElementById("resetExportFilter");
+const profileFirstName =
+  document.getElementById("profileFirstName");
 
-const exportFromInput =
-  document.getElementById("exportFrom");
+const profileAddress =
+  document.getElementById("profileAddress");
 
-const exportToInput =
-  document.getElementById("exportTo");
+const profileZip =
+  document.getElementById("profileZip");
 
+const profileCity =
+  document.getElementById("profileCity");
 
-/* =========================
-   EINSTELLUNGEN
-========================= */
+const profileParty =
+  document.getElementById("profileParty");
 
-const userLastNameInput =
-  document.getElementById("userLastName");
+const saveProfileButton =
+  document.getElementById("saveProfileButton");
 
-const userFirstNameInput =
-  document.getElementById("userFirstName");
-
-const userAddressInput =
-  document.getElementById("userAddress");
-
-const userZipInput =
-  document.getElementById("userZip");
-
-const userCityInput =
-  document.getElementById("userCity");
-
-const userPartyInput =
-  document.getElementById("userParty");
-
-const saveUserNameButton =
-  document.getElementById("saveUserName");
-
-const userNameStatus =
-  document.getElementById("userNameStatus");
+const profileStatus =
+  document.getElementById("profileStatus");
 
 const userNameDisplay =
   document.getElementById("userNameDisplay");
+
 
 const lightModeButton =
   document.getElementById("lightModeButton");
@@ -136,29 +147,26 @@ const darkModeButton =
   document.getElementById("darkModeButton");
 
 
+const exportButton =
+  document.getElementById("exportButton");
+
+const exportResetButton =
+  document.getElementById("exportResetButton");
+
+const exportFrom =
+  document.getElementById("exportFrom");
+
+const exportTo =
+  document.getElementById("exportTo");
+
+
 /* =========================
-   SPEICHER-SCHLÜSSEL
+   DATEN
 ========================= */
 
-const ENTRIES_KEY =
-  "zeitpol_entries";
-
-const COMMISSIONS_KEY =
-  "zeitpol_commissions";
-
-const USER_PROFILE_KEY =
-  "zeitpol_user_profile";
-
-const OLD_USER_NAME_KEY =
-  "zeitpol_user_name";
-
-const THEME_KEY =
-  "ravo_theme";
-
+let commissions = [];
 
 let timeEntries = [];
-
-let commissions = [];
 
 let pendingEntry = null;
 
@@ -169,15 +177,15 @@ let pendingEntry = null;
 
 function getTodayString() {
 
-  const today =
+  const now =
     new Date();
 
   const year =
-    today.getFullYear();
+    now.getFullYear();
 
   const month =
     String(
-      today.getMonth() + 1
+      now.getMonth() + 1
     ).padStart(
       2,
       "0"
@@ -185,7 +193,7 @@ function getTodayString() {
 
   const day =
     String(
-      today.getDate()
+      now.getDate()
     ).padStart(
       2,
       "0"
@@ -202,537 +210,62 @@ function getTodayString() {
 }
 
 
-function setDefaultEntryDate() {
+function parseDateString(value) {
 
-  const today =
-    getTodayString();
-
-  entryDateInput.value =
-    today;
-
-  entryDateInput.max =
-    today;
-
-}
-
-
-function formatDate(
-  date
-) {
-
-  return date.toLocaleDateString(
-    "de-CH",
-    {
-      day: "2-digit",
-      month: "2-digit",
-      year: "numeric"
-    }
-  );
-
-}
-
-
-function parseDateString(
-  value
-) {
-
-  if (
-    !value ||
-    !/^\d{4}-\d{2}-\d{2}$/.test(
-      value
-    )
-  ) {
-
+  if (!value) {
     return null;
-
   }
-
-  const parts =
-    value.split("-");
-
-  return new Date(
-    Number(parts[0]),
-    Number(parts[1]) - 1,
-    Number(parts[2]),
-    12,
-    0,
-    0,
-    0
-  );
-
-}
-
-
-/* =========================
-   DATEN LADEN
-========================= */
-
-try {
-
-  const savedEntries =
-    localStorage.getItem(
-      ENTRIES_KEY
-    );
 
   if (
-    savedEntries
-  ) {
-
-    const parsedEntries =
-      JSON.parse(
-        savedEntries
-      );
-
-    if (
-      Array.isArray(
-        parsedEntries
-      )
-    ) {
-
-      timeEntries =
-        parsedEntries;
-
-    }
-
-  }
-
-} catch (error) {
-
-  timeEntries = [];
-
-}
-
-
-try {
-
-  const savedCommissions =
-    localStorage.getItem(
-      COMMISSIONS_KEY
-    );
-
-  if (
-    savedCommissions
-  ) {
-
-    const parsedCommissions =
-      JSON.parse(
-        savedCommissions
-      );
-
-    if (
-      Array.isArray(
-        parsedCommissions
-      )
-    ) {
-
-      commissions =
-        parsedCommissions;
-
-    }
-
-  }
-
-} catch (error) {
-
-  commissions = [];
-
-}
-
-
-/* =========================
-   ALTE EINTRÄGE
-========================= */
-
-timeEntries.forEach(
-  function(entry) {
-
-    if (
-      typeof entry.confirmed !==
-      "boolean"
-    ) {
-
-      entry.confirmed =
-        true;
-
-    }
-
-  }
-);
-
-
-/* =========================
-   BENUTZERPROFIL
-========================= */
-
-function loadUserProfile() {
-
-  let profile = {
-
-    lastName:
-      "",
-
-    firstName:
-      "",
-
-    address:
-      "",
-
-    zip:
-      "",
-
-    city:
-      "",
-
-    party:
-      ""
-
-  };
-
-
-  try {
-
-    const savedProfile =
-      localStorage.getItem(
-        USER_PROFILE_KEY
-      );
-
-    if (
-      savedProfile
-    ) {
-
-      const parsedProfile =
-        JSON.parse(
-          savedProfile
-        );
-
-      if (
-        parsedProfile &&
-        typeof parsedProfile ===
-        "object"
-      ) {
-
-        profile = {
-
-          ...profile,
-          ...parsedProfile
-
-        };
-
-      }
-
-    }
-
-  } catch (error) {
-
-    profile = {
-
-      lastName:
-        "",
-
-      firstName:
-        "",
-
-      address:
-        "",
-
-      zip:
-        "",
-
-      city:
-        "",
-
-      party:
-        ""
-
-    };
-
-  }
-
-
-  const oldName =
-    localStorage.getItem(
-      OLD_USER_NAME_KEY
-    );
-
-
-  if (
-    oldName &&
-    !profile.lastName &&
-    !profile.firstName
+    typeof value === "string" &&
+    /^\d{4}-\d{2}-\d{2}$/.test(value)
   ) {
 
     const parts =
-      oldName.trim().split(
-        /\s+/
-      );
-
-
-    if (
-      parts.length >= 2
-    ) {
-
-      profile.firstName =
-        parts.shift();
-
-      profile.lastName =
-        parts.join(" ");
-
-    } else {
-
-      profile.lastName =
-        oldName.trim();
-
-    }
-
-  }
-
-
-  userLastNameInput.value =
-    profile.lastName;
-
-  userFirstNameInput.value =
-    profile.firstName;
-
-  userAddressInput.value =
-    profile.address;
-
-  userZipInput.value =
-    profile.zip;
-
-  userCityInput.value =
-    profile.city;
-
-  userPartyInput.value =
-    profile.party;
-
-}
-
-
-loadUserProfile();
-
-
-/* =========================
-   STANDARD-KOMMISSIONEN
-========================= */
-
-if (
-  commissions.length ===
-  0
-) {
-
-  commissions = [
-    "Kommission 001",
-    "Kommission 002",
-    "Kommission 003"
-  ];
-
-  saveCommissions();
-
-}
-
-
-/* =========================
-   SPEICHERN
-========================= */
-
-function saveEntries() {
-
-  localStorage.setItem(
-    ENTRIES_KEY,
-    JSON.stringify(
-      timeEntries
-    )
-  );
-
-}
-
-
-function saveCommissions() {
-
-  localStorage.setItem(
-    COMMISSIONS_KEY,
-    JSON.stringify(
-      commissions
-    )
-  );
-
-}
-
-
-/* =========================
-   NACHT / TAG
-========================= */
-
-function applyTheme(
-  theme
-) {
-
-  if (
-    theme ===
-    "dark"
-  ) {
-
-    document.body.dataset.theme =
-      "dark";
-
-  } else {
-
-    document.body.dataset.theme =
-      "light";
-
-  }
-
-
-  localStorage.setItem(
-    THEME_KEY,
-    theme
-  );
-
-
-  updateThemeButtons();
-
-}
-
-
-function loadTheme() {
-
-  const savedTheme =
-    localStorage.getItem(
-      THEME_KEY
-    );
-
-
-  if (
-    savedTheme ===
-    "dark"
-  ) {
-
-    document.body.dataset.theme =
-      "dark";
-
-  } else {
-
-    document.body.dataset.theme =
-      "light";
-
-  }
-
-
-  updateThemeButtons();
-
-}
-
-
-function updateThemeButtons() {
-
-  const isDark =
-    document.body.dataset.theme ===
-    "dark";
-
-
-  lightModeButton.classList.toggle(
-    "selected",
-    !isDark
-  );
-
-
-  darkModeButton.classList.toggle(
-    "selected",
-    isDark
-  );
-
-}
-
-
-/* =========================
-   HILFSFUNKTIONEN
-========================= */
-
-function getHours(
-  entry
-) {
-
-  return Number(
-    String(
-      entry.hours
-    ).replace(
-      ",",
-      "."
-    )
-  ) || 0;
-
-}
-
-
-function getEntryDate(
-  entry
-) {
-
-  if (
-    !entry ||
-    !entry.date
-  ) {
-
-    return null;
-
-  }
-
-
-  if (
-    /^\d{4}-\d{2}-\d{2}$/.test(
-      entry.date
-    )
-  ) {
-
-    return parseDateString(
-      entry.date
+      value.split("-");
+
+    return new Date(
+      Number(parts[0]),
+      Number(parts[1]) - 1,
+      Number(parts[2]),
+      12,
+      0,
+      0,
+      0
     );
 
   }
-
 
   const date =
-    new Date(
-      entry.date
-    );
-
+    new Date(value);
 
   if (
     Number.isNaN(
       date.getTime()
     )
   ) {
-
     return null;
-
   }
-
 
   return date;
 
 }
 
 
-function getStartOfYear(
-  date
-) {
+function getEntryDate(entry) {
 
-  return new Date(
-    date.getFullYear(),
-    0,
-    1,
-    0,
-    0,
-    0,
-    0
+  if (!entry) {
+    return null;
+  }
+
+  return parseDateString(
+    entry.date
   );
 
 }
 
 
-function getStartOfMonth(
-  date
-) {
+function getStartOfMonth(date) {
 
   return new Date(
     date.getFullYear(),
@@ -747,9 +280,22 @@ function getStartOfMonth(
 }
 
 
-function getEndOfYear(
-  date
-) {
+function getStartOfYear(date) {
+
+  return new Date(
+    date.getFullYear(),
+    0,
+    1,
+    0,
+    0,
+    0,
+    0
+  );
+
+}
+
+
+function getEndOfYear(date) {
 
   return new Date(
     date.getFullYear(),
@@ -764,16 +310,62 @@ function getEndOfYear(
 }
 
 
-function formatHours(
-  hours
-) {
+function formatDate(date) {
+
+  if (!date) {
+    return "–";
+  }
+
+  return date.toLocaleDateString(
+    "de-CH",
+    {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric"
+    }
+  );
+
+}
+
+
+/* =========================
+   STUNDEN
+========================= */
+
+function calculateTotal(entries) {
+
+  return entries.reduce(
+    function(total, entry) {
+
+      const hours =
+        Number(entry.hours);
+
+      if (
+        Number.isNaN(hours)
+      ) {
+        return total;
+      }
+
+      return total + hours;
+
+    },
+    0
+  );
+
+}
+
+
+function formatHours(hours) {
+
+  const value =
+    Number(hours) || 0;
 
   return (
-    hours.toLocaleString(
+    value.toLocaleString(
       "de-CH",
       {
-        maximumFractionDigits:
-          2
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
       }
     ) +
     " Stunden"
@@ -782,30 +374,7 @@ function formatHours(
 }
 
 
-function calculateTotal(
-  entries
-) {
-
-  let total =
-    0;
-
-  entries.forEach(
-    function(entry) {
-
-      total +=
-        getHours(entry);
-
-    }
-  );
-
-  return total;
-
-}
-
-
-function countSessions(
-  entries
-) {
+function countSessions(entries) {
 
   return entries.length;
 
@@ -813,38 +382,386 @@ function countSessions(
 
 
 /* =========================
-   KOMMISSIONS-AUSWAHL
+   LOCAL STORAGE
 ========================= */
 
-function renderCommissionSelect() {
+function loadData() {
 
-  commissionInput.innerHTML =
-    "";
+  try {
 
-
-  if (
-    commissions.length ===
-    0
-  ) {
-
-    const option =
-      document.createElement(
-        "option"
+    const storedCommissions =
+      localStorage.getItem(
+        COMMISSION_KEY
       );
 
-    option.value =
-      "";
+    commissions =
+      storedCommissions
+        ? JSON.parse(
+            storedCommissions
+          )
+        : [];
 
-    option.textContent =
-      "Keine Kommission vorhanden";
+  } catch (error) {
 
-    commissionInput.appendChild(
-      option
+    commissions = [];
+
+  }
+
+
+  try {
+
+    const storedEntries =
+      localStorage.getItem(
+        TIME_ENTRIES_KEY
+      );
+
+    timeEntries =
+      storedEntries
+        ? JSON.parse(
+            storedEntries
+          )
+        : [];
+
+  } catch (error) {
+
+    timeEntries = [];
+
+  }
+
+
+  /*
+    Alte Einträge gelten
+    als bereits quittiert.
+  */
+
+  timeEntries =
+    timeEntries.map(
+      function(entry) {
+
+        if (
+          typeof entry.confirmed ===
+          "undefined"
+        ) {
+
+          return {
+            ...entry,
+            confirmed: true
+          };
+
+        }
+
+        return entry;
+
+      }
     );
+
+
+  localStorage.setItem(
+    TIME_ENTRIES_KEY,
+    JSON.stringify(timeEntries)
+  );
+
+}
+
+
+function saveCommissions() {
+
+  localStorage.setItem(
+    COMMISSION_KEY,
+    JSON.stringify(commissions)
+  );
+
+}
+
+
+function saveTimeEntries() {
+
+  localStorage.setItem(
+    TIME_ENTRIES_KEY,
+    JSON.stringify(timeEntries)
+  );
+
+}
+
+
+/* =========================
+   PROFIL
+========================= */
+
+function getProfile() {
+
+  try {
+
+    const stored =
+      localStorage.getItem(
+        USER_PROFILE_KEY
+      );
+
+    if (!stored) {
+      return {};
+    }
+
+    const profile =
+      JSON.parse(stored);
+
+    return profile || {};
+
+  } catch (error) {
+
+    return {};
+
+  }
+
+}
+
+
+function loadProfile() {
+
+  const profile =
+    getProfile();
+
+  profileLastName.value =
+    profile.lastName || "";
+
+  profileFirstName.value =
+    profile.firstName || "";
+
+  profileAddress.value =
+    profile.address || "";
+
+  profileZip.value =
+    profile.zip || "";
+
+  profileCity.value =
+    profile.city || "";
+
+  profileParty.value =
+    profile.party || "";
+
+
+  updateUserNameDisplay();
+
+}
+
+
+function saveProfile() {
+
+  const lastName =
+    profileLastName.value.trim();
+
+  const firstName =
+    profileFirstName.value.trim();
+
+  if (!lastName) {
+
+    profileStatus.textContent =
+      "Bitte Name eingeben.";
 
     return;
 
   }
+
+  if (!firstName) {
+
+    profileStatus.textContent =
+      "Bitte Vorname eingeben.";
+
+    return;
+
+  }
+
+
+  const profile = {
+
+    lastName:
+      lastName,
+
+    firstName:
+      firstName,
+
+    address:
+      profileAddress.value.trim(),
+
+    zip:
+      profileZip.value.trim(),
+
+    city:
+      profileCity.value.trim(),
+
+    party:
+      profileParty.value.trim()
+
+  };
+
+
+  localStorage.setItem(
+    USER_PROFILE_KEY,
+    JSON.stringify(profile)
+  );
+
+
+  localStorage.setItem(
+    OLD_USER_NAME_KEY,
+    firstName +
+    " " +
+    lastName
+  );
+
+
+  updateUserNameDisplay();
+
+
+  profileStatus.textContent =
+    "Angaben gespeichert.";
+
+}
+
+
+function updateUserNameDisplay() {
+
+  const profile =
+    getProfile();
+
+  const firstName =
+    (profile.firstName || "").trim();
+
+  const lastName =
+    (profile.lastName || "").trim();
+
+  const fullName =
+    (
+      firstName +
+      " " +
+      lastName
+    ).trim();
+
+  userNameDisplay.textContent =
+    fullName;
+
+}
+
+
+/* =========================
+   NAVIGATION
+========================= */
+
+function hideAllSections() {
+
+  evaluationSection.style.display =
+    "none";
+
+  entrySection.style.display =
+    "none";
+
+  commissionSection.style.display =
+    "none";
+
+  settingsSection.style.display =
+    "none";
+
+
+  evaluationNav.classList.remove(
+    "active"
+  );
+
+  entryNav.classList.remove(
+    "active"
+  );
+
+  commissionNav.classList.remove(
+    "active"
+  );
+
+}
+
+
+function showEvaluation() {
+
+  hideAllSections();
+
+  evaluationSection.style.display =
+    "block";
+
+  evaluationNav.classList.add(
+    "active"
+  );
+
+  renderEvaluation();
+
+}
+
+
+function showEntry() {
+
+  hideAllSections();
+
+  entrySection.style.display =
+    "block";
+
+  entryNav.classList.add(
+    "active"
+  );
+
+  populateCommissionSelect();
+
+}
+
+
+function showCommissions() {
+
+  hideAllSections();
+
+  commissionSection.style.display =
+    "block";
+
+  commissionNav.classList.add(
+    "active"
+  );
+
+  renderCommissions();
+
+}
+
+
+function showSettings() {
+
+  hideAllSections();
+
+  settingsSection.style.display =
+    "block";
+
+  loadProfile();
+
+}
+
+
+/* =========================
+   KOMMISSION SELECT
+========================= */
+
+function populateCommissionSelect() {
+
+  const currentValue =
+    entryCommission.value;
+
+  entryCommission.innerHTML =
+    "";
+
+
+  const placeholder =
+    document.createElement(
+      "option"
+    );
+
+  placeholder.value =
+    "";
+
+  placeholder.textContent =
+    "Kommission auswählen";
+
+  entryCommission.appendChild(
+    placeholder
+  );
 
 
   commissions.forEach(
@@ -861,12 +778,24 @@ function renderCommissionSelect() {
       option.textContent =
         commission;
 
-      commissionInput.appendChild(
+      entryCommission.appendChild(
         option
       );
 
     }
   );
+
+
+  if (
+    commissions.includes(
+      currentValue
+    )
+  ) {
+
+    entryCommission.value =
+      currentValue;
+
+  }
 
 }
 
@@ -875,44 +804,47 @@ function renderCommissionSelect() {
    KOMMISSIONEN
 ========================= */
 
-function renderCommissionList() {
+function renderCommissions() {
 
   commissionList.innerHTML =
     "";
 
 
   if (
-    commissions.length ===
-    0
+    commissions.length === 0
   ) {
 
-    commissionList.className =
+    const empty =
+      document.createElement(
+        "div"
+      );
+
+    empty.className =
       "empty-state";
 
-    commissionList.textContent =
+    empty.textContent =
       "Noch keine Kommissionen vorhanden.";
+
+    commissionList.appendChild(
+      empty
+    );
+
+    populateCommissionSelect();
 
     return;
 
   }
 
 
-  commissionList.className =
-    "entries-list";
-
-
   commissions.forEach(
-    function(
-      commission,
-      index
-    ) {
+    function(commission, index) {
 
-      const item =
+      const entry =
         document.createElement(
           "div"
         );
 
-      item.className =
+      entry.className =
         "entry";
 
 
@@ -946,7 +878,19 @@ function renderCommissionList() {
         "small-button";
 
       renameButton.textContent =
-        "✏️ Umbenennen";
+        "Umbenennen";
+
+
+      renameButton.addEventListener(
+        "click",
+        function() {
+
+          renameCommission(
+            index
+          );
+
+        }
+      );
 
 
       const deleteButton =
@@ -961,21 +905,7 @@ function renderCommissionList() {
         "small-button danger-button";
 
       deleteButton.textContent =
-        "🗑️ Löschen";
-
-
-      renameButton.addEventListener(
-        "click",
-        function() {
-
-          showRenameForm(
-            item,
-            commission,
-            index
-          );
-
-        }
-      );
+        "Löschen";
 
 
       deleteButton.addEventListener(
@@ -998,42 +928,36 @@ function renderCommissionList() {
         deleteButton
       );
 
-      item.appendChild(
+
+      entry.appendChild(
         name
       );
 
-      item.appendChild(
+      entry.appendChild(
         actions
       );
 
+
       commissionList.appendChild(
-        item
+        entry
       );
 
     }
   );
 
+
+  populateCommissionSelect();
+
 }
 
-
-/* =========================
-   NEUE KOMMISSION
-========================= */
 
 function addCommission() {
 
   const name =
-    newCommissionInput.value.trim();
+    commissionName.value.trim();
 
-
-  if (
-    name === ""
-  ) {
-
-    newCommissionInput.focus();
-
+  if (!name) {
     return;
-
   }
 
 
@@ -1050,15 +974,11 @@ function addCommission() {
     );
 
 
-  if (
-    exists
-  ) {
+  if (exists) {
 
     alert(
       "Diese Kommission gibt es bereits."
     );
-
-    newCommissionInput.focus();
 
     return;
 
@@ -1071,273 +991,119 @@ function addCommission() {
 
   saveCommissions();
 
-  renderCommissionSelect();
-
-  renderCommissionList();
-
-  newCommissionInput.value =
+  commissionName.value =
     "";
 
-  newCommissionInput.focus();
+  renderCommissions();
 
 }
 
 
-/* =========================
-   KOMMISSION UMBENENNEN
-========================= */
+function renameCommission(index) {
 
-function showRenameForm(
-  item,
-  oldName,
-  index
-) {
-
-  item.innerHTML =
-    "";
-
-
-  const input =
-    document.createElement(
-      "input"
-    );
-
-  input.type =
-    "text";
-
-  input.value =
-    oldName;
-
-  input.autocomplete =
-    "off";
-
-
-  const actions =
-    document.createElement(
-      "div"
-    );
-
-  actions.className =
-    "entry-actions";
-
-
-  const saveButton =
-    document.createElement(
-      "button"
-    );
-
-  saveButton.type =
-    "button";
-
-  saveButton.className =
-    "small-button";
-
-  saveButton.textContent =
-    "Speichern";
-
-
-  const cancelButton =
-    document.createElement(
-      "button"
-    );
-
-  cancelButton.type =
-    "button";
-
-  cancelButton.className =
-    "small-button";
-
-  cancelButton.textContent =
-    "Abbrechen";
-
-
-  saveButton.addEventListener(
-    "click",
-    function() {
-
-      const newName =
-        input.value.trim();
-
-
-      if (
-        newName === ""
-      ) {
-
-        input.focus();
-
-        return;
-
-      }
-
-
-      const exists =
-        commissions.some(
-          function(
-            commission,
-            i
-          ) {
-
-            return (
-              i !== index &&
-              commission.toLowerCase() ===
-              newName.toLowerCase()
-            );
-
-          }
-        );
-
-
-      if (
-        exists
-      ) {
-
-        alert(
-          "Diese Kommission gibt es bereits."
-        );
-
-        input.focus();
-
-        return;
-
-      }
-
-
-      timeEntries.forEach(
-        function(entry) {
-
-          if (
-            entry.commission ===
-            oldName
-          ) {
-
-            entry.commission =
-              newName;
-
-          }
-
-        }
-      );
-
-
-      commissions[index] =
-        newName;
-
-
-      saveCommissions();
-
-      saveEntries();
-
-      renderCommissionSelect();
-
-      renderCommissionList();
-
-      renderEvaluation();
-
-    }
-  );
-
-
-  cancelButton.addEventListener(
-    "click",
-    function() {
-
-      renderCommissionList();
-
-    }
-  );
-
-
-  input.addEventListener(
-    "keydown",
-    function(event) {
-
-      if (
-        event.key ===
-        "Enter"
-      ) {
-
-        event.preventDefault();
-
-        saveButton.click();
-
-      }
-
-    }
-  );
-
-
-  item.appendChild(
-    input
-  );
-
-  item.appendChild(
-    actions
-  );
-
-  actions.appendChild(
-    saveButton
-  );
-
-  actions.appendChild(
-    cancelButton
-  );
-
-  input.focus();
-
-}
-
-
-/* =========================
-   KOMMISSION LÖSCHEN
-========================= */
-
-function deleteCommission(
-  index
-) {
-
-  const commission =
+  const oldName =
     commissions[index];
 
-
-  const used =
-    timeEntries.some(
-      function(entry) {
-
-        return (
-          entry.commission ===
-          commission
-        );
-
-      }
+  const newName =
+    prompt(
+      "Neuer Name:",
+      oldName
     );
-
-
-  let message =
-    "Möchtest du diese Kommission wirklich löschen?";
 
 
   if (
-    used
+    newName === null
   ) {
+    return;
+  }
 
-    message =
-      "Diese Kommission wird bereits bei Zeiteinträgen verwendet. Die bisherigen Einträge bleiben erhalten. Trotzdem löschen?";
+
+  const trimmed =
+    newName.trim();
+
+  if (!trimmed) {
+    return;
+  }
+
+
+  const duplicate =
+    commissions.some(
+      function(commission, i) {
+
+        return (
+          i !== index &&
+          commission.toLowerCase() ===
+          trimmed.toLowerCase()
+        );
+
+      }
+    );
+
+
+  if (duplicate) {
+
+    alert(
+      "Diese Kommission gibt es bereits."
+    );
+
+    return;
 
   }
 
 
-  const confirmed =
-    confirm(
-      message
+  commissions[index] =
+    trimmed;
+
+
+  timeEntries =
+    timeEntries.map(
+      function(entry) {
+
+        if (
+          entry.commission ===
+          oldName
+        ) {
+
+          return {
+            ...entry,
+            commission:
+              trimmed
+          };
+
+        }
+
+        return entry;
+
+      }
     );
 
 
-  if (
-    !confirmed
-  ) {
+  saveCommissions();
+  saveTimeEntries();
 
+  renderCommissions();
+
+  renderEvaluation();
+
+}
+
+
+function deleteCommission(index) {
+
+  const name =
+    commissions[index];
+
+
+  const confirmed =
+    confirm(
+      'Kommission "' +
+      name +
+      '" wirklich löschen?'
+    );
+
+
+  if (!confirmed) {
     return;
-
   }
 
 
@@ -1349,163 +1115,34 @@ function deleteCommission(
 
   saveCommissions();
 
-  renderCommissionSelect();
-
-  renderCommissionList();
-
-  renderEvaluation();
+  renderCommissions();
 
 }
 
 
 /* =========================
-   EINTRAG VORBEREITEN
+   EINTRAG
 ========================= */
 
-function prepareEntry() {
+function resetEntryForm() {
 
-  const selectedDate =
-    entryDateInput.value.trim();
+  entryDate.value =
+    getTodayString();
 
+  entryHours.value =
+    "";
 
-  const value =
-    hoursInput.value
-      .trim()
-      .replace(
-        ",",
-        "."
-      );
+  entryCommission.value =
+    "";
 
-
-  const hours =
-    Number(
-      value
-    );
-
-
-  if (
-    selectedDate === ""
-  ) {
-
-    alert(
-      "Bitte wähle ein Datum aus."
-    );
-
-    entryDateInput.focus();
-
-    return;
-
-  }
-
-
-  if (
-    value === "" ||
-    !Number.isFinite(
-      hours
-    ) ||
-    hours <= 0
-  ) {
-
-    alert(
-      "Bitte gib eine gültige Stundenzahl ein."
-    );
-
-    hoursInput.focus();
-
-    return;
-
-  }
-
-
-  if (
-    commissions.length ===
-    0
-  ) {
-
-    alert(
-      "Bitte lege zuerst eine Kommission an."
-    );
-
-    return;
-
-  }
-
-
-  pendingEntry = {
-
-    date:
-      selectedDate,
-
-    hours:
-      hours.toLocaleString(
-        "de-CH",
-        {
-          maximumFractionDigits:
-            2
-        }
-      ),
-
-    commission:
-      commissionInput.value,
-
-    activity:
-      activityInput.value.trim()
-
-  };
-
-
-  showPendingSummary();
-
-}
-
-
-/* =========================
-   ZUSAMMENFASSUNG
-========================= */
-
-function showPendingSummary() {
-
-  if (
-    !pendingEntry
-  ) {
-
-    entrySummary.style.display =
-      "none";
-
-    return;
-
-  }
-
-
-  const date =
-    getEntryDate(
-      pendingEntry
-    );
-
-
-  summaryDate.textContent =
-    date
-      ? formatDate(date)
-      : "Datum unbekannt";
-
-
-  summaryHours.textContent =
-    pendingEntry.hours +
-    " Std.";
-
-
-  summaryCommission.textContent =
-    pendingEntry.commission;
-
-
-  summaryActivity.textContent =
-    pendingEntry.activity ||
-    "Keine Tätigkeit angegeben";
-
+  entryActivity.value =
+    "";
 
   entrySummary.style.display =
-    "block";
+    "none";
 
+  pendingEntry =
+    null;
 
   entryStatus.textContent =
     "";
@@ -1513,31 +1150,148 @@ function showPendingSummary() {
 }
 
 
-/* =========================
-   EINTRAG ÄNDERN
-========================= */
+function validateEntry() {
 
-function editPendingEntry() {
+  const date =
+    entryDate.value;
 
-  if (
-    !pendingEntry
-  ) {
+  const hours =
+    Number(
+      entryHours.value
+    );
 
-    return;
+  const commission =
+    entryCommission.value;
+
+  const activity =
+    entryActivity.value.trim();
+
+
+  if (!date) {
+
+    entryStatus.textContent =
+      "Bitte Datum auswählen.";
+
+    return false;
 
   }
 
 
-  entryDateInput.value =
-    pendingEntry.date;
+  if (
+    !Number.isFinite(hours) ||
+    hours <= 0
+  ) {
 
-  hoursInput.value =
-    pendingEntry.hours;
+    entryStatus.textContent =
+      "Bitte gültige Stunden eingeben.";
 
-  commissionInput.value =
+    return false;
+
+  }
+
+
+  if (!commission) {
+
+    entryStatus.textContent =
+      "Bitte Kommission auswählen.";
+
+    return false;
+
+  }
+
+
+  if (!activity) {
+
+    entryStatus.textContent =
+      "Bitte Tätigkeit eingeben.";
+
+    return false;
+
+  }
+
+
+  return true;
+
+}
+
+
+function createPendingEntry() {
+
+  if (
+    !validateEntry()
+  ) {
+    return;
+  }
+
+
+  pendingEntry = {
+
+    date:
+      entryDate.value,
+
+    hours:
+      Number(
+        entryHours.value
+      ),
+
+    commission:
+      entryCommission.value,
+
+    activity:
+      entryActivity.value.trim(),
+
+    confirmed:
+      false
+
+  };
+
+
+  summaryDate.textContent =
+    formatDate(
+      getEntryDate(
+        pendingEntry
+      )
+    );
+
+  summaryHours.textContent =
+    formatHours(
+      pendingEntry.hours
+    );
+
+  summaryCommission.textContent =
     pendingEntry.commission;
 
-  activityInput.value =
+  summaryActivity.textContent =
+    pendingEntry.activity;
+
+
+  entrySummary.style.display =
+    "block";
+
+
+  entryStatus.textContent =
+    "Bitte prüfen und anschließend quittieren.";
+
+}
+
+
+function editPendingEntry() {
+
+  if (!pendingEntry) {
+    return;
+  }
+
+
+  entryDate.value =
+    pendingEntry.date;
+
+  entryHours.value =
+    pendingEntry.hours;
+
+  entryCommission.value =
+    pendingEntry.commission;
+
+  entryActivity.value =
     pendingEntry.activity;
 
 
@@ -1550,49 +1304,21 @@ function editPendingEntry() {
 
 
   entryStatus.textContent =
-    "";
-
-
-  hoursInput.focus();
+    "Eintrag kann geändert werden.";
 
 }
 
 
-/* =========================
-   EINTRAG QUITTIEREN
-========================= */
+function confirmPendingEntry() {
 
-function confirmEntry() {
-
-  if (
-    !pendingEntry
-  ) {
-
+  if (!pendingEntry) {
     return;
-
   }
 
 
-  const entry = {
+  const savedEntry = {
 
-    id:
-      Date.now().toString() +
-      "-" +
-      Math.random()
-        .toString(36)
-        .slice(2),
-
-    date:
-      pendingEntry.date,
-
-    hours:
-      pendingEntry.hours,
-
-    commission:
-      pendingEntry.commission,
-
-    activity:
-      pendingEntry.activity,
+    ...pendingEntry,
 
     confirmed:
       true
@@ -1601,11 +1327,11 @@ function confirmEntry() {
 
 
   timeEntries.push(
-    entry
+    savedEntry
   );
 
 
-  saveEntries();
+  saveTimeEntries();
 
 
   pendingEntry =
@@ -1616,24 +1342,21 @@ function confirmEntry() {
     "none";
 
 
-  hoursInput.value =
+  entryDate.value =
+    getTodayString();
+
+  entryHours.value =
     "";
 
-  activityInput.value =
+  entryCommission.value =
     "";
 
-
-  setDefaultEntryDate();
+  entryActivity.value =
+    "";
 
 
   entryStatus.textContent =
-    "✓ Stunden quittiert und gespeichert.";
-
-
-  renderEvaluation();
-
-
-  hoursInput.focus();
+    "Eintrag gespeichert.";
 
 }
 
@@ -1647,24 +1370,10 @@ function renderEvaluation() {
   const now =
     new Date();
 
-
-  const startOfMonth =
-    getStartOfMonth(
-      now
-    );
-
-
-  /*
-    Das Geschäftsjahr /
-    Kalenderjahr läuft immer
-    vom 01.01. bis 31.12.
-  */
-
   const startOfYear =
     getStartOfYear(
       now
     );
-
 
   const endOfYear =
     getEndOfYear(
@@ -1672,47 +1381,20 @@ function renderEvaluation() {
     );
 
 
-  const monthEntries =
-    timeEntries.filter(
-      function(entry) {
-
-        if (
-          entry.confirmed ===
-          false
-        ) {
-
-          return false;
-
-        }
-
-
-        const date =
-          getEntryDate(
-            entry
-          );
-
-
-        return (
-          date &&
-          date >= startOfMonth &&
-          date <= now
-        );
-
-      }
-    );
-
+  /*
+    Sitzungen dieses Jahr:
+    nur quittierte Einträge
+    vom 01.01. bis 31.12.
+  */
 
   const yearEntries =
     timeEntries.filter(
       function(entry) {
 
         if (
-          entry.confirmed ===
-          false
+          entry.confirmed === false
         ) {
-
           return false;
-
         }
 
 
@@ -1733,28 +1415,13 @@ function renderEvaluation() {
 
 
   /*
-    Sitzungen = Anzahl
-    der quittierten
-    Zeiteinträge im aktuellen
-    Kalenderjahr.
+    Anzahl Sitzungen
+    des aktuellen Kalenderjahres.
   */
 
   evaluationSessions.textContent =
     countSessions(
       yearEntries
-    );
-
-
-  /*
-    Stunden des aktuellen
-    Monats.
-  */
-
-  evaluationMonth.textContent =
-    formatHours(
-      calculateTotal(
-        monthEntries
-      )
     );
 
 
@@ -1776,10 +1443,6 @@ function renderEvaluation() {
 }
 
 
-/* =========================
-   KOMMISSIONSAUSWERTUNG
-========================= */
-
 function renderCommissionEvaluation() {
 
   evaluationCommissions.innerHTML =
@@ -1794,12 +1457,9 @@ function renderCommissionEvaluation() {
     function(entry) {
 
       if (
-        entry.confirmed ===
-        false
+        entry.confirmed === false
       ) {
-
         return;
-
       }
 
 
@@ -1834,28 +1494,36 @@ function renderCommissionEvaluation() {
   const commissionNames =
     Object.keys(
       commissionGroups
-    ).sort();
+    ).sort(
+      function(a, b) {
+
+        return a.localeCompare(
+          b,
+          "de"
+        );
+
+      }
+    );
 
 
   if (
-    commissionNames.length ===
-    0
+    commissionNames.length === 0
   ) {
-
-    evaluationCommissions.className =
-      "empty-state";
-
 
     evaluationCommissions.textContent =
       "Noch keine Einträge vorhanden.";
-
 
     return;
 
   }
 
 
-  evaluationCommissions.className =
+  const list =
+    document.createElement(
+      "div"
+    );
+
+  list.className =
     "commission-evaluation-list";
 
 
@@ -1866,73 +1534,73 @@ function renderCommissionEvaluation() {
         commissionGroups[
           commission
         ]
-          .map(
-            function(entry) {
+        .map(
+          function(entry) {
 
-              return {
+            return {
 
-                entry:
-                  entry,
+              entry:
+                entry,
 
-                originalIndex:
-                  timeEntries.indexOf(
-                    entry
-                  ),
+              originalIndex:
+                timeEntries.indexOf(
+                  entry
+                ),
 
-                date:
-                  getEntryDate(
-                    entry
-                  )
+              date:
+                getEntryDate(
+                  entry
+                )
 
-              };
+            };
 
+          }
+        )
+        .sort(
+          function(a, b) {
+
+            if (
+              !a.date &&
+              !b.date
+            ) {
+              return 0;
             }
-          )
-          .sort(
-            function(a, b) {
 
-              const dateA =
-                a.date
-                  ? a.date.getTime()
-                  : 0;
-
-
-              const dateB =
-                b.date
-                  ? b.date.getTime()
-                  : 0;
-
-
-              return (
-                dateB -
-                dateA
-              );
-
+            if (!a.date) {
+              return 1;
             }
-          );
 
+            if (!b.date) {
+              return -1;
+            }
 
-      const commissionBlock =
-        document.createElement(
-          "section"
+            return (
+              b.date.getTime() -
+              a.date.getTime()
+            );
+
+          }
         );
 
 
-      commissionBlock.className =
+      const block =
+        document.createElement(
+          "div"
+        );
+
+      block.className =
         "commission-block";
 
 
-      const commissionHeader =
+      const summary =
         document.createElement(
           "button"
         );
 
-
-      commissionHeader.type =
+      summary.type =
         "button";
 
-
-      commissionHeader.className =
+      summary.className =
         "commission-summary-item";
 
 
@@ -1947,16 +1615,46 @@ function renderCommissionEvaluation() {
           "strong"
         );
 
-
       name.textContent =
         commission;
 
+
+      /*
+        ZUERST SITZUNGEN
+      */
+
+      const sessions =
+        document.createElement(
+          "div"
+        );
+
+      sessions.className =
+        "commission-summary-sessions";
+
+
+      const sessionCount =
+        countSessions(
+          entries
+        );
+
+
+      sessions.textContent =
+        sessionCount +
+        (
+          sessionCount === 1
+            ? " Sitzung"
+            : " Sitzungen"
+        );
+
+
+      /*
+        DANACH STUNDEN
+      */
 
       const hours =
         document.createElement(
           "div"
         );
-
 
       hours.className =
         "commission-summary-hours";
@@ -1976,30 +1674,17 @@ function renderCommissionEvaluation() {
         );
 
 
-      /*
-        Anzahl Sitzungen der
-        jeweiligen Kommission.
-      */
+      content.appendChild(
+        name
+      );
 
-      const sessions =
-        document.createElement(
-          "div"
-        );
+      content.appendChild(
+        sessions
+      );
 
-
-      sessions.className =
-        "commission-summary-sessions";
-
-
-      sessions.textContent =
-        countSessions(
-          entries
-        ) +
-        (
-          countSessions(entries) === 1
-            ? " Sitzung"
-            : " Sitzungen"
-        );
+      content.appendChild(
+        hours
+      );
 
 
       const arrow =
@@ -2007,114 +1692,90 @@ function renderCommissionEvaluation() {
           "span"
         );
 
-
       arrow.className =
         "commission-arrow";
-
 
       arrow.textContent =
         "＋";
 
 
-      content.appendChild(
-        name
-      );
-
-
-      content.appendChild(
-        hours
-      );
-
-
-      content.appendChild(
-        sessions
-      );
-
-
-      commissionHeader.appendChild(
+      summary.appendChild(
         content
       );
 
-
-      commissionHeader.appendChild(
+      summary.appendChild(
         arrow
       );
 
 
-      commissionBlock.appendChild(
-        commissionHeader
-      );
-
-
-      const detailsList =
+      const details =
         document.createElement(
           "div"
         );
 
-
-      detailsList.className =
+      details.className =
         "commission-details-list";
 
 
-      detailsList.style.display =
+      /*
+        Details zunächst
+        geschlossen.
+      */
+
+      details.style.display =
         "none";
 
 
       entries.forEach(
         function(detail) {
 
-          createSwipeEntry(
-            detail,
-            detailsList
+          const swipeEntry =
+            createSwipeEntry(
+              detail.entry,
+              detail.originalIndex
+            );
+
+
+          details.appendChild(
+            swipeEntry
           );
 
         }
       );
 
 
-      commissionBlock.appendChild(
-        detailsList
-      );
-
-
-      commissionHeader.addEventListener(
+      summary.addEventListener(
         "click",
         function() {
 
-          const currentlyOpen =
-            detailsList.style.display !==
+          const isOpen =
+            details.style.display !==
             "none";
 
 
-          if (
-            currentlyOpen
-          ) {
+          if (isOpen) {
 
-            detailsList.style.display =
+            details.style.display =
               "none";
 
+            summary.classList.remove(
+              "open"
+            );
 
             arrow.textContent =
               "＋";
 
-
-            commissionHeader.classList.remove(
-              "open"
-            );
-
           } else {
 
-            detailsList.style.display =
+            details.style.display =
               "grid";
 
+            summary.classList.add(
+              "open"
+            );
 
             arrow.textContent =
               "−";
-
-
-            commissionHeader.classList.add(
-              "open"
-            );
 
           }
 
@@ -2122,23 +1783,33 @@ function renderCommissionEvaluation() {
       );
 
 
-      evaluationCommissions.appendChild(
-        commissionBlock
+      block.appendChild(
+        summary
+      );
+
+      block.appendChild(
+        details
+      );
+
+
+      list.appendChild(
+        block
       );
 
     }
   );
 
+
+  evaluationCommissions.appendChild(
+    list
+  );
+
 }
 
 
-/* =========================
-   SWIPE-EINTRAG
-========================= */
-
 function createSwipeEntry(
-  detail,
-  parent
+  entry,
+  originalIndex
 ) {
 
   const wrapper =
@@ -2146,32 +1817,34 @@ function createSwipeEntry(
       "div"
     );
 
-
   wrapper.className =
     "swipe-entry";
 
 
-  const deleteAction =
+  const deleteButton =
     document.createElement(
       "button"
     );
 
-
-  deleteAction.type =
+  deleteButton.type =
     "button";
 
-
-  deleteAction.className =
+  deleteButton.className =
     "swipe-delete";
 
-
-  deleteAction.textContent =
+  deleteButton.textContent =
     "Löschen";
 
 
-  deleteAction.setAttribute(
-    "aria-label",
-    "Eintrag löschen"
+  deleteButton.addEventListener(
+    "click",
+    function() {
+
+      deleteTimeEntry(
+        originalIndex
+      );
+
+    }
   );
 
 
@@ -2179,7 +1852,6 @@ function createSwipeEntry(
     document.createElement(
       "div"
     );
-
 
   content.className =
     "swipe-content";
@@ -2190,46 +1862,44 @@ function createSwipeEntry(
       "strong"
     );
 
-
   date.textContent =
-    detail.date
-      ? formatDate(detail.date)
-      : "Datum unbekannt";
-
-
-  const hours =
-    document.createElement(
-      "div"
+    formatDate(
+      getEntryDate(
+        entry
+      )
     );
-
-
-  hours.textContent =
-    detail.entry.hours +
-    " Std.";
 
 
   const activity =
     document.createElement(
+      "div"
+    );
+
+  activity.textContent =
+    entry.activity ||
+    "Keine Tätigkeit";
+
+
+  const hours =
+    document.createElement(
       "small"
     );
 
+  hours.textContent =
+    formatHours(
+      Number(entry.hours)
+    );
 
-  activity.textContent =
-    detail.entry.activity ||
-    "Keine Tätigkeit angegeben";
 
-
-  const status =
+  const badge =
     document.createElement(
       "span"
     );
 
-
-  status.className =
+  badge.className =
     "confirmed-badge";
 
-
-  status.textContent =
+  badge.textContent =
     "Quittiert";
 
 
@@ -2238,20 +1908,20 @@ function createSwipeEntry(
   );
 
   content.appendChild(
-    hours
-  );
-
-  content.appendChild(
     activity
   );
 
   content.appendChild(
-    status
+    hours
+  );
+
+  content.appendChild(
+    badge
   );
 
 
   wrapper.appendChild(
-    deleteAction
+    deleteButton
   );
 
   wrapper.appendChild(
@@ -2259,10 +1929,17 @@ function createSwipeEntry(
   );
 
 
-  parent.appendChild(
-    wrapper
+  enableSwipe(
+    content
   );
 
+
+  return wrapper;
+
+}
+
+
+function enableSwipe(element) {
 
   let startX =
     0;
@@ -2274,9 +1951,16 @@ function createSwipeEntry(
     false;
 
 
-  content.addEventListener(
+  element.addEventListener(
     "touchstart",
     function(event) {
+
+      if (
+        !event.touches ||
+        !event.touches[0]
+      ) {
+        return;
+      }
 
       startX =
         event.touches[0].clientX;
@@ -2289,22 +1973,21 @@ function createSwipeEntry(
 
     },
     {
-      passive:
-        true
+      passive: true
     }
   );
 
 
-  content.addEventListener(
+  element.addEventListener(
     "touchmove",
     function(event) {
 
       if (
-        !dragging
+        !dragging ||
+        !event.touches ||
+        !event.touches[0]
       ) {
-
         return;
-
       }
 
 
@@ -2312,79 +1995,62 @@ function createSwipeEntry(
         event.touches[0].clientX;
 
 
-      const difference =
+      const distance =
         currentX -
         startX;
 
 
       if (
-        difference < 0
+        distance < 0
       ) {
 
-        const offset =
+        const limited =
           Math.max(
-            -90,
-            difference
+            distance,
+            -90
           );
 
-
-        content.style.transform =
+        element.style.transform =
           "translateX(" +
-          offset +
+          limited +
           "px)";
 
       }
 
     },
     {
-      passive:
-        true
+      passive: true
     }
   );
 
 
-  content.addEventListener(
+  element.addEventListener(
     "touchend",
     function() {
 
-      if (
-        !dragging
-      ) {
-
+      if (!dragging) {
         return;
-
       }
-
 
       dragging =
         false;
 
 
-      const difference =
+      const distance =
         currentX -
         startX;
 
 
       if (
-        difference <= -50
+        distance < -45
       ) {
 
-        content.classList.add(
-          "swiped"
-        );
-
-
-        content.style.transform =
+        element.style.transform =
           "translateX(-90px)";
 
       } else {
 
-        content.classList.remove(
-          "swiped"
-        );
-
-
-        content.style.transform =
+        element.style.transform =
           "translateX(0)";
 
       }
@@ -2392,54 +2058,27 @@ function createSwipeEntry(
     }
   );
 
-
-  deleteAction.addEventListener(
-    "click",
-    function(event) {
-
-      event.stopPropagation();
-
-
-      deleteTimeEntry(
-        detail.originalIndex
-      );
-
-    }
-  );
-
 }
 
 
-/* =========================
-   ZEITEINTRAG LÖSCHEN
-========================= */
-
-function deleteTimeEntry(
-  index
-) {
+function deleteTimeEntry(index) {
 
   if (
     index < 0 ||
     index >= timeEntries.length
   ) {
-
     return;
-
   }
 
 
   const confirmed =
     confirm(
-      "Diesen quittierten Zeiteintrag wirklich löschen?"
+      "Diesen Eintrag wirklich löschen?"
     );
 
 
-  if (
-    !confirmed
-  ) {
-
+  if (!confirmed) {
     return;
-
   }
 
 
@@ -2449,7 +2088,7 @@ function deleteTimeEntry(
   );
 
 
-  saveEntries();
+  saveTimeEntries();
 
   renderEvaluation();
 
@@ -2457,187 +2096,77 @@ function deleteTimeEntry(
 
 
 /* =========================
-   BENUTZERPROFIL
+   EXPORT
 ========================= */
 
-function getUserProfile() {
+function csvEscape(value) {
 
-  return {
-
-    lastName:
-      userLastNameInput.value.trim(),
-
-    firstName:
-      userFirstNameInput.value.trim(),
-
-    address:
-      userAddressInput.value.trim(),
-
-    zip:
-      userZipInput.value.trim(),
-
-    city:
-      userCityInput.value.trim(),
-
-    party:
-      userPartyInput.value.trim()
-
-  };
-
-}
-
-
-function getDisplayName() {
-
-  const profile =
-    getUserProfile();
-
-
-  return [
-    profile.firstName,
-    profile.lastName
-  ]
-    .filter(
-      Boolean
-    )
-    .join(" ");
-
-}
-
-
-function renderUserName() {
-
-  userNameDisplay.textContent =
-    getDisplayName();
-
-}
-
-
-function saveUserProfile() {
-
-  const lastName =
-    userLastNameInput.value.trim();
-
-
-  const firstName =
-    userFirstNameInput.value.trim();
-
-
-  if (
-    lastName === ""
-  ) {
-
-    userNameStatus.textContent =
-      "Bitte gib deinen Namen ein.";
-
-    userLastNameInput.focus();
-
-    return;
-
-  }
-
-
-  if (
-    firstName === ""
-  ) {
-
-    userNameStatus.textContent =
-      "Bitte gib deinen Vornamen ein.";
-
-    userFirstNameInput.focus();
-
-    return;
-
-  }
-
-
-  const profile =
-    getUserProfile();
-
-
-  localStorage.setItem(
-    USER_PROFILE_KEY,
-    JSON.stringify(
-      profile
-    )
-  );
-
-
-  localStorage.setItem(
-    OLD_USER_NAME_KEY,
-    getDisplayName()
-  );
-
-
-  renderUserName();
-
-
-  userNameStatus.textContent =
-    "Angaben gespeichert.";
-
-}
-
-
-/* =========================
-   EXPORT FILTER
-========================= */
-
-function resetExportFilter() {
-
-  exportFromInput.value =
-    "";
-
-  exportToInput.value =
-    "";
-
-}
-
-
-/* =========================
-   EXCEL EXPORT
-========================= */
-
-function exportToExcel() {
-
-  const confirmedEntries =
-    timeEntries.filter(
-      function(entry) {
-
-        return (
-          entry.confirmed !==
-          false
-        );
-
-      }
+  const text =
+    String(
+      value ?? ""
     );
 
 
   if (
-    confirmedEntries.length ===
-    0
+    text.includes(";") ||
+    text.includes('"') ||
+    text.includes("\n")
   ) {
 
-    alert(
-      "Es sind noch keine quittierten Zeiteinträge vorhanden."
+    return (
+      '"' +
+      text.replace(
+        /"/g,
+        '""'
+      ) +
+      '"'
     );
-
-    return;
 
   }
 
 
-  const fromValue =
-    exportFromInput.value.trim();
+  return text;
+
+}
 
 
-  const toValue =
-    exportToInput.value.trim();
+function formatExportHours(hours) {
+
+  return Number(
+    hours
+  ).toLocaleString(
+    "de-CH",
+    {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }
+  );
+
+}
+
+
+function exportCsv() {
+
+  const from =
+    exportFrom.value
+      ? parseDateString(
+          exportFrom.value
+        )
+      : null;
+
+
+  const to =
+    exportTo.value
+      ? parseDateString(
+          exportTo.value
+        )
+      : null;
 
 
   if (
-    fromValue &&
-    toValue &&
-    fromValue > toValue
+    from &&
+    to &&
+    from > to
   ) {
 
     alert(
@@ -2649,340 +2178,191 @@ function exportToExcel() {
   }
 
 
-  const filteredEntries =
-    confirmedEntries.filter(
-      function(entry) {
+  const filtered =
+    timeEntries
+      .filter(
+        function(entry) {
 
-        const entryDate =
-          getEntryDate(
-            entry
-          );
-
-
-        if (
-          !entryDate
-        ) {
-
-          return false;
-
-        }
+          if (
+            entry.confirmed === false
+          ) {
+            return false;
+          }
 
 
-        const year =
-          entryDate.getFullYear();
+          const date =
+            getEntryDate(
+              entry
+            );
 
 
-        const month =
-          String(
-            entryDate.getMonth() + 1
-          ).padStart(
-            2,
-            "0"
-          );
+          if (!date) {
+            return false;
+          }
 
 
-        const day =
-          String(
-            entryDate.getDate()
-          ).padStart(
-            2,
-            "0"
-          );
+          if (
+            from &&
+            date < from
+          ) {
+            return false;
+          }
 
 
-        const entryDateString =
-          year +
-          "-" +
-          month +
-          "-" +
-          day;
+          if (
+            to
+          ) {
+
+            const endDate =
+              new Date(
+                to.getFullYear(),
+                to.getMonth(),
+                to.getDate(),
+                23,
+                59,
+                59,
+                999
+              );
 
 
-        if (
-          fromValue &&
-          entryDateString < fromValue
-        ) {
+            if (
+              date > endDate
+            ) {
+              return false;
+            }
 
-          return false;
-
-        }
+          }
 
 
-        if (
-          toValue &&
-          entryDateString > toValue
-        ) {
-
-          return false;
+          return true;
 
         }
+      )
+      .sort(
+        function(a, b) {
+
+          const dateA =
+            getEntryDate(
+              a
+            );
+
+          const dateB =
+            getEntryDate(
+              b
+            );
 
 
-        return true;
+          if (!dateA && !dateB) {
+            return 0;
+          }
 
-      }
-    );
+          if (!dateA) {
+            return 1;
+          }
 
-
-  if (
-    filteredEntries.length ===
-    0
-  ) {
-
-    alert(
-      "Für den gewählten Zeitraum wurden keine quittierten Einträge gefunden."
-    );
-
-    return;
-
-  }
+          if (!dateB) {
+            return -1;
+          }
 
 
-  const sortedEntries =
-    [...filteredEntries].sort(
-      function(a, b) {
+          return (
+            dateA.getTime() -
+            dateB.getTime()
+          );
 
-        const dateA =
-          getEntryDate(a);
-
-        const dateB =
-          getEntryDate(b);
-
-
-        const timeA =
-          dateA
-            ? dateA.getTime()
-            : 0;
-
-
-        const timeB =
-          dateB
-            ? dateB.getTime()
-            : 0;
-
-
-        return (
-          timeA -
-          timeB
-        );
-
-      }
-    );
-
-
-  function escapeCSV(
-    value
-  ) {
-
-    const text =
-      String(
-        value ?? ""
+        }
       );
-
-
-    if (
-      text.includes(";") ||
-      text.includes('"') ||
-      text.includes("\n") ||
-      text.includes("\r")
-    ) {
-
-      return (
-        '"' +
-        text.replace(
-          /"/g,
-          '""'
-        ) +
-        '"'
-      );
-
-    }
-
-
-    return text;
-
-  }
 
 
   const profile =
-    getUserProfile();
+    getProfile();
 
 
-  const rows =
-    [];
+  const rows = [];
 
 
-  rows.push(
-    [
-      "Name",
-      profile.lastName
-    ]
-      .map(
-        escapeCSV
-      )
-      .join(";")
-  );
+  rows.push([
+    "Name",
+    profile.lastName || ""
+  ]);
 
+  rows.push([
+    "Vorname",
+    profile.firstName || ""
+  ]);
 
-  rows.push(
-    [
-      "Vorname",
-      profile.firstName
-    ]
-      .map(
-        escapeCSV
-      )
-      .join(";")
-  );
+  rows.push([
+    "Adresse",
+    profile.address || ""
+  ]);
 
+  rows.push([
+    "PLZ",
+    profile.zip || ""
+  ]);
 
-  rows.push(
-    [
-      "Adresse",
-      profile.address
-    ]
-      .map(
-        escapeCSV
-      )
-      .join(";")
-  );
+  rows.push([
+    "Ort",
+    profile.city || ""
+  ]);
 
-
-  rows.push(
-    [
-      "PLZ",
-      profile.zip
-    ]
-      .map(
-        escapeCSV
-      )
-      .join(";")
-  );
-
-
-  rows.push(
-    [
-      "Ort",
-      profile.city
-    ]
-      .map(
-        escapeCSV
-      )
-      .join(";")
-  );
-
-
-  rows.push(
-    [
-      "Partei",
-      profile.party
-    ]
-      .map(
-        escapeCSV
-      )
-      .join(";")
-  );
+  rows.push([
+    "Partei",
+    profile.party || ""
+  ]);
 
 
   if (
-    fromValue ||
-    toValue
+    from ||
+    to
   ) {
 
-    const fromText =
-      fromValue
-        ? formatDate(
-            parseDateString(
-              fromValue
-            )
-          )
-        : "Anfang";
-
-
-    const toText =
-      toValue
-        ? formatDate(
-            parseDateString(
-              toValue
-            )
-          )
-        : "heute";
-
-
-    rows.push(
-      [
-        "Zeitraum",
-        fromText +
-        " bis " +
-        toText
-      ]
-        .map(
-          escapeCSV
-        )
-        .join(";")
-    );
+    rows.push([
+      "Zeitraum",
+      (
+        from
+          ? formatDate(from)
+          : "–"
+      ) +
+      " bis " +
+      (
+        to
+          ? formatDate(to)
+          : "–"
+      )
+    ]);
 
   }
 
 
-  rows.push("");
+  rows.push([]);
+
+  rows.push([
+    "Datum",
+    "Kommission",
+    "Tätigkeit",
+    "Stunden"
+  ]);
 
 
-  rows.push(
-    [
-      "Datum",
-      "Kommission",
-      "Tätigkeit",
-      "Stunden"
-    ]
-      .map(
-        escapeCSV
-      )
-      .join(";")
-  );
-
-
-  sortedEntries.forEach(
+  filtered.forEach(
     function(entry) {
 
-      const date =
-        getEntryDate(
-          entry
-        );
-
-
-      const dateText =
-        date
-          ? formatDate(
-              date
-            )
-          : "";
-
-
-      const hours =
-        getHours(
-          entry
-        );
-
-
-      rows.push(
-        [
-          dateText,
-          entry.commission || "",
-          entry.activity || "",
-          hours.toLocaleString(
-            "de-CH",
-            {
-              maximumFractionDigits:
-                2
-            }
+      rows.push([
+        formatDate(
+          getEntryDate(
+            entry
           )
-        ]
-          .map(
-            escapeCSV
+        ),
+        entry.commission ||
+          "Ohne Kommission",
+        entry.activity || "",
+        formatExportHours(
+          Number(
+            entry.hours
           )
-          .join(";")
-      );
+        )
+      ]);
 
     }
   );
@@ -2990,161 +2370,48 @@ function exportToExcel() {
 
   const total =
     calculateTotal(
-      sortedEntries
+      filtered
     );
 
 
-  rows.push("");
-
-
-  rows.push(
-    [
-      "",
-      "",
-      "Gesamt",
-      total.toLocaleString(
-        "de-CH",
-        {
-          maximumFractionDigits:
-            2
-        }
-      )
-    ]
-      .map(
-        escapeCSV
-      )
-      .join(";")
-  );
+  rows.push([
+    "",
+    "",
+    "Gesamt",
+    formatExportHours(
+      total
+    )
+  ]);
 
 
   const csv =
-    "\uFEFF" +
-    rows.join(
-      "\r\n"
-    );
+    rows
+      .map(
+        function(row) {
+
+          return row
+            .map(
+              csvEscape
+            )
+            .join(";");
+
+        }
+      )
+      .join("\r\n");
 
 
   const blob =
     new Blob(
-      [csv],
+      [
+        "\uFEFF" +
+        csv
+      ],
       {
         type:
           "text/csv;charset=utf-8;"
       }
     );
 
-
-  let filename =
-    "Ravo_Excel_" +
-    getTodayString();
-
-
-  if (
-    fromValue &&
-    toValue
-  ) {
-
-    filename =
-      "Ravo_Excel_" +
-      fromValue +
-      "_bis_" +
-      toValue;
-
-  } else if (
-    fromValue
-  ) {
-
-    filename =
-      "Ravo_Excel_ab_" +
-      fromValue;
-
-  } else if (
-    toValue
-  ) {
-
-    filename =
-      "Ravo_Excel_bis_" +
-      toValue;
-
-  }
-
-
-  filename +=
-    ".csv";
-
-
-  const file =
-    new File(
-      [blob],
-      filename,
-      {
-        type:
-          "text/csv;charset=utf-8;"
-      }
-    );
-
-
-  if (
-    navigator.share &&
-    navigator.canShare &&
-    navigator.canShare({
-      files:
-        [file]
-    })
-  ) {
-
-    navigator.share(
-      {
-        title:
-          "Ravo Excel Export",
-
-        text:
-          "Zeiterfassung aus Ravo",
-
-        files:
-          [file]
-
-      }
-    ).catch(
-      function(error) {
-
-        if (
-          error.name !==
-          "AbortError"
-        ) {
-
-          downloadCSV(
-            blob,
-            filename
-          );
-
-        }
-
-      }
-    );
-
-
-    return;
-
-  }
-
-
-  downloadCSV(
-    blob,
-    filename
-  );
-
-}
-
-
-/* =========================
-   DOWNLOAD
-========================= */
-
-function downloadCSV(
-  blob,
-  filename
-) {
 
   const url =
     URL.createObjectURL(
@@ -3157,231 +2424,137 @@ function downloadCSV(
       "a"
     );
 
-
   link.href =
     url;
 
-
   link.download =
-    filename;
-
+    "Ravo_Stunden.csv";
 
   document.body.appendChild(
     link
   );
 
-
   link.click();
-
 
   link.remove();
 
-
-  setTimeout(
-    function() {
-
-      URL.revokeObjectURL(
-        url
-      );
-
-    },
-    1000
+  URL.revokeObjectURL(
+    url
   );
+
+}
+
+
+function resetExportFilter() {
+
+  exportFrom.value =
+    "";
+
+  exportTo.value =
+    "";
 
 }
 
 
 /* =========================
-   SEITENWECHSEL
+   THEME
 ========================= */
 
-function clearSections() {
+function applyTheme(theme) {
 
-  recordingSection.style.display =
-    "none";
+  if (
+    theme !== "dark"
+  ) {
 
-  evaluationSection.style.display =
-    "none";
+    theme =
+      "light";
 
-  commissionSection.style.display =
-    "none";
-
-  settingsSection.style.display =
-    "none";
-
-}
+  }
 
 
-function clearNavActive() {
+  document.body.dataset.theme =
+    theme;
 
-  navRecording.classList.remove(
-    "active"
+
+  localStorage.setItem(
+    THEME_KEY,
+    theme
   );
-
-  navEvaluation.classList.remove(
-    "active"
-  );
-
-  navCommissions.classList.remove(
-    "active"
-  );
-
-}
-
-
-function showRecording() {
-
-  clearSections();
-
-  clearNavActive();
-
-
-  recordingSection.style.display =
-    "";
-
-
-  navRecording.classList.add(
-    "active"
-  );
-
-
-  entryStatus.textContent =
-    "";
-
-}
-
-
-function showEvaluation() {
-
-  clearSections();
-
-  clearNavActive();
-
-
-  evaluationSection.style.display =
-    "";
-
-
-  navEvaluation.classList.add(
-    "active"
-  );
-
-
-  exportDetails.open =
-    false;
-
-
-  renderEvaluation();
-
-}
-
-
-function showCommissions() {
-
-  clearSections();
-
-  clearNavActive();
-
-
-  commissionSection.style.display =
-    "";
-
-
-  navCommissions.classList.add(
-    "active"
-  );
-
-
-  renderCommissionList();
-
-}
-
-
-function showSettings() {
-
-  clearSections();
-
-  clearNavActive();
-
-
-  settingsSection.style.display =
-    "";
-
-
-  renderUserName();
-
-
-  userNameStatus.textContent =
-    "";
 
 
   updateThemeButtons();
 
+}
 
-  userLastNameInput.focus();
+
+function loadTheme() {
+
+  const stored =
+    localStorage.getItem(
+      THEME_KEY
+    );
+
+
+  if (
+    stored === "dark"
+  ) {
+
+    applyTheme(
+      "dark"
+    );
+
+  } else {
+
+    applyTheme(
+      "light"
+    );
+
+  }
+
+}
+
+
+function updateThemeButtons() {
+
+  const theme =
+    document.body.dataset.theme;
+
+
+  lightModeButton.classList.toggle(
+    "selected",
+    theme === "light"
+  );
+
+
+  darkModeButton.classList.toggle(
+    "selected",
+    theme === "dark"
+  );
 
 }
 
 
 /* =========================
-   BUTTONS
+   EVENTS
 ========================= */
 
-addEntryButton.addEventListener(
-  "click",
-  function() {
-
-    prepareEntry();
-
-  }
-);
-
-
-editEntryButton.addEventListener(
-  "click",
-  function() {
-
-    editPendingEntry();
-
-  }
-);
-
-
-confirmEntryButton.addEventListener(
-  "click",
-  function() {
-
-    confirmEntry();
-
-  }
-);
-
-
-/* =========================
-   NAVIGATION
-========================= */
-
-navEvaluation.addEventListener(
+evaluationNav.addEventListener(
   "click",
   showEvaluation
 );
 
 
-navRecording.addEventListener(
+entryNav.addEventListener(
   "click",
-  showRecording
+  showEntry
 );
 
 
-navCommissions.addEventListener(
+commissionNav.addEventListener(
   "click",
   showCommissions
 );
 
-
-/* =========================
-   EINSTELLUNGEN
-========================= */
 
 settingsButton.addEventListener(
   "click",
@@ -3389,51 +2562,53 @@ settingsButton.addEventListener(
 );
 
 
-saveUserNameButton.addEventListener(
+saveEntryButton.addEventListener(
   "click",
-  function() {
+  createPendingEntry
+);
 
-    saveUserProfile();
+
+editEntryButton.addEventListener(
+  "click",
+  editPendingEntry
+);
+
+
+confirmEntryButton.addEventListener(
+  "click",
+  confirmPendingEntry
+);
+
+
+addCommissionButton.addEventListener(
+  "click",
+  addCommission
+);
+
+
+commissionName.addEventListener(
+  "keydown",
+  function(event) {
+
+    if (
+      event.key === "Enter"
+    ) {
+
+      event.preventDefault();
+
+      addCommission();
+
+    }
 
   }
 );
 
 
-[
-  userLastNameInput,
-  userFirstNameInput,
-  userAddressInput,
-  userZipInput,
-  userCityInput,
-  userPartyInput
-].forEach(
-  function(input) {
-
-    input.addEventListener(
-      "keydown",
-      function(event) {
-
-        if (
-          event.key ===
-          "Enter"
-        ) {
-
-          event.preventDefault();
-
-          saveUserProfile();
-
-        }
-
-      }
-    );
-
-  }
+saveProfileButton.addEventListener(
+  "click",
+  saveProfile
 );
 
-
-/* =========================
-   TAG / NACHT
-========================= */
 
 lightModeButton.addEventListener(
   "click",
@@ -3459,60 +2634,15 @@ darkModeButton.addEventListener(
 );
 
 
-/* =========================
-   KOMMISSION
-========================= */
-
-addCommissionButton.addEventListener(
+exportButton.addEventListener(
   "click",
-  function() {
-
-    addCommission();
-
-  }
+  exportCsv
 );
 
 
-newCommissionInput.addEventListener(
-  "keydown",
-  function(event) {
-
-    if (
-      event.key ===
-      "Enter"
-    ) {
-
-      event.preventDefault();
-
-      addCommission();
-
-    }
-
-  }
-);
-
-
-/* =========================
-   EXPORT
-========================= */
-
-exportExcelButton.addEventListener(
+exportResetButton.addEventListener(
   "click",
-  function() {
-
-    exportToExcel();
-
-  }
-);
-
-
-resetExportFilterButton.addEventListener(
-  "click",
-  function() {
-
-    resetExportFilter();
-
-  }
+  resetExportFilter
 );
 
 
@@ -3520,21 +2650,22 @@ resetExportFilterButton.addEventListener(
    START
 ========================= */
 
+loadData();
+
+loadProfile();
+
 loadTheme();
 
-setDefaultEntryDate();
+entryDate.value =
+  getTodayString();
 
-renderUserName();
-
-renderCommissionSelect();
-
-renderCommissionList();
+renderCommissions();
 
 renderEvaluation();
 
 /*
-  Ravo startet immer mit
-  der Auswertung.
+  App startet immer
+  auf Auswertung.
 */
 
 showEvaluation();
