@@ -1,12 +1,11 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="de">
 <head>
-
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
   >
 
   <meta
@@ -21,7 +20,7 @@
 
   <meta
     name="apple-mobile-web-app-status-bar-style"
-    content="default"
+    content="black-translucent"
   >
 
   <meta
@@ -36,7 +35,7 @@
 
   <link
     rel="apple-touch-icon"
-    href="icon-192.png"
+    href="icons/icon-180.png"
   >
 
   <link
@@ -45,21 +44,18 @@
   >
 
   <title>Ravo</title>
-
 </head>
 
 <body>
 
   <main class="app-shell">
 
-    <!-- KOPF -->
-
     <header class="topbar">
 
       <div>
 
         <p class="eyebrow">
-          Stundenverwaltung
+          Zeiterfassung
         </p>
 
         <h1>
@@ -69,7 +65,8 @@
         <div
           id="userNameDisplay"
           class="user-name-display"
-        ></div>
+        >
+        </div>
 
       </div>
 
@@ -85,6 +82,181 @@
     </header>
 
 
+    <!-- ERFASSUNG -->
+
+    <section
+      id="recordingSection"
+      class="card timer-card"
+    >
+
+      <p class="section-label">
+        Erfassung
+      </p>
+
+
+      <!-- ZUSAMMENFASSUNG -->
+
+      <div
+        id="entrySummary"
+        class="entry-summary"
+        style="display: none;"
+      >
+
+        <div class="summary-header">
+
+          <div>
+
+            <p class="section-label">
+              Bitte prüfen
+            </p>
+
+            <h3>
+              Zusammenfassung
+            </h3>
+
+          </div>
+
+          <span class="pending-badge">
+            Noch nicht gespeichert
+          </span>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Datum
+          </span>
+
+          <strong id="summaryDate">
+          </strong>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Stunden
+          </span>
+
+          <strong id="summaryHours">
+          </strong>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Kommission
+          </span>
+
+          <strong id="summaryCommission">
+          </strong>
+
+        </div>
+
+
+        <div class="summary-row">
+
+          <span>
+            Tätigkeit
+          </span>
+
+          <strong id="summaryActivity">
+          </strong>
+
+        </div>
+
+
+        <div class="summary-actions">
+
+          <button
+            id="editEntry"
+            class="secondary-button"
+            type="button"
+          >
+            Ändern
+          </button>
+
+
+          <button
+            id="confirmEntry"
+            class="confirm-button"
+            type="button"
+          >
+            ✓ Quittieren und speichern
+          </button>
+
+        </div>
+
+      </div>
+
+
+      <label for="entryDate">
+        Datum
+      </label>
+
+      <input
+        id="entryDate"
+        type="date"
+        autocomplete="off"
+      >
+
+
+      <label for="hours">
+        Stunden
+      </label>
+
+      <input
+        id="hours"
+        type="text"
+        inputmode="decimal"
+        placeholder="z. B. 7,5"
+        autocomplete="off"
+      >
+
+
+      <label for="commission">
+        Kommission
+      </label>
+
+      <select id="commission">
+      </select>
+
+
+      <label for="activity">
+        Tätigkeit
+      </label>
+
+      <input
+        id="activity"
+        type="text"
+        placeholder="z. B. Besprechung"
+        autocomplete="off"
+      >
+
+
+      <button
+        id="addEntry"
+        class="primary-button"
+        type="button"
+      >
+        Eintragen
+      </button>
+
+
+      <p
+        id="entryStatus"
+        class="entry-status"
+      >
+      </p>
+
+    </section>
+
+
     <!-- AUSWERTUNG -->
 
     <section
@@ -97,13 +269,16 @@
         Auswertung
       </p>
 
+
       <h2>
         Nach Kommissionen
       </h2>
 
+
       <div id="evaluationCommissions">
         Noch keine Einträge vorhanden.
       </div>
+
 
       <div class="evaluation-overview">
 
@@ -111,9 +286,8 @@
           Übersicht
         </p>
 
-        <div class="summary-grid">
 
-          <!-- SITZUNGEN -->
+        <div class="summary-grid">
 
           <div class="summary-box">
 
@@ -127,8 +301,6 @@
 
           </div>
 
-
-          <!-- JAHR -->
 
           <div class="summary-box">
 
@@ -155,18 +327,20 @@
       >
 
         <summary>
-          Export
+          📥 Export
         </summary>
+
 
         <div class="export-content">
 
           <p class="export-description">
-            Exportiere deine bestätigten Einträge als Excel-kompatible CSV-Datei.
+            Quittierte Zeiteinträge mit den persönlichen Angaben aus den Einstellungen exportieren.
           </p>
+
 
           <div class="export-filter">
 
-            <div>
+            <div class="filter-field">
 
               <label for="exportFrom">
                 Von
@@ -179,7 +353,8 @@
 
             </div>
 
-            <div>
+
+            <div class="filter-field">
 
               <label for="exportTo">
                 Bis
@@ -194,18 +369,20 @@
 
           </div>
 
+
           <div class="export-actions">
 
             <button
-              id="exportButton"
+              id="exportExcel"
               class="export-button"
               type="button"
             >
-              CSV exportieren
+              Excel exportieren
             </button>
 
+
             <button
-              id="exportResetButton"
+              id="resetExportFilter"
               class="export-reset-button"
               type="button"
             >
@@ -214,205 +391,14 @@
 
           </div>
 
+
           <small>
-            Die Datei enthält deine gespeicherten Angaben sowie Datum, Kommission,
-            Tätigkeit und Stunden.
+            Ohne Datumsfilter werden alle quittierten Einträge exportiert.
           </small>
 
         </div>
 
       </details>
-
-    </section>
-
-
-    <!-- ERFASSUNG -->
-
-    <section
-      id="entrySection"
-      class="card timer-card"
-      style="display: none;"
-    >
-
-      <p class="section-label">
-        Erfassung
-      </p>
-
-
-      <!-- ZUSAMMENFASSUNG -->
-
-      <div
-        id="entrySummary"
-        class="entry-summary"
-        style="display: none;"
-      >
-
-        <div class="summary-header">
-
-          <div>
-
-            <p class="section-label">
-              Zusammenfassung
-            </p>
-
-            <h3>
-              Eintrag prüfen
-            </h3>
-
-          </div>
-
-          <span class="pending-badge">
-            Noch nicht gespeichert
-          </span>
-
-        </div>
-
-
-        <div class="summary-row">
-
-          <span>
-            Datum
-          </span>
-
-          <strong id="summaryDate">
-            –
-          </strong>
-
-        </div>
-
-
-        <div class="summary-row">
-
-          <span>
-            Stunden
-          </span>
-
-          <strong id="summaryHours">
-            –
-          </strong>
-
-        </div>
-
-
-        <div class="summary-row">
-
-          <span>
-            Kommission
-          </span>
-
-          <strong id="summaryCommission">
-            –
-          </strong>
-
-        </div>
-
-
-        <div class="summary-row">
-
-          <span>
-            Tätigkeit
-          </span>
-
-          <strong id="summaryActivity">
-            –
-          </strong>
-
-        </div>
-
-
-        <div class="summary-actions">
-
-          <button
-            id="editEntryButton"
-            class="secondary-button"
-            type="button"
-          >
-            Ändern
-          </button>
-
-          <button
-            id="confirmEntryButton"
-            class="confirm-button"
-            type="button"
-          >
-            ✓ Quittieren und speichern
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- DATUM -->
-
-      <label for="entryDate">
-        Datum
-      </label>
-
-      <input
-        id="entryDate"
-        type="date"
-      >
-
-
-      <!-- STUNDEN -->
-
-      <label for="entryHours">
-        Stunden
-      </label>
-
-      <input
-        id="entryHours"
-        type="number"
-        min="0"
-        step="0.25"
-        inputmode="decimal"
-        placeholder="z. B. 2.5"
-      >
-
-
-      <!-- KOMMISSION -->
-
-      <label for="entryCommission">
-        Kommission
-      </label>
-
-      <select
-        id="entryCommission"
-      >
-        <option value="">
-          Kommission auswählen
-        </option>
-      </select>
-
-
-      <!-- TÄTIGKEIT -->
-
-      <label for="entryActivity">
-        Tätigkeit
-      </label>
-
-      <input
-        id="entryActivity"
-        type="text"
-        maxlength="200"
-        placeholder="Was wurde gemacht?"
-      >
-
-
-      <button
-        id="saveEntryButton"
-        class="primary-button"
-        type="button"
-      >
-        Eintragen
-      </button>
-
-
-      <div
-        id="entryStatus"
-        class="entry-status"
-      ></div>
 
     </section>
 
@@ -429,47 +415,57 @@
         Verwaltung
       </p>
 
+
       <h2>
         Kommissionen
       </h2>
 
+
       <p class="commission-info">
-        Hier kannst du Kommissionen hinzufügen, umbenennen oder löschen.
+        Hier kannst du deine Kommissionen verwalten.
       </p>
 
 
-      <div class="commission-input-row">
+      <div class="commission-form">
 
-        <div>
+        <label for="newCommission">
+          Neue Kommission
+        </label>
 
-          <label for="commissionName">
-            Neue Kommission
-          </label>
+
+        <div class="commission-input-row">
 
           <input
-            id="commissionName"
+            id="newCommission"
             type="text"
-            maxlength="100"
-            placeholder="Kommissionsname"
+            placeholder="z. B. Projekt 2026"
+            autocomplete="off"
           >
 
-        </div>
 
-        <button
-          id="addCommissionButton"
-          class="primary-button"
-          type="button"
-        >
-          Hinzufügen
-        </button>
+          <button
+            id="addCommission"
+            class="primary-button"
+            type="button"
+          >
+            Hinzufügen
+          </button>
+
+        </div>
 
       </div>
 
 
+      <p class="section-label">
+        Meine Kommissionen
+      </p>
+
+
       <div
         id="commissionList"
-        style="margin-top: 18px;"
-      ></div>
+        class="entries-list"
+      >
+      </div>
 
     </section>
 
@@ -486,105 +482,93 @@
         Einstellungen
       </p>
 
+
       <h2>
         Persönliche Angaben
       </h2>
 
 
-      <label for="profileLastName">
+      <label for="userLastName">
         Name *
       </label>
 
       <input
-        id="profileLastName"
+        id="userLastName"
         type="text"
+        placeholder="z. B. Muster"
         autocomplete="family-name"
-        placeholder="Nachname"
       >
 
 
-      <label for="profileFirstName">
+      <label for="userFirstName">
         Vorname *
       </label>
 
       <input
-        id="profileFirstName"
+        id="userFirstName"
         type="text"
+        placeholder="z. B. Max"
         autocomplete="given-name"
-        placeholder="Vorname"
       >
 
 
-      <label for="profileAddress">
+      <label for="userAddress">
         Adresse
       </label>
 
       <input
-        id="profileAddress"
+        id="userAddress"
         type="text"
+        placeholder="z. B. Hauptstrasse 10"
         autocomplete="street-address"
-        placeholder="Adresse"
       >
 
 
-      <label for="profileZip">
+      <label for="userZip">
         PLZ
       </label>
 
       <input
-        id="profileZip"
+        id="userZip"
         type="text"
         inputmode="numeric"
+        placeholder="z. B. 8000"
         autocomplete="postal-code"
-        placeholder="PLZ"
       >
 
 
-      <label for="profileCity">
+      <label for="userCity">
         Ort
       </label>
 
       <input
-        id="profileCity"
+        id="userCity"
         type="text"
+        placeholder="z. B. Zürich"
         autocomplete="address-level2"
-        placeholder="Ort"
       >
 
 
-      <label for="profileParty">
+      <label for="userParty">
         Partei
       </label>
 
       <input
-        id="profileParty"
+        id="userParty"
         type="text"
-        placeholder="Partei"
+        placeholder="optional"
+        autocomplete="off"
       >
 
 
-      <button
-        id="saveProfileButton"
-        class="primary-button"
-        type="button"
-      >
-        Angaben speichern
-      </button>
-
-
-      <div
-        id="profileStatus"
-        class="form-status"
-      ></div>
-
-
-      <!-- TAG / NACHT -->
+      <!-- MODUS -->
 
       <div class="theme-settings">
 
         <p class="theme-title">
           Darstellung
         </p>
+
 
         <div class="theme-buttons">
 
@@ -593,75 +577,154 @@
             class="theme-button"
             type="button"
           >
-            ☀️ Tag
+            ☀️ Tagmodus
           </button>
+
 
           <button
             id="darkModeButton"
             class="theme-button"
             type="button"
           >
-            🌙 Nacht
+            🌙 Nachtmodus
           </button>
 
         </div>
 
       </div>
 
+
+      <button
+        id="saveUserName"
+        class="primary-button"
+        type="button"
+      >
+        Angaben speichern
+      </button>
+
+
+      <p
+        id="userNameStatus"
+        class="form-status"
+      >
+      </p>
+
+
+      <!-- DATENSICHERUNG -->
+
+      <div class="backup-settings">
+
+        <p class="theme-title">
+          Daten sichern &amp; wiederherstellen
+        </p>
+
+
+        <p class="backup-description">
+          Sichere deine Ravo-Daten als Datei oder stelle ein vorhandenes Backup wieder her.
+        </p>
+
+
+        <div class="backup-buttons">
+
+          <button
+            id="backupDataButton"
+            class="secondary-button"
+            type="button"
+          >
+            💾 Daten sichern
+          </button>
+
+
+          <button
+            id="restoreDataButton"
+            class="secondary-button"
+            type="button"
+          >
+            ♻️ Backup wiederherstellen
+          </button>
+
+        </div>
+
+
+        <input
+          id="restoreFileInput"
+          type="file"
+          accept="application/json,.json"
+          hidden
+        >
+
+
+        <p
+          id="backupStatus"
+          class="form-status"
+        >
+        </p>
+
+      </div>
+
     </section>
 
+
+    <!-- NAVIGATION -->
+
+    <nav
+      class="bottom-nav"
+      aria-label="Hauptnavigation"
+    >
+
+      <button
+        id="navEvaluation"
+        class="nav-item active"
+        type="button"
+      >
+
+        <span class="nav-icon">
+          📊
+        </span>
+
+        <span>
+          Auswertung
+        </span>
+
+      </button>
+
+
+      <button
+        id="navRecording"
+        class="nav-item"
+        type="button"
+      >
+
+        <span class="nav-icon">
+          ⏱️
+        </span>
+
+        <span>
+          Erfassung
+        </span>
+
+      </button>
+
+
+      <button
+        id="navCommissions"
+        class="nav-item"
+        type="button"
+      >
+
+        <span class="nav-icon">
+          🏛️
+        </span>
+
+        <span>
+          Kommissionen
+        </span>
+
+      </button>
+
+    </nav>
+
   </main>
-
-
-  <!-- NAVIGATION -->
-
-  <nav class="bottom-nav">
-
-    <button
-      id="evaluationNav"
-      class="nav-item active"
-      type="button"
-    >
-      <span class="nav-icon">
-        📊
-      </span>
-
-      <span>
-        Auswertung
-      </span>
-    </button>
-
-
-    <button
-      id="entryNav"
-      class="nav-item"
-      type="button"
-    >
-      <span class="nav-icon">
-        ✏️
-      </span>
-
-      <span>
-        Erfassung
-      </span>
-    </button>
-
-
-    <button
-      id="commissionNav"
-      class="nav-item"
-      type="button"
-    >
-      <span class="nav-icon">
-        📁
-      </span>
-
-      <span>
-        Kommission
-      </span>
-    </button>
-
-  </nav>
 
 
   <script src="app.js"></script>
