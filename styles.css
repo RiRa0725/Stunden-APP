@@ -1873,6 +1873,53 @@ label {
 
 
 /* =========================
+   DATENSICHERUNG
+========================= */
+
+.backup-settings {
+  margin-top:
+    24px;
+
+  padding-top:
+    18px;
+
+  border-top:
+    1px solid
+    var(--border);
+}
+
+
+.backup-description {
+  margin:
+    0 0 12px;
+
+  color:
+    var(--muted);
+
+  font-size:
+    13px;
+
+  line-height:
+    1.5;
+}
+
+
+.backup-buttons {
+  display:
+    grid;
+
+  gap:
+    8px;
+}
+
+
+#backupStatus {
+  margin-top:
+    10px;
+}
+
+
+/* =========================
    TAG / NACHT
 ========================= */
 
